@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Services — D1 Business Solutions</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg:      #0b0d12;
+    --bg2:     #11141b;
+    --bg3:     #171b24;
+    --surface: #1c2030;
+    --border:  #252a38;
+    --border2: #2e3448;
+    --ink:     #e9eaf2;
+    --ink2:    #8d94ad;
+    --ink3:    #555d78;
+    --accent:  #c792ea;
+    --accent2: #82aaff;
+    --green:   #c3e88d;
+    --orange:  #f78c6c;
+    --cyan:    #89ddff;
+    --yellow:  #ffcb6b;
+  }
+  body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; }
+
+  nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.1rem 2.5rem; border-bottom: 1px solid var(--border);
+    background: rgba(11,13,18,0.94); backdrop-filter: blur(14px);
+    position: sticky; top: 0; z-index: 10;
+  }
+  .logo { font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 1.7rem; letter-spacing: 0.04em; color: var(--accent); font-style: italic; text-decoration: none; }
+  nav ul { display: flex; gap: 2rem; list-style: none; }
+  nav a { text-decoration: none; color: var(--ink2); font-size: 0.85rem; font-weight: 400; letter-spacing: 0.04em; transition: color 0.2s; }
+  nav a:hover { color: var(--ink); }
+  .nav-cta { background: var(--accent); color: #0b0d12 !important; padding: 0.45rem 1.3rem; border-radius: 100px; font-weight: 600 !important; font-size: 0.82rem !important; }
+
+  .section-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+  h2 { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: clamp(2rem, 3.5vw, 2.8rem); letter-spacing: -0.01em; line-height: 1.1; margin-bottom: 1rem; }
+  h2 em { font-style: italic; color: var(--accent2); }
+  .section-intro { font-size: 0.92rem; color: var(--ink2); max-width: 500px; font-weight: 300; margin-bottom: 3rem; line-height: 1.8; }
+
+  /* HERO */
+  .page-hero { max-width: 1100px; margin: 0 auto; padding: 5rem 2.5rem 4rem; text-align: center; }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--bg3); border: 1px solid var(--border2);
+    padding: 0.35rem 1rem; border-radius: 100px;
+    font-size: 0.72rem; font-weight: 500; color: var(--ink2); letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 1.75rem;
+  }
+  .hero-eyebrow::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 7px var(--green); }
+  .page-hero h1 { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: clamp(2.8rem, 5vw, 4rem); line-height: 1.05; letter-spacing: -0.01em; margin-bottom: 1.25rem; }
+  .page-hero h1 em { font-style: italic; color: var(--accent); }
+  .page-hero p { font-size: 0.95rem; color: var(--ink2); font-weight: 300; max-width: 520px; margin: 0 auto 2.5rem; line-height: 1.8; }
+  .hero-actions { display: flex; gap: 1rem; align-items: center; justify-content: center; }
+  .btn-primary { background: var(--accent); color: #0b0d12; padding: 0.85rem 2rem; border-radius: 100px; text-decoration: none; font-weight: 600; font-size: 0.88rem; letter-spacing: 0.03em; transition: opacity 0.2s, transform 0.2s; display: inline-block; }
+  .btn-primary:hover { opacity: 0.85; transform: translateY(-2px); }
+  .btn-ghost { color: var(--ink2); font-weight: 400; font-size: 0.88rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; border: 1px solid var(--border2); padding: 0.85rem 1.6rem; border-radius: 100px; letter-spacing: 0.03em; transition: border-color 0.2s, color 0.2s; }
+  .btn-ghost:hover { border-color: var(--accent2); color: var(--accent2); }
+
+  /* SERVICE NAV TABS */
+  .service-tabs { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--bg2); overflow-x: auto; }
+  .service-tabs-inner { display: flex; max-width: 1100px; margin: 0 auto; }
+  .tab-link { flex: 1; min-width: 130px; padding: 1.1rem 1.5rem; display: flex; align-items: center; gap: 0.6rem; text-decoration: none; color: var(--ink3); font-size: 0.82rem; font-weight: 400; border-right: 1px solid var(--border); white-space: nowrap; transition: background 0.2s, color 0.2s; }
+  .tab-link:last-child { border-right: none; }
+  .tab-link:hover { background: var(--bg3); color: var(--ink2); }
+  .tab-link .tab-icon { font-size: 1rem; flex-shrink: 0; }
+
+  /* SERVICE DEEP DIVES */
+  .services-section { max-width: 1100px; margin: 0 auto; padding: 5rem 2.5rem; }
+
+  .service-block {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4.5rem; align-items: start;
+    padding: 4.5rem 0; border-bottom: 1px solid var(--border);
+  }
+  .service-block:first-child { padding-top: 0; }
+  .service-block:last-child { border-bottom: none; }
+  .service-block.reverse { direction: rtl; }
+  .service-block.reverse > * { direction: ltr; }
+
+  .svc-eyebrow { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem; }
+  .svc-icon-lg { font-size: 1.6rem; }
+  .svc-tag { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.2rem 0.75rem; border-radius: 100px; }
+  .tag-purple { background: rgba(199,146,234,0.12); color: var(--accent); border: 1px solid rgba(199,146,234,0.25); }
+  .tag-cyan   { background: rgba(137,221,255,0.08); color: var(--cyan);   border: 1px solid rgba(137,221,255,0.2); }
+  .tag-blue   { background: rgba(130,170,255,0.1);  color: var(--accent2);border: 1px solid rgba(130,170,255,0.2); }
+  .tag-green  { background: rgba(195,232,141,0.1);  color: var(--green);  border: 1px solid rgba(195,232,141,0.2); }
+  .tag-orange { background: rgba(247,140,108,0.1);  color: var(--orange); border: 1px solid rgba(247,140,108,0.2); }
+
+  .svc-content h3 { font-family: 'DM Serif Display', serif; font-weight: 400; font-size: clamp(1.5rem, 2.2vw, 1.85rem); color: var(--ink); margin-bottom: 1rem; line-height: 1.2; }
+  .svc-content > p { font-size: 0.9rem; color: var(--ink2); font-weight: 300; line-height: 1.85; margin-bottom: 1.25rem; }
+
+  .svc-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; margin-bottom: 1.75rem; }
+  .svc-bullets li { display: flex; align-items: flex-start; gap: 0.65rem; font-size: 0.83rem; color: var(--ink2); font-weight: 300; line-height: 1.5; }
+  .svc-bullets li::before { content: '✓'; color: var(--green); font-size: 0.78rem; font-weight: 600; flex-shrink: 0; margin-top: 0.15rem; }
+
+  .svc-link { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: var(--accent2); text-decoration: none; font-weight: 500; letter-spacing: 0.02em; transition: gap 0.2s; }
+  .svc-link:hover { gap: 0.7rem; }
+
+  /* SERVICE VISUAL CARDS */
+  .svc-visual { background: var(--bg2); border: 1px solid var(--border); border-radius: 16px; padding: 1.75rem; }
+  .svc-visual-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
+  .svc-visual-title { font-size: 0.72rem; color: var(--ink3); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+  .svc-live-dot { display: flex; align-items: center; gap: 0.4rem; font-size: 0.7rem; color: var(--green); }
+  .svc-live-dot::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 5px var(--green); animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+  /* Website visual */
+  .site-preview { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 1rem; }
+  .site-bar { display: flex; align-items: center; gap: 0.5rem; padding: 0.55rem 0.85rem; background: var(--surface); border-bottom: 1px solid var(--border); }
+  .site-dots { display: flex; gap: 4px; }
+  .site-dots span { width: 8px; height: 8px; border-radius: 50%; }
+  .dot-r { background: #ff5f56; } .dot-y { background: #ffbd2e; } .dot-g { background: #27c93f; }
+  .site-url { font-size: 0.65rem; color: var(--ink3); font-family: monospace; margin-left: auto; }
+  .site-body { padding: 1rem; }
+  .site-nav-mock { display: flex; gap: 0.5rem; margin-bottom: 0.8rem; }
+  .site-nav-mock span { height: 6px; border-radius: 3px; background: var(--border2); }
+  .site-hero-mock { height: 8px; background: rgba(199,146,234,0.3); border-radius: 4px; width: 55%; margin-bottom: 0.4rem; }
+  .site-sub-mock { height: 6px; background: var(--border); border-radius: 3px; width: 75%; margin-bottom: 0.3rem; }
+  .site-sub-mock.sm { width: 45%; }
+  .site-btn-mock { height: 22px; background: rgba(199,146,234,0.18); border: 1px solid rgba(199,146,234,0.3); border-radius: 100px; width: 80px; margin-top: 0.75rem; display: flex; align-items: center; justify-content: center; }
+  .site-btn-mock span { font-size: 0.55rem; color: var(--accent); font-weight: 600; letter-spacing: 0.06em; }
+  .site-stats-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.6rem; }
+  .site-stat { background: var(--bg3); border: 1px solid var(--border2); border-radius: 8px; padding: 0.65rem 0.75rem; }
+  .site-stat-val { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 300; color: var(--green); line-height: 1; }
+  .site-stat-lbl { font-size: 0.6rem; color: var(--ink3); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 0.15rem; }
+
+  /* AI agent visual */
+  .chat-window { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .chat-header { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 0.6rem; background: var(--surface); }
+  .chat-pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 6px var(--cyan); animation: pulse 2s ease-in-out infinite; }
+  .chat-name { font-size: 0.78rem; color: var(--ink); font-weight: 500; }
+  .chat-status { font-size: 0.65rem; color: var(--cyan); margin-left: auto; }
+  .chat-body { padding: 1rem; display: flex; flex-direction: column; gap: 0.65rem; }
+  .chat-bubble { max-width: 80%; padding: 0.6rem 0.85rem; border-radius: 10px; font-size: 0.78rem; line-height: 1.5; }
+  .bubble-user { background: var(--surface); color: var(--ink2); align-self: flex-end; border-radius: 10px 10px 3px 10px; }
+  .bubble-ai { background: rgba(137,221,255,0.08); border: 1px solid rgba(137,221,255,0.15); color: var(--ink2); align-self: flex-start; border-radius: 10px 10px 10px 3px; }
+  .bubble-ai strong { color: var(--cyan); font-weight: 500; }
+  .chat-input-mock { padding: 0.75rem 1rem; border-top: 1px solid var(--border); display: flex; gap: 0.5rem; align-items: center; }
+  .chat-input-mock span { flex: 1; height: 28px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; }
+  .chat-send { width: 28px; height: 28px; background: rgba(137,221,255,0.15); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; }
+  .leads-captured { margin-top: 0.85rem; display: flex; align-items: center; gap: 0.6rem; padding: 0.6rem 0.85rem; background: rgba(195,232,141,0.06); border: 1px solid rgba(195,232,141,0.15); border-radius: 8px; font-size: 0.75rem; color: var(--green); }
+  .leads-captured::before { content: '⚡'; }
+
+  /* Ecommerce visual */
+  .store-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.85rem; }
+  .product-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .product-img { height: 60px; background: linear-gradient(135deg, var(--surface), var(--bg3)); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
+  .product-info { padding: 0.6rem 0.75rem; }
+  .product-name { height: 6px; background: var(--border2); border-radius: 3px; width: 80%; margin-bottom: 0.35rem; }
+  .product-price { font-size: 0.78rem; color: var(--green); font-weight: 500; }
+  .product-btn { display: block; margin: 0.35rem; height: 22px; background: rgba(199,146,234,0.15); border-radius: 5px; display: flex; align-items: center; justify-content: center; }
+  .product-btn span { font-size: 0.6rem; color: var(--accent); font-weight: 600; letter-spacing: 0.06em; }
+  .store-total { background: var(--surface); border: 1px solid var(--border2); border-radius: 10px; padding: 0.85rem 1rem; display: flex; justify-content: space-between; align-items: center; }
+  .store-total-label { font-size: 0.78rem; color: var(--ink2); }
+  .store-total-val { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; color: var(--green); font-weight: 300; }
+
+  /* SEO visual */
+  .seo-scores { display: flex; flex-direction: column; gap: 0.65rem; }
+  .seo-row { display: flex; align-items: center; gap: 0.85rem; }
+  .seo-label { font-size: 0.78rem; color: var(--ink2); font-weight: 400; min-width: 100px; }
+  .seo-bar-track { flex: 1; height: 7px; background: var(--border); border-radius: 100px; overflow: hidden; }
+  .seo-bar-fill { height: 100%; border-radius: 100px; }
+  .fill-green  { background: linear-gradient(90deg, var(--green), #a8d672); }
+  .fill-blue   { background: linear-gradient(90deg, var(--accent2), #5b9fff); }
+  .fill-purple { background: linear-gradient(90deg, var(--accent), #a55ecf); }
+  .fill-cyan   { background: linear-gradient(90deg, var(--cyan), #5bc8e8); }
+  .seo-val { font-size: 0.78rem; color: var(--ink); font-weight: 500; min-width: 28px; text-align: right; }
+  .seo-note { margin-top: 1rem; font-size: 0.73rem; color: var(--ink3); display: flex; align-items: center; gap: 0.5rem; }
+  .seo-note::before { content: '↑'; color: var(--green); font-weight: 700; }
+
+  /* Automation visual */
+  .flow-steps { display: flex; flex-direction: column; gap: 0; }
+  .flow-node { display: flex; align-items: flex-start; gap: 0.85rem; }
+  .flow-line-col { display: flex; flex-direction: column; align-items: center; }
+  .flow-dot { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; flex-shrink: 0; }
+  .fd-purple { background: rgba(199,146,234,0.15); border: 1px solid rgba(199,146,234,0.3); color: var(--accent); }
+  .fd-blue   { background: rgba(130,170,255,0.12); border: 1px solid rgba(130,170,255,0.25); color: var(--accent2); }
+  .fd-green  { background: rgba(195,232,141,0.12); border: 1px solid rgba(195,232,141,0.25); color: var(--green); }
+  .fd-cyan   { background: rgba(137,221,255,0.1);  border: 1px solid rgba(137,221,255,0.2);  color: var(--cyan); }
+  .flow-connector { width: 1px; flex: 1; min-height: 18px; background: var(--border2); margin: 2px 0; }
+  .flow-text { padding-bottom: 1rem; }
+  .flow-text p { font-size: 0.8rem; color: var(--ink); font-weight: 400; line-height: 1; margin-bottom: 0.2rem; }
+  .flow-text span { font-size: 0.73rem; color: var(--ink3); font-weight: 300; }
+
+  /* Dashboard visual */
+  .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; margin-bottom: 0.85rem; }
+  .dash-metric { background: var(--bg3); border: 1px solid var(--border2); border-radius: 10px; padding: 0.85rem 1rem; }
+  .dash-val { font-family: 'Cormorant Garamond', serif; font-size: 1.7rem; font-weight: 300; line-height: 1; margin-bottom: 0.2rem; }
+  .dv-g { color: var(--green); } .dv-b { color: var(--accent2); } .dv-p { color: var(--accent); } .dv-c { color: var(--cyan); }
+  .dash-lbl { font-size: 0.65rem; color: var(--ink3); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
+  .dash-chart { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 0.85rem 1rem; }
+  .dash-chart-label { font-size: 0.7rem; color: var(--ink3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.65rem; }
+  .dash-bars { display: flex; align-items: flex-end; gap: 4px; height: 44px; }
+  .dash-bar { flex: 1; border-radius: 3px 3px 0 0; background: rgba(130,170,255,0.25); min-width: 0; }
+
+  /* BENEFITS BAND */
+  .benefits-band { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .benefits-inner { max-width: 1100px; margin: 0 auto; padding: 4.5rem 2.5rem; }
+  .benefits-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
+  .benefit-item h4 { font-family: 'DM Serif Display', serif; font-weight: 400; font-size: 1rem; color: var(--ink); margin-bottom: 0.4rem; }
+  .benefit-item p { font-size: 0.8rem; color: var(--ink2); font-weight: 300; line-height: 1.7; }
+  .benefit-icon { font-size: 1.3rem; margin-bottom: 0.75rem; }
+
+  /* CTA BAND */
+  .cta-band { max-width: 1100px; margin: 0 auto 5rem; padding: 0 2.5rem; }
+  .cta-inner {
+    background: var(--bg2); border: 1px solid var(--border2); border-radius: 20px;
+    padding: 3.5rem 3rem; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
+    position: relative; overflow: hidden;
+  }
+  .cta-inner::before { content: ''; position: absolute; top: -80px; right: -80px; width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle, rgba(199,146,234,0.07) 0%, transparent 70%); pointer-events: none; }
+  .cta-inner::after { content: ''; position: absolute; bottom: -60px; left: -60px; width: 220px; height: 220px; border-radius: 50%; background: radial-gradient(circle, rgba(130,170,255,0.06) 0%, transparent 70%); pointer-events: none; }
+  .cta-content p { font-size: 0.9rem; color: var(--ink2); font-weight: 300; line-height: 1.8; margin-bottom: 2rem; }
+  .cta-actions { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+  .btn-accent { display: inline-block; background: var(--accent); color: #0b0d12; padding: 0.85rem 2.2rem; border-radius: 100px; text-decoration: none; font-weight: 600; font-size: 0.88rem; letter-spacing: 0.03em; transition: opacity 0.2s, transform 0.2s; }
+  .btn-accent:hover { opacity: 0.85; transform: translateY(-2px); }
+  .cta-contacts { display: flex; flex-direction: column; gap: 0.85rem; }
+  .cta-contact-item { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.25rem; background: var(--bg3); border: 1px solid var(--border); border-radius: 12px; transition: border-color 0.2s; text-decoration: none; }
+  .cta-contact-item:hover { border-color: var(--border2); }
+  .cta-contact-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+  .icon-phone { background: rgba(195,232,141,0.1); } .icon-email { background: rgba(199,146,234,0.1); } .icon-ai { background: rgba(137,221,255,0.1); }
+  .cta-contact-text p { font-size: 0.68rem; color: var(--ink3); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; margin-bottom: 0.15rem; }
+  .cta-contact-text span { font-size: 0.88rem; color: var(--ink); font-weight: 400; }
+
+  footer { border-top: 1px solid var(--border); padding: 2rem 2.5rem; max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr 1fr; align-items: center; }
+  .footer-logo { font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 1.4rem; color: var(--accent); font-style: italic; }
+  .footer-legal { font-size: 0.75rem; color: var(--ink3); text-align: center; line-height: 1.7; }
+  .footer-contact { text-align: right; }
+  .footer-contact a { font-size: 0.78rem; color: var(--ink3); text-decoration: none; display: block; line-height: 2; transition: color 0.2s; }
+  .footer-contact a:hover { color: var(--accent); }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.25rem; } nav ul { gap: 1rem; }
+    .page-hero { padding: 3.5rem 1.25rem 2.5rem; }
+    .service-tabs-inner { min-width: 600px; }
+    .services-section { padding: 3rem 1.25rem; }
+    .service-block { grid-template-columns: 1fr; gap: 2rem; padding: 3rem 0; }
+    .service-block.reverse { direction: ltr; }
+    .benefits-inner { padding: 3rem 1.25rem; }
+    .benefits-grid { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .cta-band { padding: 0 1.25rem; }
+    .cta-inner { grid-template-columns: 1fr; padding: 2rem 1.5rem; }
+    footer { grid-template-columns: 1fr; gap: 1rem; text-align: center; }
+    .footer-contact { text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">D1</a>
+  <ul>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="work.html">Work</a></li>
+    <li><a href="process.html">Process</a></li>
+    <li><a href="quote.html" class="nav-cta">Get a quote</a></li>
+  </ul>
+</nav>
+
+<div class="page-hero">
+  <div class="hero-eyebrow">What we do</div>
+  <h1>Everything your business<br><em>needs online</em></h1>
+  <p>From a fast, beautiful website to an AI agent that captures leads while you sleep — we build the full stack so you can focus on running your business.</p>
+  <div class="hero-actions">
+    <a href="quote.html" class="btn-primary">Get a quote →</a>
+    <a href="process.html" class="btn-ghost">See our process</a>
+  </div>
+</div>
+
+<div class="service-tabs">
+  <div class="service-tabs-inner">
+    <a href="#websites"    class="tab-link"><span class="tab-icon">🌐</span> Business websites</a>
+    <a href="#ai"          class="tab-link"><span class="tab-icon">🤖</span> AI agents</a>
+    <a href="#ecommerce"   class="tab-link"><span class="tab-icon">🛒</span> E-commerce</a>
+    <a href="#seo"         class="tab-link"><span class="tab-icon">⚡</span> Speed &amp; SEO</a>
+    <a href="#automation"  class="tab-link"><span class="tab-icon">🔗</span> Automation</a>
+    <a href="#analytics"   class="tab-link"><span class="tab-icon">📊</span> Analytics</a>
+  </div>
+</div>
+
+<div class="services-section">
+
+  <!-- 1. BUSINESS WEBSITES -->
+  <div class="service-block" id="websites">
+    <div class="svc-content">
+      <div class="svc-eyebrow">
+        <span class="svc-icon-lg">🌐</span>
+        <span class="svc-tag tag-purple">Most popular</span>
+      </div>
+      <h3>Business websites that convert visitors into customers</h3>
+      <p>Your website is your most valuable salesperson — it works 24/7, never calls in sick, and makes a first impression in under three seconds. We build fast, modern sites that look great, rank on Google, and turn browsers into buyers.</p>
+      <p>Every site comes mobile-first, with on-page SEO wired in from the start — not bolted on after. Most starter sites are live within a week.</p>
+      <ul class="svc-bullets">
+        <li>Custom design in your brand colors and voice — no templates</li>
+        <li>Up to 10 pages (Home, About, Services, Testimonials, Blog, Contact & more)</li>
+        <li>Sub-2-second load times on mobile and desktop</li>
+        <li>On-page SEO: meta tags, schema markup, XML sitemap, robots.txt</li>
+        <li>Google Analytics 4 and Search Console connected from day one</li>
+        <li>Contact forms, click-to-call, and lead capture built in</li>
+        <li>48-hour first draft · unlimited revisions · 30-day post-launch support</li>
+      </ul>
+      <a href="quote.html" class="svc-link">Get a website quote →</a>
+    </div>
+    <div class="svc-visual">
+      <div class="svc-visual-header">
+        <span class="svc-visual-title">Live site preview</span>
+        <span class="svc-live-dot">Live</span>
+      </div>
+      <div class="site-preview">
+        <div class="site-bar">
+          <div class="site-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          <div class="site-url">yourbusiness.com</div>
+        </div>
+        <div class="site-body">
+          <div class="site-nav-mock">
+            <span style="width:30px"></span><span style="width:28px"></span><span style="width:36px"></span><span style="width:24px"></span>
+          </div>
+          <div class="site-hero-mock"></div>
+          <div class="site-sub-mock"></div>
+          <div class="site-sub-mock sm"></div>
+          <div class="site-btn-mock"><span>GET STARTED →</span></div>
+        </div>
+      </div>
+      <div class="site-stats-row">
+        <div class="site-stat"><div class="site-stat-val">98</div><div class="site-stat-lbl">Perf score</div></div>
+        <div class="site-stat"><div class="site-stat-val" style="color:var(--accent2);">1.2s</div><div class="site-stat-lbl">Load time</div></div>
+        <div class="site-stat"><div class="site-stat-val" style="color:var(--accent);">100%</div><div class="site-stat-lbl">Mobile OK</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. AI AGENTS -->
+  <div class="service-block reverse" id="ai">
+    <div class="svc-content">
+      <div class="svc-eyebrow">
+        <span class="svc-icon-lg">🤖</span>
+        <span class="svc-tag tag-cyan">New</span>
+      </div>
+      <h3>AI agents &amp; chatbots that work while you sleep</h3>
+      <p>Most leads don't fill out a form — they ask a question at 11pm and move on if nobody answers. Our AI agents are trained on your specific business: your services, pricing, FAQs, and tone. They answer questions, qualify visitors, and capture contact info around the clock.</p>
+      <p>The result: more leads, fewer wasted calls, and a system that pays for itself in the first month.</p>
+      <ul class="svc-bullets">
+        <li>Trained on your business — not a generic chatbot template</li>
+        <li>Answers questions, qualifies leads, and books appointments automatically</li>
+        <li>Works on your website, Facebook, Instagram, or all three</li>
+        <li>Instant email or SMS alert when a hot lead is captured</li>
+        <li>Connects to your CRM, Google Sheets, or Notion</li>
+        <li>Fully branded — your name, your tone, your personality</li>
+        <li>From $349 setup · optional $49/mo hosting</li>
+      </ul>
+      <a href="quote.html" class="svc-link">Get an AI agent →</a>
+    </div>
+    <div class="svc-visual">
+      <div class="svc-visual-header">
+        <span class="svc-visual-title">AI agent live</span>
+        <span class="svc-live-dot">Active</span>
+      </div>
+      <div class="chat-window">
+        <div class="chat-header">
+          <div class="chat-pulse"></div>
+          <div class="chat-name">YourBusiness AI</div>
+          <div class="chat-status">online 24/7</div>
+        </div>
+        <div class="chat-body">
+          <div class="chat-bubble bubble-user">Hi, do you do same-day quotes?</div>
+          <div class="chat-bubble bubble-ai"><strong>Yes!</strong> We can usually get you a quote same day. What type of service are you looking for?</div>
+          <div class="chat-bubble bubble-user">A new website for my plumbing business</div>
+          <div class="chat-bubble bubble-ai">Perfect — our websites start at <strong>$799</strong>. Can I grab your name and number so Donald can follow up today?</div>
+        </div>
+        <div class="chat-input-mock"><span></span><div class="chat-send">→</div></div>
+      </div>
+      <div class="leads-captured">3 new leads captured today — automatically</div>
+    </div>
+  </div>
+
+  <!-- 3. E-COMMERCE -->
+  <div class="service-block" id="ecommerce">
+    <div class="svc-content">
+      <div class="svc-eyebrow">
+        <span class="svc-icon-lg">🛒</span>
+        <span class="svc-tag tag-blue">Sell online</span>
+      </div>
+      <h3>E-commerce stores built to sell, not just display</h3>
+      <p>An online store shouldn't just list your products — it should guide every visitor toward buying. We build stores with smart product pages, streamlined checkout, and automated follow-up emails that bring customers back.</p>
+      <p>Stripe, PayPal, Apple Pay, and Google Pay ready on day one. No monthly platform fees beyond your payment processor.</p>
+      <ul class="svc-bullets">
+        <li>Unlimited products with smart filtering and search</li>
+        <li>Stripe, PayPal, Apple Pay, and Google Pay checkout</li>
+        <li>Abandoned cart emails and post-purchase follow-up sequences</li>
+        <li>Inventory management and low-stock alerts</li>
+        <li>Discount codes, bundles, and upsell prompts</li>
+        <li>Order tracking page and automated shipping emails</li>
+        <li>Integrates with Shopify, WooCommerce, or fully custom</li>
+      </ul>
+      <a href="quote.html" class="svc-link">Start selling online →</a>
+    </div>
+    <div class="svc-visual">
+      <div class="svc-visual-header">
+        <span class="svc-visual-title">Your store</span>
+        <span class="svc-live-dot">Live</span>
+      </div>
+      <div class="store-grid">
+        <div class="product-card">
+          <div class="product-img">🪟</div>
+          <div class="product-info">
+            <div class="product-name"></div>
+            <div class="product-price">$129.00</div>
+          </div>
+          <div class="product-btn"><span>ADD TO CART</span></div>
+        </div>
+        <div class="product-card">
+          <div class="product-img">🔧</div>
+          <div class="product-info">
+            <div class="product-name"></div>
+            <div class="product-price">$89.00</div>
+          </div>
+          <div class="product-btn"><span>ADD TO CART</span></div>
+        </div>
+      </div>
+      <div class="store-total">
+        <span class="store-total-label">Today's revenue</span>
+        <span class="store-total-val">$1,842</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. SPEED & SEO -->
+  <div class="service-block reverse" id="seo">
+    <div class="svc-content">
+      <div class="svc-eyebrow">
+        <span class="svc-icon-lg">⚡</span>
+        <span class="svc-tag tag-green">Rank higher</span>
+      </div>
+      <h3>Speed &amp; SEO that puts you on page one</h3>
+      <p>A slow website costs you customers and rankings. Google actively penalizes slow, poorly optimized sites — and rewards the fast ones. We audit your site, find every bottleneck, and fix it.</p>
+      <p>After a D1 optimization, most sites see a 40–70% improvement in load time and measurable movement in search rankings within 60 days.</p>
+      <ul class="svc-bullets">
+        <li>Full technical SEO audit: errors, crawlability, Core Web Vitals</li>
+        <li>Image compression, lazy loading, and CDN setup</li>
+        <li>Google Business Profile optimization for local search</li>
+        <li>Keyword research and on-page content recommendations</li>
+        <li>Schema markup for rich snippets (reviews, FAQs, products)</li>
+        <li>Monthly rank tracking and performance reports</li>
+        <li>Competitor gap analysis included</li>
+      </ul>
+      <a href="quote.html" class="svc-link">Get an SEO audit →</a>
+    </div>
+    <div class="svc-visual">
+      <div class="svc-visual-header">
+        <span class="svc-visual-title">Site health scores</span>
+        <span class="svc-live-dot">After D1</span>
+      </div>
+      <div class="seo-scores">
+        <div class="seo-row">
+          <span class="seo-label">Performance</span>
+          <div class="seo-bar-track"><div class="seo-bar-fill fill-green" style="width:97%"></div></div>
+          <span class="seo-val">97</span>
+        </div>
+        <div class="seo-row">
+          <span class="seo-label">SEO</span>
+          <div class="seo-bar-track"><div class="seo-bar-fill fill-blue" style="width:100%"></div></div>
+          <span class="seo-val">100</span>
+        </div>
+        <div class="seo-row">
+          <span class="seo-label">Accessibility</span>
+          <div class="seo-bar-track"><div class="seo-bar-fill fill-purple" style="width:95%"></div></div>
+          <span class="seo-val">95</span>
+        </div>
+        <div class="seo-row">
+          <span class="seo-label">Best Practices</span>
+          <div class="seo-bar-track"><div class="seo-bar-fill fill-cyan" style="width:100%"></div></div>
+          <span class="seo-val">100</span>
+        </div>
+      </div>
+      <div class="seo-note">Average 58% load time improvement after optimization</div>
+    </div>
+  </div>
+
+  <!-- 5. AUTOMATION -->
+  <div class="service-block" id="automation">
+    <div class="svc-content">
+      <div class="svc-eyebrow">
+        <span class="svc-icon-lg">🔗</span>
+        <span class="svc-tag tag-orange">Save hours weekly</span>
+      </div>
+      <h3>Automation &amp; integrations that eliminate busywork</h3>
+      <p>Every time a lead fills out a form and nothing happens automatically, you're losing time and money. We connect your website to the tools you already use — CRMs, booking systems, email platforms — so data flows without you touching it.</p>
+      <p>Most clients save 5–10 hours per week within the first month of automations going live.</p>
+      <ul class="svc-bullets">
+        <li>CRM connections: HubSpot, Salesforce, Pipedrive, Notion, Airtable</li>
+        <li>Booking systems: Calendly, Acuity, Cal.com, or custom-built</li>
+        <li>Email marketing: Mailchimp, Klaviyo, ActiveCampaign, ConvertKit</li>
+        <li>Form submissions auto-routed to Slack, email, or SMS</li>
+        <li>Zapier / Make automations built and documented for you</li>
+        <li>Payment collection and invoice automation</li>
+        <li>Everything tested end-to-end before handoff</li>
+      </ul>
+      <a href="quote.html" class="svc-link">Automate your workflow →</a>
+    </div>
+    <div class="svc-visual">
+      <div class="svc-visual-header">
+        <span class="svc-visual-title">Automation flow</span>
+        <span class="svc-live-dot">Running</span>
+      </div>
+      <div class="flow-steps">
+        <div class="flow-node">
+          <div class="flow-line-col"><div class="flow-dot fd-purple">📝</div><div class="flow-connector"></div></div>
+          <div class="flow-text"><p>Lead fills out form</p><span>Captured on your website</span></div>
+        </div>
+        <div class="flow-node">
+          <div class="flow-line-col"><div class="flow-dot fd-blue">📧</div><div class="flow-connector"></div></div>
+          <div class="flow-text"><p>Welcome email sent instantly</p><span>Mailchimp / ConvertKit</span></div>
+        </div>
+        <div class="flow-node">
+          <div class="flow-line-col"><div class="flow-dot fd-cyan">🗂️</div><div class="flow-connector"></div></div>
+          <div class="flow-text"><p>CRM contact created</p><span>HubSpot / Notion / Airtable</span></div>
+        </div>
+        <div class="flow-node">
+          <div class="flow-line-col"><div class="flow-dot fd-green">🔔</div></div>
+          <div class="flow-text"><p>You get a Slack alert</p><span>Ready to close the deal</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. ANALYTICS -->
+  <div class="service-block reverse" id="analytics">
+    <div class="svc-content">
+      <div class="svc-eyebrow">
+        <span class="svc-icon-lg">📊</span>
+        <span class="svc-tag tag-blue">Know what works</span>
+      </div>
+      <h3>Analytics dashboards that show what's actually working</h3>
+      <p>Most business owners have Google Analytics installed but no idea what it means. We build clean, plain-English dashboards that show you the numbers that actually matter: leads, traffic sources, top pages, revenue, and return on ad spend.</p>
+      <p>No data science degree required. Just open your dashboard and know exactly where to focus your energy.</p>
+      <ul class="svc-bullets">
+        <li>Custom Looker Studio dashboard built for your specific goals</li>
+        <li>Lead source tracking (Google, social, referral, direct)</li>
+        <li>Conversion funnel: visits → leads → customers</li>
+        <li>Google Ads and Meta Ads performance in one view</li>
+        <li>Monthly email summary with plain-English commentary</li>
+        <li>Heatmaps and scroll tracking to improve page performance</li>
+        <li>Set up once, runs forever — no monthly retainer required</li>
+      </ul>
+      <a href="quote.html" class="svc-link">Get your dashboard →</a>
+    </div>
+    <div class="svc-visual">
+      <div class="svc-visual-header">
+        <span class="svc-visual-title">Your dashboard</span>
+        <span class="svc-live-dot">Live data</span>
+      </div>
+      <div class="dash-grid">
+        <div class="dash-metric"><div class="dash-val dv-g">142</div><div class="dash-lbl">Leads this month</div></div>
+        <div class="dash-metric"><div class="dash-val dv-b">4.8k</div><div class="dash-lbl">Site visitors</div></div>
+        <div class="dash-metric"><div class="dash-val dv-p">38%</div><div class="dash-lbl">Conversion rate</div></div>
+        <div class="dash-metric"><div class="dash-val dv-c">$12k</div><div class="dash-lbl">Est. revenue</div></div>
+      </div>
+      <div class="dash-chart">
+        <div class="dash-chart-label">Weekly traffic</div>
+        <div class="dash-bars">
+          <div class="dash-bar" style="height:40%"></div>
+          <div class="dash-bar" style="height:55%"></div>
+          <div class="dash-bar" style="height:48%"></div>
+          <div class="dash-bar" style="height:70%"></div>
+          <div class="dash-bar" style="height:62%"></div>
+          <div class="dash-bar" style="height:85%"></div>
+          <div class="dash-bar" style="height:100%; background:rgba(130,170,255,0.5);"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- BENEFITS BAND -->
+<div class="benefits-band">
+  <div class="benefits-inner">
+    <div class="section-label">Why D1</div>
+    <h2 style="margin-bottom:2.5rem;">Built for <em>small business</em></h2>
+    <div class="benefits-grid">
+      <div class="benefit-item"><div class="benefit-icon">⚡</div><h4>Fast delivery</h4><p>First draft in 48 hours. Most sites live within a week. We move fast because your time matters.</p></div>
+      <div class="benefit-item"><div class="benefit-icon">💰</div><h4>Startup pricing</h4><p>Competitive rates built for growing businesses — not enterprise budgets. Transparent, no hidden fees.</p></div>
+      <div class="benefit-item"><div class="benefit-icon">🔒</div><h4>You own everything</h4><p>All code, content, and domains are yours from day one. No lock-in. Take it anywhere, anytime.</p></div>
+      <div class="benefit-item"><div class="benefit-icon">📞</div><h4>Real support</h4><p>Talk to the person building your site. No account managers. Same-day replies on Growth &amp; Scale plans.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA BAND -->
+<div class="cta-band" style="margin-top: 5rem;">
+  <div class="cta-inner">
+    <div class="cta-content">
+      <div class="section-label">Ready to start?</div>
+      <h2>Let's build something <em>great</em></h2>
+      <p>Tell us what you need and we'll have a proposal and visual mockup in your inbox within 48 hours — no commitment required.</p>
+      <div class="cta-actions">
+        <a href="quote.html" class="btn-accent">Get a quote →</a>
+        <a href="process.html" class="btn-ghost">See how it works</a>
+      </div>
+    </div>
+    <div class="cta-contacts">
+      <a href="tel:2067134204" class="cta-contact-item">
+        <div class="cta-contact-icon icon-phone">📞</div>
+        <div class="cta-contact-text"><p>Phone</p><span>(206) 713-4204</span></div>
+      </a>
+      <a href="mailto:hello@d1businesssolutions.com" class="cta-contact-item">
+        <div class="cta-contact-icon icon-email">✉️</div>
+        <div class="cta-contact-text"><p>General inquiries</p><span>hello@d1businesssolutions.com</span></div>
+      </a>
+      <a href="mailto:ai@d1businesssolutions.com" class="cta-contact-item">
+        <div class="cta-contact-icon icon-ai">🤖</div>
+        <div class="cta-contact-text"><p>AI &amp; automation</p><span>ai@d1businesssolutions.com</span></div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">D1</div>
+  <div class="footer-legal">© 2026 D1 Business Solutions LLC.<br>All rights reserved.</div>
+  <div class="footer-contact">
+    <a href="tel:2067134204">(206) 713-4204</a>
+    <a href="mailto:hello@d1businesssolutions.com">hello@d1businesssolutions.com</a>
+  </div>
+</footer>
+
+</body>
+</html>
