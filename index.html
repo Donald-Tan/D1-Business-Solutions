@@ -35,12 +35,7 @@
     backdrop-filter: blur(14px);
     position: sticky; top: 0; z-index: 10;
   }
-  .logo {
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 600; font-size: 1.7rem;
-    letter-spacing: 0.04em; color: var(--accent);
-    font-style: italic;
-  }
+  .logo { font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 1.7rem; letter-spacing: 0.04em; color: var(--accent); font-style: italic; text-decoration: none; }
   nav ul { display: flex; gap: 2rem; list-style: none; }
   nav a { text-decoration: none; color: var(--ink2); font-size: 0.85rem; font-weight: 400; letter-spacing: 0.04em; transition: color 0.2s; }
   nav a:hover { color: var(--ink); }
@@ -66,26 +61,19 @@
   .hero-eyebrow::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 7px var(--green); }
 
   h1 {
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 300;
+    font-family: 'Cormorant Garamond', serif; font-weight: 300;
     font-size: clamp(3rem, 5.5vw, 4.2rem);
-    line-height: 1.05; letter-spacing: -0.01em;
-    margin-bottom: 1.75rem;
+    line-height: 1.05; letter-spacing: -0.01em; margin-bottom: 1.75rem;
   }
   h1 em { font-style: italic; color: var(--accent); }
 
   .hero-sub { font-size: 0.95rem; color: var(--ink2); font-weight: 300; max-width: 420px; margin-bottom: 2.75rem; line-height: 1.8; letter-spacing: 0.01em; }
 
-  /* MOTTO */
   .motto {
     display: inline-flex; align-items: baseline; gap: 0.15em;
     font-family: 'DM Serif Display', serif;
-    font-size: 0.95rem; letter-spacing: 0.02em;
-    margin-bottom: 2.5rem;
-    padding: 0.5rem 1.1rem;
-    border: 1px solid var(--border2);
-    border-radius: 8px;
-    background: var(--bg3);
+    font-size: 0.95rem; letter-spacing: 0.02em; margin-bottom: 2.5rem;
+    padding: 0.5rem 1.1rem; border: 1px solid var(--border2); border-radius: 8px; background: var(--bg3);
   }
   .motto-d1 { color: var(--accent); }
   .motto-gets { color: var(--ink2); font-style: italic; margin: 0 0.3em; }
@@ -126,42 +114,21 @@
   .stat-num .a { color: var(--accent); } .stat-num .g { color: var(--green); } .stat-num .b { color: var(--accent2); }
   .stat-label { font-size: 0.78rem; color: var(--ink3); margin-top: 0.3rem; letter-spacing: 0.03em; }
 
-  /* SECTIONS */
-  section { max-width: 1100px; margin: 0 auto; padding: 5.5rem 2.5rem; }
+  /* READY TO START */
   .section-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
   h2 { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: clamp(2rem, 3.5vw, 2.8rem); letter-spacing: -0.01em; line-height: 1.1; margin-bottom: 1rem; }
   h2 em { font-style: italic; color: var(--accent2); }
-  .section-intro { font-size: 0.92rem; color: var(--ink2); max-width: 500px; font-weight: 300; margin-bottom: 3.5rem; line-height: 1.8; letter-spacing: 0.01em; }
 
-  /* SERVICES */
-  .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
-  .service-card { background: var(--bg2); padding: 2rem; transition: background 0.2s; }
-  .service-card:hover { background: var(--bg3); }
-  .service-icon { font-size: 1.3rem; margin-bottom: 1rem; }
-  .service-card h3 { font-family: 'DM Serif Display', serif; font-weight: 400; font-size: 1.05rem; margin-bottom: 0.6rem; color: var(--ink); letter-spacing: 0.01em; }
-  .service-card p { font-size: 0.82rem; color: var(--ink2); font-weight: 300; line-height: 1.7; }
-  .service-card.featured { background: var(--surface); }
-  .service-icon-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
-  .service-icon-row .service-icon { margin-bottom: 0; }
-  .service-tag { display: inline-block; font-size: 0.62rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.2rem 0.65rem; border-radius: 4px; }
-  .tag-purple { background: rgba(199,146,234,0.12); color: var(--accent); border: 1px solid rgba(199,146,234,0.25); }
-  .tag-cyan { background: rgba(137,221,255,0.08); color: var(--cyan); border: 1px solid rgba(137,221,255,0.2); }
-
-  /* PROCESS */
-  .process-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
-  .process-step { padding: 1.75rem; border: 1px solid var(--border); border-radius: 12px; background: var(--bg2); }
-  .step-num { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: 2rem; color: var(--border2); line-height: 1; margin-bottom: 1rem; }
-  .process-step h3 { font-family: 'DM Serif Display', serif; font-weight: 400; font-size: 0.95rem; margin-bottom: 0.5rem; color: var(--ink); }
-  .process-step p { font-size: 0.8rem; color: var(--ink2); font-weight: 300; line-height: 1.7; }
-
-  /* CONTACT */
+  .cta-wrap { padding: 5rem 2.5rem; max-width: 1100px; margin: 0 auto; }
   .contact-band {
     background: var(--bg2); border: 1px solid var(--border2); border-radius: 20px;
-    padding: 3.5rem 3rem; max-width: 1100px; margin: 0 auto 5rem;
+    padding: 3.5rem 3rem;
     display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; align-items: center;
     position: relative; overflow: hidden;
   }
   .contact-band::before { content: ''; position: absolute; top: -80px; right: -80px; width: 260px; height: 260px; border-radius: 50%; background: radial-gradient(circle, rgba(199,146,234,0.08) 0%, transparent 70%); pointer-events: none; }
+  .contact-band::after { content: ''; position: absolute; bottom: -60px; left: -60px; width: 220px; height: 220px; border-radius: 50%; background: radial-gradient(circle, rgba(130,170,255,0.06) 0%, transparent 70%); pointer-events: none; }
+
   .contact-cta-motto {
     font-family: 'DM Serif Display', serif;
     font-size: 1.4rem; margin-top: 1.25rem; margin-bottom: 1.75rem;
@@ -169,20 +136,22 @@
   }
   .cm-d1 { color: var(--accent); font-style: italic; }
   .cm-gets { color: var(--ink2); font-style: italic; }
-  .cm-it { color: var(--ink2); font-style: italic; }
   .cm-d { color: var(--accent2); }
   .cm-one { color: var(--green); }
 
+  .cta-links { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-accent { display: inline-block; background: var(--accent); color: #0b0d12; padding: 0.85rem 2.2rem; border-radius: 100px; text-decoration: none; font-weight: 600; font-size: 0.88rem; letter-spacing: 0.03em; transition: opacity 0.2s, transform 0.2s; }
+  .btn-accent:hover { opacity: 0.85; transform: translateY(-2px); }
+
   .contact-details { display: flex; flex-direction: column; gap: 1rem; }
-  .contact-item { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.25rem; background: var(--bg3); border: 1px solid var(--border); border-radius: 12px; transition: border-color 0.2s; }
+  .contact-item { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.25rem; background: var(--bg3); border: 1px solid var(--border); border-radius: 12px; transition: border-color 0.2s; text-decoration: none; }
   .contact-item:hover { border-color: var(--border2); }
   .contact-item-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
-  .icon-phone { background: rgba(195,232,141,0.1); } .icon-email { background: rgba(199,146,234,0.1); } .icon-ai { background: rgba(137,221,255,0.1); }
+  .icon-phone { background: rgba(195,232,141,0.1); }
+  .icon-email { background: rgba(199,146,234,0.1); }
+  .icon-ai    { background: rgba(137,221,255,0.1); }
   .contact-item-text p { font-size: 0.68rem; color: var(--ink3); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; margin-bottom: 0.15rem; }
-  .contact-item-text a { font-size: 0.88rem; color: var(--ink); text-decoration: none; font-weight: 400; }
-  .contact-item-text a:hover { color: var(--accent); }
-  .btn-accent { display: inline-block; background: var(--accent); color: #0b0d12; padding: 0.85rem 2.2rem; border-radius: 100px; text-decoration: none; font-weight: 600; font-size: 0.88rem; letter-spacing: 0.03em; transition: opacity 0.2s; }
-  .btn-accent:hover { opacity: 0.85; }
+  .contact-item-text span { font-size: 0.88rem; color: var(--ink); font-weight: 400; }
 
   /* FOOTER */
   footer { border-top: 1px solid var(--border); padding: 2rem 2.5rem; max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr 1fr; align-items: center; }
@@ -191,28 +160,47 @@
   .footer-contact { text-align: right; }
   .footer-contact a { font-size: 0.78rem; color: var(--ink3); text-decoration: none; display: block; line-height: 2; transition: color 0.2s; }
   .footer-contact a:hover { color: var(--accent); }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.25rem; }
+    nav ul { gap: 1rem; }
+    .hero { grid-template-columns: 1fr; gap: 2.5rem; padding: 3.5rem 1.25rem; }
+    .stats { flex-wrap: wrap; }
+    .stat { flex: 1 1 50%; border-bottom: 1px solid var(--border); }
+    .cta-wrap { padding: 3rem 1.25rem; }
+    .contact-band { grid-template-columns: 1fr; padding: 2rem 1.5rem; gap: 2rem; }
+    footer { grid-template-columns: 1fr; gap: 1rem; text-align: center; }
+    .footer-contact { text-align: center; }
+  }
 </style>
 </head>
 <body>
 
 <nav>
-  <div class="logo">D1</div>
+  <a href="index.html" class="logo">D1</a>
   <ul>
-    <li><a href="#">Services</a></li>
-    <li><a href="#">Work</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="work.html">Work</a></li>
     <li><a href="process.html">Process</a></li>
     <li><a href="quote.html" class="nav-cta">Get a quote</a></li>
   </ul>
 </nav>
 
+<!-- HERO -->
 <div class="hero">
   <div>
     <div class="hero-eyebrow">Web design & AI automation</div>
     <h1>We build websites<br>&amp; <em>AI agents</em></h1>
     <p class="hero-sub">Helping business owners grow with beautifully crafted websites and intelligent AI tools built to work around the clock.</p>
+    <div class="motto">
+      <span class="motto-d1">D1</span>
+      <span class="motto-gets">gets it</span>
+      <span class="motto-d">D</span><span class="motto-one">ONE</span>
+    </div>
     <div class="hero-actions">
       <a href="tel:2067134204" class="btn-primary">Call us now</a>
-      <a href="#contact" class="btn-ghost">Get in touch →</a>
+      <a href="quote.html" class="btn-ghost">Get a quote →</a>
     </div>
   </div>
   <div class="hero-visual">
@@ -239,6 +227,7 @@
   </div>
 </div>
 
+<!-- STATS BAR -->
 <div class="stats-bar">
   <div class="stats">
     <div class="stat"><div class="stat-num"><span class="a">48</span>h</div><div class="stat-label">First draft delivery</div></div>
@@ -248,96 +237,44 @@
   </div>
 </div>
 
-<section>
-  <div class="section-label">What we do</div>
-  <h2>Everything your business<br><em>needs online</em></h2>
-  <p class="section-intro">From a polished first impression to an AI that handles your leads 24/7 — we cover the full stack so you can focus on running your business.</p>
-  <div class="services-grid">
-    <div class="service-card">
-      <div class="service-icon-row">
-        <div class="service-icon">🌐</div>
-        <div class="service-tag tag-purple">Most popular</div>
-      </div>
-      <h3>Business websites</h3>
-      <p>Fast, modern websites that convert visitors into customers. Built to rank on Google from day one.</p>
-    </div>
-    <div class="service-card featured">
-      <div class="service-icon-row">
-        <div class="service-icon">🤖</div>
-        <div class="service-tag tag-cyan">New</div>
-      </div>
-      <h3>AI agents & chatbots</h3>
-      <p>Custom AI assistants that answer questions, qualify leads, and book appointments — while you sleep.</p>
-    </div>
-    <div class="service-card">
-      <div class="service-icon">🛒</div>
-      <h3>E-commerce stores</h3>
-      <p>Online shops with smart product pages, streamlined checkout, and automated follow-up emails.</p>
-    </div>
-    <div class="service-card">
-      <div class="service-icon">⚡</div>
-      <h3>Speed & SEO</h3>
-      <p>We audit and rebuild slow sites for sub-2s load times and page-one search rankings.</p>
-    </div>
-    <div class="service-card">
-      <div class="service-icon">🔗</div>
-      <h3>Automation & integrations</h3>
-      <p>Connect your website to CRMs, booking tools, and email platforms — zero manual data entry.</p>
-    </div>
-    <div class="service-card">
-      <div class="service-icon">📊</div>
-      <h3>Analytics dashboards</h3>
-      <p>Know exactly what's working. Clear dashboards showing leads, traffic, and revenue in one view.</p>
-    </div>
-  </div>
-</section>
-
-<section style="padding-top: 0;">
-  <div class="section-label">How it works</div>
-  <h2>From idea to live<br><em>in four steps</em></h2>
-  <p class="section-intro">A lean, collaborative process designed around busy business owners — no jargon, no delays.</p>
-  <div class="process-grid">
-    <div class="process-step"><div class="step-num">01</div><h3>Discovery call</h3><p>We learn about your business, goals, and what's holding you back online. Free, no pressure.</p></div>
-    <div class="process-step"><div class="step-num">02</div><h3>Proposal & design</h3><p>You get a detailed proposal and a visual mockup within 48 hours of our call.</p></div>
-    <div class="process-step"><div class="step-num">03</div><h3>Build & review</h3><p>We build your site and AI tools, sharing progress at every milestone for your feedback.</p></div>
-    <div class="process-step"><div class="step-num">04</div><h3>Launch & support</h3><p>We go live together and stay on for 30 days to make sure everything performs perfectly.</p></div>
-  </div>
-</section>
-
-<div style="padding: 0 2.5rem;" id="contact">
+<!-- READY TO START -->
+<div class="cta-wrap">
   <div class="contact-band">
     <div>
-      <div class="section-label">Get in touch</div>
-      <h2>Let's build something your customers will love</h2>
+      <div class="section-label">Ready to start?</div>
+      <h2>Let's build something your customers will <em>love</em></h2>
       <div class="contact-cta-motto">
         <span class="cm-d1">D1</span>
         <span class="cm-gets">gets it</span>
         <span class="cm-d">D</span><span class="cm-one">ONE</span>
       </div>
-      <a href="mailto:hello@d1businesssolutions.com" class="btn-accent">Send us a message →</a>
+      <div class="cta-links">
+        <a href="quote.html" class="btn-accent">Get a quote →</a>
+        <a href="services.html" class="btn-ghost">See our services</a>
+      </div>
     </div>
     <div class="contact-details">
-      <div class="contact-item">
+      <a href="tel:2067134204" class="contact-item">
         <div class="contact-item-icon icon-phone">📞</div>
         <div class="contact-item-text">
           <p>Phone</p>
-          <a href="tel:2067134204">(206) 713-4204</a>
+          <span>(206) 713-4204</span>
         </div>
-      </div>
-      <div class="contact-item">
+      </a>
+      <a href="mailto:hello@d1businesssolutions.com" class="contact-item">
         <div class="contact-item-icon icon-email">✉️</div>
         <div class="contact-item-text">
           <p>General inquiries</p>
-          <a href="mailto:hello@d1businesssolutions.com">hello@d1businesssolutions.com</a>
+          <span>hello@d1businesssolutions.com</span>
         </div>
-      </div>
-      <div class="contact-item">
+      </a>
+      <a href="mailto:ai@d1businesssolutions.com" class="contact-item">
         <div class="contact-item-icon icon-ai">🤖</div>
         <div class="contact-item-text">
           <p>AI & automation projects</p>
-          <a href="mailto:ai@d1businesssolutions.com">ai@d1businesssolutions.com</a>
+          <span>ai@d1businesssolutions.com</span>
         </div>
-      </div>
+      </a>
     </div>
   </div>
 </div>
