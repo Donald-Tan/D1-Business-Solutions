@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>D1 Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+
+<!-- Firebase SDKs -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, setDoc, onSnapshot }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+// ── Firebase config ───────────────────────────────────────────────────────────
+const firebaseConfig = {
+  apiKey:            "AIzaSyBY7A0du9gqbCpjW1NR4LFb7RRlPQAZwFU",
+  authDomain:        "d1businessolutions.com",
+  projectId:         "d1businesssolution",
+  storageBucket:     "d1businesssolution.firebasestorage.app",
+  messagingSenderId: "135169545392",
+  appId:             "1:135169545392:web:50692f83e090414f2ad775",
+  measurementId:     "G-EEEJ610F7W"
+};
+// ─────────────────────────────────────────────────────────────────────────────
+
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+
+// Seed data (only runs once if Firestore is empty)
+const SEED = [
+  // ── Existing contacts ─────────────────────────────────────────────────────
+  {name:'Model A Transmission & Auto Repair',type:'Auto Repair',city:'Brooklyn',phone:'',email:'',owner:'',who:'',last:'2025-05-13',follow:'2025-05-19',meeting:'Monday 8AM',status:'Callback',price:'',maint:'',response:'Call back Monday 8AM',notes:'',maps:'https://maps.app.goo.gl/7p7sS4JyeqiK4ye17'},
+  {name:'Ambato Auto Service Inc',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'2025-05-13',follow:'',meeting:'',status:'Not interested',price:'',maint:'',response:'They said no',notes:'',maps:'https://maps.app.goo.gl/jsTpmXG87h763Zyw8'},
+  {name:'F & T Auto Center',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'2025-05-13',follow:'',meeting:'',status:'Agreed',price:'799',maint:'189',response:'Agreed on $799 and $189 maintenance/year',notes:'',maps:'https://maps.app.goo.gl/Rh7iq113UmW7CcJE9'},
+  {name:'24/7 Manhattan Plumbing NYC',type:'Plumbing',city:'New York',phone:'',email:'',owner:'',who:'',last:'2025-05-13',follow:'',meeting:'',status:'Not valid',price:'',maint:'',response:'Phone not in service',notes:'',maps:'https://247manhattanplumbingnyc.com/?GMB=webclick'},
+  {name:'The New York Plumber',type:'Plumbing',city:'New York',phone:'',email:'',owner:'',who:'',last:'2025-05-13',follow:'',meeting:'',status:'User busy',price:'',maint:'',response:'User busy',notes:'',maps:'https://thenewyorkplumber.com/'},
+  {name:'Expert HVAC Contractor Gainesville',type:'HVAC',city:'Gainesville',phone:'+13524509079',email:'',owner:'',who:'',last:'2025-05-13',follow:'',meeting:'',status:'Not valid',price:'',maint:'',response:'Not valid',notes:'No website',maps:'https://maps.app.goo.gl/DwbBUJwuaJfHdQ2z5'},
+  {name:'Reliable HVAC Repair',type:'HVAC',city:'',phone:'+19177895751',email:'',owner:'',who:'',last:'2025-05-13',follow:'',meeting:'',status:'Not valid',price:'',maint:'',response:'Not valid',notes:'',maps:'https://maps.app.goo.gl/x1V8dnoeY26HbZLo7'},
+  {name:'Top Heating and Cooling in New York',type:'HVAC',city:'New York',phone:'+13474081916',email:'',owner:'',who:'',last:'2025-05-13',follow:'',meeting:'',status:'Callback',price:'',maint:'',response:'Callback',notes:'',maps:'https://maps.app.goo.gl/vfDft1FyfBcjwVbk6'},
+  {name:'New York Air Conditioning & Heating Inc.',type:'HVAC',city:'New York',phone:'+16463579243',email:'',owner:'',who:'',last:'2025-05-13',follow:'',meeting:'',status:'Callback',price:'',maint:'',response:'Wait for callback',notes:'',maps:'https://maps.app.goo.gl/ybUr9BJWNUnKtsiH9'},
+  {name:'Hendricks Co.',type:'HVAC',city:'',phone:'+15102647593',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/Qtxqv3SpjK4PECcXA'},
+  {name:'Croft HVAC & PTAC NY Inc',type:'HVAC',city:'New York',phone:'+13323160946',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/tWx3W3ZXY78qtNcy6'},
+  {name:'New York City Heating & Air Conditioning',type:'HVAC',city:'New York',phone:'+13322520534',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/yNuAu2YjczqBPCy99'},
+  {name:'Broadway HVAC Services',type:'HVAC',city:'New York',phone:'+13155852839',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/CFuLVPBKexZtEbTC8'},
+  {name:'A & J Mechanical-HVAC',type:'HVAC',city:'New York',phone:'+16465063673',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/cLcuDi82AttiSwK78'},
+  {name:'NYC Quality Plumbing',type:'Plumbing',city:'New York',phone:'+13322220135',email:'',owner:'',who:'',last:'2025-05-13',follow:'',meeting:'',status:'Not valid',price:'',maint:'',response:'Not valid',notes:'',maps:'https://maps.app.goo.gl/JqpBVuYumqhuyWwm9'},
+  {name:'LZ Manhattan Plumbing New York',type:'Plumbing',city:'New York',phone:'+13155268735',email:'',owner:'',who:'',last:'2025-05-13',follow:'',meeting:'',status:'Not valid',price:'',maint:'',response:'Not valid',notes:'',maps:'https://maps.app.goo.gl/zakEZaEhieXMBbDH6'},
+  {name:'NYC Emergency Plumber & Sewer',type:'Plumbing',city:'New York',phone:'+13329003335',email:'',owner:'',who:'',last:'2025-05-13',follow:'',meeting:'',status:'Callback',price:'',maint:'',response:'They know me',notes:'',maps:'https://maps.app.goo.gl/KxDTzx5aNkRvHDSV6'},
+  {name:'Ludlow Plumbing Supply inc.',type:'Plumbing',city:'New York',phone:'+16463701338',email:'',owner:'',who:'',last:'2025-05-13',follow:'',meeting:'',status:'No reply',price:'',maint:'',response:'Did not answer',notes:'',maps:'https://maps.app.goo.gl/rGN9aui4gWvAR6eD8'},
+  {name:'C & M Auto Repair',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'2025-05-13',follow:'2025-05-19',meeting:'Monday ~10AM',status:'Callback',price:'',maint:'',response:'Callback next Monday ~10am',notes:'Called 9AM — talk to girls in office. Called again at 10AM+, party unavailable at 10:56am. Manager (her) not in, will cb next Monday around 10am.',maps:'https://maps.app.goo.gl/GNGdjSXEiQtSmW8g8'},
+  {name:'ISAAC Auto Repair',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'2025-05-13',follow:'',meeting:'',status:'No reply',price:'',maint:'',response:'No reply',notes:'',maps:'https://maps.app.goo.gl/sfJfLfKc9FCRZu316'},
+  {name:'HI-TEK AUTO REPAIR INC.',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/EQ9gwh79Yr7oWhYt6'},
+  {name:'(Unnamed — not interested)',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'2025-05-13',follow:'',meeting:'',status:'Not interested',price:'',maint:'',response:'Not interested',notes:'',maps:'https://maps.app.goo.gl/zqtcxvWX552oCsJ59'},
+  {name:'Delridge Auto Repair (1)',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'2025-05-13',follow:'',meeting:'',status:'Not valid',price:'',maint:'',response:'Not valid',notes:'',maps:'https://maps.app.goo.gl/T5F2jKBtrV7fLEzH6'},
+  {name:'Rose Street Auto Repair',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'2025-05-13',follow:'',meeting:'',status:'No reply',price:'',maint:'',response:'Not owner',notes:'',maps:'https://maps.app.goo.gl/6iqXeZPG1Kdew35YA'},
+  {name:'Home Care Auto Repair/Mobile Mechanic',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'2025-05-13',follow:'2025-05-14',meeting:'',status:'Callback',price:'',maint:'',response:'Callback tomorrow',notes:'',maps:'https://maps.app.goo.gl/RMhW77MX9jVXQPL5A'},
+  {name:'Guru Auto Tech Inc.',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'2025-05-13',follow:'2025-05-14',meeting:'',status:'Callback',price:'',maint:'',response:'Callback tomorrow',notes:'',maps:'https://maps.app.goo.gl/5hY8RVyR6Wk97TSr7'},
+  {name:'Winston Auto Repair',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'2025-05-13',follow:'2025-05-14',meeting:'',status:'Callback',price:'',maint:'',response:'Callback tomorrow',notes:'',maps:'https://maps.app.goo.gl/DpPhd8L6NBsK1YY56'},
+  {name:"Joshua's Auto Repair",type:'Auto Repair',city:'',phone:'',email:'',owner:'Tony',who:'',last:'2025-05-13',follow:'',meeting:'',status:'Callback',price:'',maint:'',response:'Tony might call back in 3-6 months',notes:'Long-term follow-up',maps:'https://maps.app.goo.gl/MaNdvE46969Vox5U7'},
+  {name:'Community Automotive Service & Repair',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'2025-05-13',follow:'2026-01-01',meeting:'',status:'In transition',price:'',maint:'',response:'In transition to be sold; callback next year',notes:'',maps:'https://maps.app.goo.gl/SmhBxbat1XNMK3Nn6'},
+  {name:'Expert Muffler and Auto Repair',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'2025-05-13',follow:'',meeting:'',status:'Not interested',price:'',maint:'',response:"Don't have and don't need one",notes:'',maps:'https://maps.app.goo.gl/U1vFzgwrWrThYNzf6'},
+  {name:'All Automotive Repairs',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'2025-05-13',follow:'',meeting:'',status:'Not interested',price:'',maint:'',response:"Life is good, don't need more money",notes:'',maps:'https://maps.app.goo.gl/ipXGEU6qTW7n2eHEA'},
+  {name:'Best Auto Repair',type:'Auto Repair',city:'',phone:'5039136005',email:'',owner:'Edwardo',who:'',last:'2025-05-13',follow:'',meeting:'',status:'Send demo',price:'',maint:'',response:'Send demo to Edwardo',notes:'',maps:'https://maps.app.goo.gl/JF8WrnBy9Aw1hw2r6'},
+  {name:'Alpine Auto Repair',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'2025-05-13',follow:'',meeting:'',status:'Not interested',price:'',maint:'',response:'Did not want a website',notes:'',maps:'https://maps.app.goo.gl/Wt9AnagJekmCnfiU7'},
+  {name:'J Auto Repair',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/64J8XaNr5rgzKnED6'},
+  {name:"Lioe's Automotive Service",type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'2025-05-13',follow:'',meeting:'',status:'Not interested',price:'',maint:'',response:"Says they don't need a website",notes:'',maps:'https://maps.app.goo.gl/WaPzHC1rAZ1RZwBX6'},
+  {name:"Andy's Auto Repair",type:'Auto Repair',city:'',phone:'',email:'',owner:'Diana',who:'',last:'2025-05-13',follow:'2025-05-14',meeting:'~12PM',status:'Callback',price:'',maint:'',response:'Ask for Diana around 12pm',notes:'Diana is in charge of this',maps:'https://maps.app.goo.gl/Y7JRNHrD29wxwTxK9'},
+  {name:'H & I Autobody Seatown Autoworks',type:'Auto Repair',city:'Seattle',phone:'',email:'',owner:'',who:'',last:'2025-05-13',follow:'',meeting:'',status:'Not interested',price:'',maint:'',response:'Not interested',notes:'',maps:'https://maps.app.goo.gl/nCrqd3AWbQTSarbK7'},
+  {name:'Delridge Auto Repair (2)',type:'Auto Repair',city:'Seattle',phone:'',email:'',owner:'',who:'',last:'2025-05-13',follow:'',meeting:'',status:'Not interested',price:'',maint:'',response:'Guy hung up',notes:'',maps:'https://maps.app.goo.gl/epgD7UcNuLkZDztf7'},
+  {name:"Eion's Automotive",type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'2025-05-13',follow:'',meeting:'',status:'In transition',price:'',maint:'',response:'Changing management transition period',notes:'',maps:'https://maps.app.goo.gl/6vZijWGrKqGXaJ2Q8'},
+  {name:'Mobile Mechanic Seattle',type:'Auto Repair',city:'Seattle',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/CHDq2t9y7xU7JmHP8'},
+  {name:'Vu Auto Services & Sales',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'2025-05-13',follow:'',meeting:'',status:'Not interested',price:'',maint:'',response:"I don't need a website",notes:'Emphatic refusal',maps:'https://maps.app.goo.gl/APUxoGn9zXxpzTio6'},
+  {name:"Saeteun's Garage - Auto Body Customs",type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/6xn1vjxgKHyYAueT6'},
+  {name:'Seattle Transmission & Auto Repair',type:'Auto Repair',city:'Seattle',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/X7APz91powKm6Yav8'},
+  {name:"Danny's Auto Repair LLC",type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/Xut76FpCoByZPis5A'},
+  {name:"St John's Auto Center",type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'2025-05-13',follow:'',meeting:'',status:'Not interested',price:'',maint:'',response:"Don't need it",notes:'',maps:'https://maps.app.goo.gl/wQbVEiCmoqyEhjrM8'},
+  {name:'A GOOD SHOP AUTO REPAIR, LLC',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'2025-05-13',follow:'',meeting:'',status:'Not interested',price:'',maint:'',response:"Don't need it",notes:'',maps:'https://maps.app.goo.gl/bFuFouocvbCCAisw5'},
+  {name:'New Glen Automotive Warehouse',type:'Auto Repair',city:'',phone:'',email:'',owner:'Raul',who:'',last:'2025-05-13',follow:'',meeting:'',status:'Not interested',price:'',maint:'',response:'Already has a website provided for customers',notes:'cb May 14 8:15am — Raul not interested, already has a website provided for their customers',maps:'https://maps.app.goo.gl/PGmtzVB6oWTtBxHC9'},
+  // ── New leads ─────────────────────────────────────────────────────────────
+  {name:'West Village Auto Repair',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:''},
+  {name:'S & S Automotive LLC',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:''},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/Pc8wxSu2v8byJ9oJ6'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/zZ7pX5FcDuyKapFf7'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/UVY6E2cVrQhmobji9'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/fgX58HNVcZMpzX8XA'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/LuJew5vBKnCvFyXE7'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/ekpG8DZVZtAdTR936'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/ucM1X2hodvLXmZKX7'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/w71twvXDvwRhRchN9'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/CSDeesjadRarw9vw5'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/Ay4ijdNe5jBHvNNs6'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/baYHg6e9KizTksvJ9'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/fuJfQGGa49Q8RgKA7'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/3GE7kNXbs11ZV7Dn7'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/x8goVvdUZSm9iagh6'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/vD6trFfuMp4noWac9'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/nh6GEem8eeYdocZq5'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/odbhfm3kdQzj6Wns6'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/wQUvCoiaRiNK7aZQ9'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/SNau8a4BDnXwsxES6'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/JQ3wodxRHPAiosc49'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/Z4zvofcAqmXe14qF8'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/kLrLMKAkRCWR3hLt9'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/YKUdyg6Ahg5sqEsK8'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/chMRMFSAC5YoJNxN9'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/i8pReVtXz1wzw33Y9'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/chkFntkz1w23TyjL7'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/Qbw6JccvDEdfWJti9'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/n83hvCd3GNRzi4J17'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/ojrNsBkCEStgDvh88'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/1jQGkeE9t8sWJWhx7'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/CQGE8FouSWaamYJJ7'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/pDb1Nm3hiK3uHg4N8'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/LUVhkUFUdQikjQfk9'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/M46jaPt2BLGUhitR9'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/AnHHJ1nWhbJZu6Re6'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/KstaXrzB3SHtVARp8'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/Qr5mfQeMNcZLz3bm8'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/zRcVuHMHGy2LXNYe8'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/Jn8wJoJ26jQAxTcL7'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/9uDumXnMVnKvGsdR8'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/QssYdpRnSBREtSd18'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/bVY5dDKPAfzjZmKW7'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/k1G6kjRSh1Tyjhk69'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/yyFx4diDKDCg1hEL8'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/45kpkoWA5bYL9PZz9'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/AavPuyE8EEvHDhJNA'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/c3oGfzQq5tKbVYSL7'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/W4iQrN3MVmNcE17y7'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/wiMmC1Ltn3Ekq5fz6'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/dRvtzU8nxxxBbacX6'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/i2zUCpyLZYHjPUNGA'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/tfZ8Xqbek9mNjrGR9'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/M68eRQffPATekDx47'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/CHbrKSaCi7oLWNMn8'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/nLXw517TmZSEsGeb8'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/fhhwwh9qtzyr7sFS9'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/soNUCzHet13p5ocs8'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/aE5EU77dsVXTEKWJ6'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/hzMLJfCNG77kZuRQ6'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/h7PhFPfcd1JEaFzu6'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/k6jj5y454mBynbS37'},
+  {name:'New lead',type:'Auto Repair',city:'',phone:'',email:'',owner:'',who:'',last:'',follow:'',meeting:'',status:'Not contacted',price:'',maint:'',response:'',notes:'',maps:'https://maps.app.goo.gl/nPgFCpxgss7gvms99'},
+];
+
+// ── Allowed users ─────────────────────────────────────────────────────────────
+const ALLOWED_EMAILS = [
+  'donaldtan382@gmail.com',
+  'leonmudbone18@gmail.com',
+];
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ── App State ─────────────────────────────────────────────────────────────────
+let contacts = [];
+let editDocId = null;
+let sortCol = 'added', sortDir = -1;
+let currentPage = 1;
+const PAGE_SIZE = 50;
+let unsubscribe = null;
+
+// Projects state
+let projects = [];
+let projEditId = null;
+let unsubProjects = null;
+
+// Expenses state
+let expenses = [];
+let expEditId = null;
+let unsubExpenses = null;
+
+// Websites state
+let websites = [];
+let siteEditId = null;
+let unsubWebsites = null;
+
+// ── Auth ──────────────────────────────────────────────────────────────────────
+const provider = new GoogleAuthProvider();
+const googleBtnHTML = `<svg class="google-icon" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 8 2.9l5.7-5.7C34.5 6.5 29.5 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.7-.4-3.9z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.5 16 19 12 24 12c3.1 0 5.8 1.1 8 2.9l5.7-5.7C34.5 6.5 29.5 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.2 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8H6.3C9.6 35.4 16.3 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.3-2.3 4.2-4.2 5.6l6.2 5.2C37 39 44 34 44 24c0-1.3-.1-2.7-.4-3.9z"/></svg> Continue with Google`;
+
+// Handle redirect result on page load
+getRedirectResult(auth).catch(() => {});
+
+onAuthStateChanged(auth, async user => {
+  if (user) {
+    if (!ALLOWED_EMAILS.includes(user.email)) {
+      await signOut(auth);
+      document.getElementById('l-err').textContent = `Access denied. ${user.email} is not authorised.`;
+      return;
+    }
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app-screen').style.display  = 'flex';
+    document.getElementById('user-email').textContent = user.displayName || user.email;
+    document.getElementById('user-avatar').src =
+      user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName||user.email)}&background=c792ea&color=0b0d12&size=32`;
+    startListening();
+    startProjectsListening();
+    startExpensesListening();
+    startWebsitesListening();
+  } else {
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('app-screen').style.display  = 'none';
+    if (unsubscribe) { unsubscribe(); unsubscribe = null; }
+    if (unsubProjects) { unsubProjects(); unsubProjects = null; }
+    if (unsubExpenses) { unsubExpenses(); unsubExpenses = null; }
+    if (unsubWebsites) { unsubWebsites(); unsubWebsites = null; }
+  }
+});
+
+window.doLogin = async () => {
+  const err = document.getElementById('l-err');
+  err.textContent = '';
+  document.getElementById('google-btn').disabled = true;
+  document.getElementById('google-btn').textContent = 'Signing in…';
+  try {
+    await signInWithPopup(auth, provider);
+  } catch(e) {
+    if (e.code === 'auth/popup-blocked' || e.code === 'auth/popup-closed-by-user') {
+      try {
+        await signInWithRedirect(auth, provider);
+      } catch(e2) {
+        err.textContent = 'Sign-in failed. Please try again.';
+        document.getElementById('google-btn').disabled = false;
+        document.getElementById('google-btn').innerHTML = googleBtnHTML;
+      }
+    } else {
+      err.textContent = 'Sign-in failed. Please try again.';
+      document.getElementById('google-btn').disabled = false;
+      document.getElementById('google-btn').innerHTML = googleBtnHTML;
+    }
+  }
+};
+
+window.doLogout = async () => {
+  await signOut(auth);
+};
+
+// ── Page switching ────────────────────────────────────────────────────────────
+window.switchPage = (page) => {
+  ['crm','projects','expenses','websites'].forEach(p => {
+    document.getElementById('page-'+p).style.display = p===page ? (p==='crm'?'flex':'block') : 'none';
+    document.getElementById('tab-'+p).classList.toggle('active', p===page);
+  });
+  const ctrl = document.getElementById('crm-controls');
+  if (ctrl) ctrl.style.display = page==='crm' ? 'contents' : 'none';
+};
+
+// ── Firestore: CRM real-time listener ────────────────────────────────────────
+async function startListening() {
+  const col = collection(db, 'contacts');
+  const snap = await getDocs(col);
+  if (snap.empty) {
+    for (const c of SEED) await addDoc(col, c);
+  }
+  unsubscribe = onSnapshot(col, snapshot => {
+    contacts = snapshot.docs.map(d => ({ _id: d.id, ...d.data() }));
+    renderTable();
+  });
+}
+
+// ── Firestore: Projects real-time listener ───────────────────────────────────
+function startProjectsListening() {
+  const col = collection(db, 'projects');
+  unsubProjects = onSnapshot(col, snapshot => {
+    projects = snapshot.docs.map(d => ({ _id: d.id, ...d.data() }));
+    renderKanban();
+  });
+}
+
+// ── Firestore: Expenses real-time listener ───────────────────────────────────
+function startExpensesListening() {
+  const col = collection(db, 'expenses');
+  unsubExpenses = onSnapshot(col, snapshot => {
+    expenses = snapshot.docs.map(d => ({ _id: d.id, ...d.data() }));
+    renderExpenses();
+  });
+}
+
+// ── Firestore: Websites real-time listener ───────────────────────────────────
+function startWebsitesListening() {
+  const col = collection(db, 'websites');
+  unsubWebsites = onSnapshot(col, snapshot => {
+    websites = snapshot.docs.map(d => ({ _id: d.id, ...d.data() }));
+    renderWebsites();
+  });
+}
+
+// ── Websites CRUD ─────────────────────────────────────────────────────────────
+window.openSiteModal = (docId) => {
+  siteEditId = docId || null;
+  const s = docId ? websites.find(x => x._id === docId) : {};
+  document.getElementById('sm-title').textContent = docId ? 'Edit website' : 'Add website';
+  ['sm-business','sm-demo','sm-live','sm-notes'].forEach(id => {
+    const el = document.getElementById(id);
+    const key = id.replace('sm-','');
+    if (el) el.value = (s && s[key]) ? s[key] : '';
+  });
+  const statusEl = document.getElementById('sm-status');
+  if (statusEl) statusEl.value = (s && s.status) ? s.status : 'Demo';
+  document.getElementById('sdel-btn').style.display = docId ? '' : 'none';
+  document.getElementById('site-overlay').classList.add('open');
+};
+
+window.closeSiteModal = () => {
+  document.getElementById('site-overlay').classList.remove('open');
+  siteEditId = null;
+};
+
+window.saveSite = async () => {
+  const business = document.getElementById('sm-business').value.trim();
+  if (!business) { alert('Business name is required.'); return; }
+  const obj = {
+    business,
+    status:  document.getElementById('sm-status').value,
+    demo:    document.getElementById('sm-demo').value.trim(),
+    live:    document.getElementById('sm-live').value.trim(),
+    notes:   document.getElementById('sm-notes').value.trim(),
+  };
+  if (siteEditId) {
+    await updateDoc(doc(db, 'websites', siteEditId), obj);
+  } else {
+    obj.added = new Date().toISOString().slice(0,10);
+    await addDoc(collection(db, 'websites'), obj);
+  }
+  closeSiteModal();
+};
+
+window.deleteSite = async () => {
+  if (!siteEditId || !confirm('Delete this entry? This cannot be undone.')) return;
+  await deleteDoc(doc(db, 'websites', siteEditId));
+  closeSiteModal();
+};
+
+document.getElementById('site-overlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('site-overlay')) closeSiteModal();
+});
+
+// ── Websites render ───────────────────────────────────────────────────────────
+window.renderWebsites = () => {
+  const statusColor = {
+    'Demo':      { bg: 'rgba(130,170,255,0.1)',  color: 'var(--accent2)', border: 'rgba(130,170,255,0.2)'  },
+    'Published': { bg: 'rgba(195,232,141,0.12)', color: 'var(--green)',   border: 'rgba(195,232,141,0.25)' },
+    'Both':      { bg: 'rgba(199,146,234,0.12)', color: 'var(--accent)',  border: 'rgba(199,146,234,0.25)' },
+  };
+  const badge = s => {
+    const sc = statusColor[s] || { bg: 'rgba(141,148,173,0.1)', color: 'var(--ink3)', border: 'rgba(141,148,173,0.2)' };
+    return `<span style="display:inline-block;padding:2px 9px;border-radius:100px;font-size:0.68rem;font-weight:600;letter-spacing:0.04em;background:${sc.bg};color:${sc.color};border:1px solid ${sc.border};white-space:nowrap">${esc(s)}</span>`;
+  };
+  const linkBtn = (url, label) => url
+    ? `<a href="${esc(url)}" target="_blank" style="display:inline-block;padding:2px 10px;border-radius:6px;border:1px solid var(--border2);color:var(--accent2);font-size:0.75rem;text-decoration:none;white-space:nowrap">${label} ↗</a>`
+    : `<span style="color:var(--ink3);font-size:0.75rem">—</span>`;
+
+  const tbody = document.getElementById('site-tbody');
+  if (!websites.length) {
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--ink3)">No websites yet. Add one above.</td></tr>`;
+  } else {
+    const sorted = [...websites].sort((a,b) => (b.added||'').localeCompare(a.added||''));
+    tbody.innerHTML = sorted.map(s => `<tr class="trow">
+      <td style="font-weight:500;color:var(--ink)">${esc(s.business)}</td>
+      <td>${badge(s.status)}</td>
+      <td>${linkBtn(s.demo, 'Demo')}</td>
+      <td>${linkBtn(s.live, 'Live')}</td>
+      <td style="color:var(--ink3);font-size:0.75rem">${s.added||'—'}</td>
+      <td style="color:var(--ink3);font-size:0.78rem;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(s.notes)||''}</td>
+      <td><button class="edit-btn" onclick="openSiteModal('${s._id}')">Edit</button></td>
+    </tr>`).join('');
+  }
+
+  // Stats
+  const total     = websites.length;
+  const demos     = websites.filter(s => s.status === 'Demo' || s.status === 'Both').length;
+  const published = websites.filter(s => s.status === 'Published' || s.status === 'Both').length;
+  document.getElementById('site-stats').innerHTML = `
+    <div class="stat-card"><div class="stat-lbl">Total</div><div class="stat-val" style="color:var(--ink)">${total}</div></div>
+    <div class="stat-card"><div class="stat-lbl" style="color:var(--accent2)">Demos</div><div class="stat-val" style="color:var(--accent2)">${demos}</div></div>
+    <div class="stat-card"><div class="stat-lbl" style="color:var(--green)">Published</div><div class="stat-val" style="color:var(--green)">${published}</div></div>`;
+};
+
+// ── CRM CRUD ──────────────────────────────────────────────────────────────────
+window.saveContact = async () => {
+  const name = document.getElementById('f-name').value.trim();
+  if (!name) { alert('Business name is required.'); return; }
+  const fields = ['name','owner','type','city','phone','email','who','last','follow','follow_time','meeting','status','price','maint','maps','response','notes'];
+  const obj = {};
+  fields.forEach(k => { const el = document.getElementById('f-'+k); obj[k] = el ? el.value.trim() : ''; });
+  if (editDocId) {
+    await updateDoc(doc(db, 'contacts', editDocId), obj);
+  } else {
+    await addDoc(collection(db, 'contacts'), obj);
+  }
+  closeModal();
+};
+
+window.deleteContact = async () => {
+  if (!editDocId || !confirm('Delete this contact? This cannot be undone.')) return;
+  await deleteDoc(doc(db, 'contacts', editDocId));
+  closeModal();
+};
+
+window.openModal = (docId) => {
+  editDocId = docId || null;
+  const c = docId ? contacts.find(x => x._id === docId) : {};
+  document.getElementById('m-title').textContent = docId ? 'Edit contact' : 'Add contact';
+  ['name','owner','city','phone','email','who','last','follow','follow_time','meeting','status','price','maint','maps','response','notes'].forEach(k => {
+    const el = document.getElementById('f-'+k);
+    if (el) el.value = (c && c[k]) ? c[k] : '';
+  });
+  const typeEl = document.getElementById('f-type');
+  if (typeEl) typeEl.value = (c && c.type) ? c.type : 'Auto Repair';
+  document.getElementById('del-btn').style.display = docId ? '' : 'none';
+  document.getElementById('overlay').classList.add('open');
+};
+
+window.closeModal = () => {
+  document.getElementById('overlay').classList.remove('open');
+  editDocId = null;
+};
+
+window.addFromMaps = () => {
+  const url = document.getElementById('maps-url').value.trim();
+  if (!url) { alert('Paste a Google Maps link first.'); return; }
+  document.getElementById('maps-url').value = '';
+  editDocId = null;
+  document.getElementById('m-title').textContent = 'Add contact';
+  ['name','owner','city','phone','email','who','last','follow','follow_time','meeting','price','maint','response','notes'].forEach(k => {
+    const el = document.getElementById('f-'+k);
+    if (el) el.value = '';
+  });
+  document.getElementById('f-status').value = 'Not contacted';
+  document.getElementById('f-maps').value = url;
+  document.getElementById('del-btn').style.display = 'none';
+  document.getElementById('overlay').classList.add('open');
+  document.getElementById('f-name').focus();
+};
+
+document.getElementById('overlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('overlay')) closeModal();
+});
+
+// ── Projects CRUD ─────────────────────────────────────────────────────────────
+window.openProjModal = (docId, defaultStatus) => {
+  projEditId = docId || null;
+  const p = docId ? projects.find(x => x._id === docId) : {};
+  document.getElementById('pm-title').textContent = docId ? 'Edit project' : 'Add project';
+  ['title','client','priority','due','notes'].forEach(k => {
+    const el = document.getElementById('pf-'+k);
+    if (el) el.value = (p && p[k]) ? p[k] : '';
+  });
+  const statusEl = document.getElementById('pf-status');
+  if (statusEl) statusEl.value = (p && p.status) ? p.status : (defaultStatus || 'Backlog');
+  document.getElementById('pdel-btn').style.display = docId ? '' : 'none';
+  document.getElementById('proj-overlay').classList.add('open');
+};
+
+window.closeProjModal = () => {
+  document.getElementById('proj-overlay').classList.remove('open');
+  projEditId = null;
+};
+
+window.saveProject = async () => {
+  const title = document.getElementById('pf-title').value.trim();
+  if (!title) { alert('Title is required.'); return; }
+  const obj = {
+    title,
+    client: document.getElementById('pf-client').value.trim(),
+    status: document.getElementById('pf-status').value,
+    priority: document.getElementById('pf-priority').value,
+    due: document.getElementById('pf-due').value,
+    notes: document.getElementById('pf-notes').value.trim(),
+  };
+  if (projEditId) {
+    await updateDoc(doc(db, 'projects', projEditId), obj);
+  } else {
+    obj.created = new Date().toISOString().slice(0,10);
+    await addDoc(collection(db, 'projects'), obj);
+  }
+  closeProjModal();
+};
+
+window.deleteProject = async () => {
+  if (!projEditId || !confirm('Delete this project? This cannot be undone.')) return;
+  await deleteDoc(doc(db, 'projects', projEditId));
+  closeProjModal();
+};
+
+document.getElementById('proj-overlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('proj-overlay')) closeProjModal();
+});
+
+// ── Kanban render ─────────────────────────────────────────────────────────────
+const KANBAN_COLS = ['Backlog', 'In Progress', 'Review', 'Done'];
+const PRIORITY_COLOR = {
+  'High':   'var(--orange)',
+  'Medium': 'var(--yellow)',
+  'Low':    'var(--green)',
+};
+
+window.renderKanban = () => {
+  const today = new Date().toISOString().slice(0,10);
+  const total  = projects.length;
+  const inProg = projects.filter(p => p.status === 'In Progress').length;
+  const done   = projects.filter(p => p.status === 'Done').length;
+  const overdue = projects.filter(p => p.due && p.due < today && p.status !== 'Done').length;
+
+  document.getElementById('proj-stats').innerHTML = `
+    <div class="stat-card"><div class="stat-lbl">Total projects</div><div class="stat-val" style="color:var(--ink)">${total}</div></div>
+    <div class="stat-card"><div class="stat-lbl" style="color:var(--accent2)">In Progress</div><div class="stat-val" style="color:var(--accent2)">${inProg}</div></div>
+    <div class="stat-card"><div class="stat-lbl" style="color:var(--green)">Done</div><div class="stat-val" style="color:var(--green)">${done}</div></div>
+    <div class="stat-card"><div class="stat-lbl" style="color:var(--orange)">Overdue</div><div class="stat-val" style="color:var(--orange)">${overdue}</div></div>
+  `;
+
+  const board = document.getElementById('kanban-board');
+  board.innerHTML = KANBAN_COLS.map(col => {
+    const cards = projects.filter(p => p.status === col);
+    const cardsHTML = cards.map(p => {
+      const isOverdue = p.due && p.due < today && col !== 'Done';
+      const prColor = PRIORITY_COLOR[p.priority] || 'var(--ink3)';
+      return `<div class="k-card" onclick="openProjModal('${p._id}')">
+        <div class="k-card-title">${esc(p.title)}</div>
+        ${p.client ? `<div class="k-card-client">${esc(p.client)}</div>` : ''}
+        <div class="k-card-meta">
+          ${p.priority ? `<span style="font-size:0.68rem;font-weight:600;color:${prColor};background:${prColor}18;border:1px solid ${prColor}30;border-radius:100px;padding:1px 8px">${esc(p.priority)}</span>` : ''}
+          ${p.due ? `<span style="font-size:0.68rem;color:${isOverdue?'var(--orange)':'var(--ink3)'};font-weight:${isOverdue?'600':'300'}">${p.due}</span>` : ''}
+        </div>
+        ${p.notes ? `<div style="font-size:0.72rem;color:var(--ink3);margin-top:0.4rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(p.notes)}</div>` : ''}
+      </div>`;
+    }).join('');
+    return `<div class="k-col">
+      <div class="k-col-header">
+        <span class="k-col-title">${col}</span>
+        <span class="k-count">${cards.length}</span>
+      </div>
+      <div class="k-cards">${cardsHTML}</div>
+      <button class="k-add-btn" onclick="openProjModal(null,'${col}')">+ Add card</button>
+    </div>`;
+  }).join('');
+};
+
+// ── Expenses CRUD ─────────────────────────────────────────────────────────────
+window.openExpModal = (docId) => {
+  expEditId = docId || null;
+  const e = docId ? expenses.find(x => x._id === docId) : {};
+  document.getElementById('em-title').textContent = docId ? 'Edit expense' : 'Add expense';
+  ['description','amount','date','notes'].forEach(k => {
+    const el = document.getElementById('ef-'+k);
+    if (el) el.value = (e && e[k]) ? e[k] : '';
+  });
+  const catEl = document.getElementById('ef-category');
+  if (catEl) catEl.value = (e && e.category) ? e.category : 'Other';
+  const paidEl = document.getElementById('ef-paid_by');
+  if (paidEl) paidEl.value = (e && e.paid_by) ? e.paid_by : 'Donald';
+  document.getElementById('edel-btn').style.display = docId ? '' : 'none';
+  document.getElementById('exp-overlay').classList.add('open');
+};
+
+window.closeExpModal = () => {
+  document.getElementById('exp-overlay').classList.remove('open');
+  expEditId = null;
+};
+
+window.saveExpense = async () => {
+  const desc = document.getElementById('ef-description').value.trim();
+  if (!desc) { alert('Description is required.'); return; }
+  const amtRaw = document.getElementById('ef-amount').value;
+  if (!amtRaw) { alert('Amount is required.'); return; }
+  const obj = {
+    description: desc,
+    amount: parseFloat(amtRaw),
+    category: document.getElementById('ef-category').value,
+    date: document.getElementById('ef-date').value,
+    paid_by: document.getElementById('ef-paid_by').value,
+    notes: document.getElementById('ef-notes').value.trim(),
+  };
+  if (expEditId) {
+    await updateDoc(doc(db, 'expenses', expEditId), obj);
+  } else {
+    obj.created = new Date().toISOString().slice(0,10);
+    await addDoc(collection(db, 'expenses'), obj);
+  }
+  closeExpModal();
+};
+
+window.deleteExpense = async () => {
+  if (!expEditId || !confirm('Delete this expense? This cannot be undone.')) return;
+  await deleteDoc(doc(db, 'expenses', expEditId));
+  closeExpModal();
+};
+
+document.getElementById('exp-overlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('exp-overlay')) closeExpModal();
+});
+
+// ── Expenses render ───────────────────────────────────────────────────────────
+window.renderExpenses = () => {
+  const catFilter = document.getElementById('exp-cat-filter')?.value || '';
+  const thisMonth = new Date().toISOString().slice(0,7);
+
+  const filtered = catFilter ? expenses.filter(e => e.category === catFilter) : expenses;
+  const sorted = [...filtered].sort((a,b) => (b.date||'').localeCompare(a.date||''));
+
+  const total      = expenses.reduce((s,e) => s + (parseFloat(e.amount)||0), 0);
+  const monthTotal = expenses.filter(e => (e.date||'').startsWith(thisMonth)).reduce((s,e) => s + (parseFloat(e.amount)||0), 0);
+  const donaldTot  = expenses.filter(e => e.paid_by === 'Donald').reduce((s,e) => s + (parseFloat(e.amount)||0), 0);
+  const leonTot    = expenses.filter(e => e.paid_by === 'Leon').reduce((s,e) => s + (parseFloat(e.amount)||0), 0);
+
+  document.getElementById('exp-stats-bar').innerHTML = `
+    <div class="exp-stat"><div class="stat-lbl">Total spent</div><div class="stat-val" style="color:var(--ink)">$${total.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</div></div>
+    <div class="exp-stat"><div class="stat-lbl" style="color:var(--accent2)">This month</div><div class="stat-val" style="color:var(--accent2)">$${monthTotal.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</div></div>
+    <div class="exp-stat"><div class="stat-lbl" style="color:var(--green)">Donald</div><div class="stat-val" style="color:var(--green)">$${donaldTot.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</div></div>
+    <div class="exp-stat"><div class="stat-lbl" style="color:var(--cyan)">Leon</div><div class="stat-val" style="color:var(--cyan)">$${leonTot.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</div></div>
+  `;
+
+  const CAT_COLOR = {
+    'Software':   'var(--accent)',
+    'Marketing':  'var(--accent2)',
+    'Equipment':  'var(--cyan)',
+    'Travel':     'var(--yellow)',
+    'Meals':      'var(--green)',
+    'Contractor': 'var(--orange)',
+    'Other':      'var(--ink3)',
+  };
+
+  const tbody = document.getElementById('exp-tbody');
+  if (sorted.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--ink3)">No expenses yet. Add one above.</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = sorted.map(e => {
+    const cc = CAT_COLOR[e.category] || 'var(--ink3)';
+    return `<tr class="trow">
+      <td style="color:var(--ink3);font-size:0.75rem">${e.date||'—'}</td>
+      <td style="font-weight:500;color:var(--ink)">${esc(e.description)}</td>
+      <td><span style="font-size:0.68rem;font-weight:600;color:${cc};background:${cc}18;border:1px solid ${cc}30;border-radius:100px;padding:1px 9px">${esc(e.category||'')}</span></td>
+      <td style="color:var(--green);font-weight:500">$${(parseFloat(e.amount)||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
+      <td style="color:var(--ink2);font-size:0.78rem">${esc(e.paid_by||'')}</td>
+      <td style="color:var(--ink3);font-size:0.75rem;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(e.notes||'')}</td>
+      <td><button class="edit-btn" onclick="openExpModal('${e._id}')">Edit</button></td>
+    </tr>`;
+  }).join('');
+};
+
+// ── Filtering & Sorting ───────────────────────────────────────────────────────
+window.sortBy = col => {
+  sortCol === col ? sortDir *= -1 : (sortCol = col, sortDir = 1);
+  currentPage = 1;
+  renderTable();
+};
+
+window.goPage = (p) => { currentPage = p; renderTable(); };
+
+window.renderTable = () => {
+  const q   = (document.getElementById('search')?.value || '').toLowerCase();
+  const ft  = document.getElementById('f-industry')?.value || '';
+  const fs  = document.getElementById('f-status-filter')?.value || '';
+
+  let data = contacts.filter(c =>
+    (!q  || (c.name||'').toLowerCase().includes(q) || (c.phone||'').includes(q) || (c.owner||'').toLowerCase().includes(q)) &&
+    (!ft || c.type === ft) &&
+    (!fs || c.status === fs)
+  );
+  data.sort((a,b) => ((a[sortCol]||'').localeCompare(b[sortCol]||'')) * sortDir);
+
+  const totalPages = Math.max(1, Math.ceil(data.length / PAGE_SIZE));
+  if (currentPage > totalPages) currentPage = totalPages;
+  const pageData = data.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+
+  const statusColor = {
+    'Agreed':         { bg: 'rgba(195,232,141,0.12)', color: 'var(--green)',   border: 'rgba(195,232,141,0.25)' },
+    'Callback':       { bg: 'rgba(255,203,107,0.12)', color: 'var(--yellow)',  border: 'rgba(255,203,107,0.25)' },
+    'Not interested': { bg: 'rgba(247,140,108,0.12)', color: 'var(--orange)',  border: 'rgba(247,140,108,0.25)' },
+    'Not valid':      { bg: 'rgba(247,140,108,0.1)',  color: 'var(--orange)',  border: 'rgba(247,140,108,0.2)'  },
+    'No reply':       { bg: 'rgba(141,148,173,0.1)',  color: 'var(--ink3)',    border: 'rgba(141,148,173,0.2)'  },
+    'Not contacted':  { bg: 'rgba(130,170,255,0.1)',  color: 'var(--accent2)', border: 'rgba(130,170,255,0.2)'  },
+    'Send demo':      { bg: 'rgba(199,146,234,0.12)', color: 'var(--accent)',  border: 'rgba(199,146,234,0.25)' },
+    'In transition':  { bg: 'rgba(137,221,255,0.1)',  color: 'var(--cyan)',    border: 'rgba(137,221,255,0.2)'  },
+    'User busy':      { bg: 'rgba(141,148,173,0.1)',  color: 'var(--ink3)',    border: 'rgba(141,148,173,0.2)'  },
+  };
+
+  const badge = s => {
+    const sc = statusColor[s] || { bg: 'rgba(141,148,173,0.1)', color: 'var(--ink3)', border: 'rgba(141,148,173,0.2)' };
+    return `<span style="display:inline-block;padding:2px 9px;border-radius:100px;font-size:0.68rem;font-weight:600;letter-spacing:0.04em;background:${sc.bg};color:${sc.color};border:1px solid ${sc.border};white-space:nowrap">${esc(s)}</span>`;
+  };
+
+  const tbody = document.getElementById('tbody');
+  const noRes = document.getElementById('no-res');
+  noRes.style.display = data.length ? 'none' : 'block';
+  tbody.innerHTML = pageData.map(c => `<tr class="trow">
+    <td style="font-weight:500;color:var(--ink)">${c.maps ? `<a href="${esc(c.maps)}" target="_blank" style="color:var(--accent2);text-decoration:none">${esc(c.name)}</a>` : esc(c.name)}</td>
+    <td style="color:var(--ink3);font-size:0.78rem">${esc(c.type)||'—'}</td>
+    <td style="color:var(--ink2);font-size:0.78rem">${esc(c.phone)||'—'}</td>
+    <td style="color:var(--ink2);font-size:0.78rem">${esc(c.city)||'—'}</td>
+    <td style="color:var(--ink3);font-size:0.78rem">${esc(c.who)||'—'}</td>
+    <td style="color:var(--ink3);font-size:0.75rem">${c.last||'—'}</td>
+    <td style="color:${c.follow && c.follow <= new Date().toISOString().slice(0,10) ? 'var(--orange)' : 'var(--ink3)'};font-size:0.75rem;font-weight:${c.follow && c.follow <= new Date().toISOString().slice(0,10) ? '600' : '300'}">${c.follow ? c.follow + (c.follow_time ? '<br><span style="font-size:0.7rem;opacity:0.75">'+esc(c.follow_time)+'</span>' : '') : '—'}</td>
+    <td>${badge(c.status)}</td>
+    <td style="color:var(--green);font-size:0.78rem;font-weight:500">${c.price ? '$'+c.price : ''}</td>
+    <td style="color:var(--ink3);font-size:0.72rem">${c.added||'—'}</td>
+    <td><button class="edit-btn" onclick="openModal('${c._id}')">Edit</button></td>
+  </tr>`).join('');
+
+  const pager = document.getElementById('pager');
+  if (totalPages <= 1) { pager.innerHTML = ''; }
+  else {
+    let btns = '';
+    for (let i = 1; i <= totalPages; i++) {
+      btns += `<button onclick="goPage(${i})" style="padding:4px 10px;border-radius:6px;border:1px solid ${i===currentPage?'var(--accent2)':'rgba(255,255,255,0.1)'};background:${i===currentPage?'rgba(130,170,255,0.15)':'transparent'};color:${i===currentPage?'var(--accent2)':'var(--ink3)'};cursor:pointer;font-size:0.78rem">${i}</button>`;
+    }
+    pager.innerHTML = `<div style="display:flex;gap:6px;align-items:center;justify-content:center;padding:12px 0;flex-wrap:wrap">
+      <span style="color:var(--ink3);font-size:0.78rem;margin-right:4px">Showing ${(currentPage-1)*PAGE_SIZE+1}–${Math.min(currentPage*PAGE_SIZE,data.length)} of ${data.length}</span>
+      ${btns}
+    </div>`;
+  }
+
+  const tot = contacts.length;
+  const ag  = contacts.filter(c => c.status === 'Agreed').length;
+  const cb  = contacts.filter(c => c.status === 'Callback').length;
+  const ni  = contacts.filter(c => ['Not interested','Not valid'].includes(c.status)).length;
+  const nc  = contacts.filter(c => c.status === 'Not contacted').length;
+  const rev = contacts.filter(c => c.price).reduce((s,c) => s + parseFloat(c.price||0), 0);
+  document.getElementById('crm-stats').innerHTML = `
+    <div class="stat-card"><div class="stat-lbl">Total leads</div><div class="stat-val" style="color:var(--ink)">${tot}</div></div>
+    <div class="stat-card"><div class="stat-lbl" style="color:var(--green)">Agreed</div><div class="stat-val" style="color:var(--green)">${ag}</div></div>
+    <div class="stat-card"><div class="stat-lbl" style="color:var(--yellow)">Callbacks</div><div class="stat-val" style="color:var(--yellow)">${cb}</div></div>
+    <div class="stat-card"><div class="stat-lbl" style="color:var(--orange)">Not interested</div><div class="stat-val" style="color:var(--orange)">${ni}</div></div>
+    <div class="stat-card"><div class="stat-lbl" style="color:var(--accent2)">Not contacted</div><div class="stat-val" style="color:var(--accent2)">${nc}</div></div>
+    <div class="stat-card"><div class="stat-lbl" style="color:var(--accent)">Pipeline value</div><div class="stat-val" style="color:var(--accent)">$${rev.toLocaleString()}</div></div>`;
+};
+
+function esc(s) {
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg:      #0b0d12;
+    --bg2:     #11141b;
+    --bg3:     #171b24;
+    --surface: #1c2030;
+    --border:  #252a38;
+    --border2: #2e3448;
+    --ink:     #e9eaf2;
+    --ink2:    #8d94ad;
+    --ink3:    #555d78;
+    --accent:  #c792ea;
+    --accent2: #82aaff;
+    --green:   #c3e88d;
+    --orange:  #f78c6c;
+    --cyan:    #89ddff;
+    --yellow:  #ffcb6b;
+  }
+  body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--ink); line-height: 1.5; min-height: 100vh; }
+
+  /* LOGIN */
+  #login-screen {
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; padding: 1.5rem;
+    background: var(--bg);
+  }
+  .login-card {
+    background: var(--bg2); border: 1px solid var(--border2);
+    border-radius: 20px; padding: 2.5rem 2.25rem; width: 100%; max-width: 400px;
+    position: relative; overflow: hidden;
+  }
+  .login-card::before { content:''; position:absolute; top:-80px; right:-80px; width:220px; height:220px; border-radius:50%; background: radial-gradient(circle, rgba(199,146,234,0.1) 0%, transparent 70%); pointer-events:none; }
+  .login-logo { font-family: 'Cormorant Garamond', serif; font-weight:600; font-size:2.2rem; color:var(--accent); font-style:italic; letter-spacing:0.04em; margin-bottom:0.25rem; }
+  .login-sub { font-size:0.8rem; color:var(--ink3); margin-bottom:2rem; letter-spacing:0.04em; text-transform:uppercase; font-weight:500; }
+  .google-btn {
+    width:100%; padding:0.85rem 1rem; background:#fff; color:#1a1a18;
+    border:1px solid #ddd; border-radius:100px;
+    font-family:'Outfit',sans-serif; font-size:0.9rem; font-weight:500;
+    cursor:pointer; display:flex; align-items:center; justify-content:center; gap:0.75rem;
+    transition:box-shadow 0.2s, opacity 0.2s; letter-spacing:0.01em;
+  }
+  .google-btn:hover { box-shadow:0 2px 8px rgba(0,0,0,0.15); }
+  .google-btn:disabled { opacity:0.6; cursor:not-allowed; }
+  .google-icon { width:18px; height:18px; flex-shrink:0; }
+  .login-err { font-size:0.8rem; color:var(--orange); margin-top:0.75rem; min-height:1.2em; }
+  .login-team { margin-top:1.5rem; padding-top:1.25rem; border-top:1px solid var(--border); font-size:0.75rem; color:var(--ink3); text-align:center; }
+
+  /* APP SHELL */
+  #app-screen { display:none; flex-direction:column; min-height:100vh; }
+
+  /* TOPBAR */
+  .topbar {
+    display:flex; align-items:center; gap:1rem; flex-wrap:wrap;
+    padding:0.9rem 1.75rem; border-bottom:1px solid var(--border);
+    background:rgba(11,13,18,0.96); backdrop-filter:blur(14px);
+    position:sticky; top:0; z-index:50;
+  }
+  .topbar-logo { font-family:'Cormorant Garamond',serif; font-weight:600; font-size:1.5rem; color:var(--accent); font-style:italic; letter-spacing:0.04em; }
+  .topbar-sep { width:1px; height:24px; background:var(--border); flex-shrink:0; }
+  .topbar-search { padding:0.5rem 0.9rem; background:var(--bg3); border:1px solid var(--border2); border-radius:8px; font-family:'Outfit',sans-serif; font-size:0.82rem; color:var(--ink); outline:none; width:180px; transition:border-color 0.2s; }
+  .topbar-search:focus { border-color:var(--accent2); }
+  .topbar-select { padding:0.5rem 0.8rem; background:var(--bg3); border:1px solid var(--border2); border-radius:8px; font-family:'Outfit',sans-serif; font-size:0.82rem; color:var(--ink2); outline:none; cursor:pointer; }
+  .topbar-btn { padding:0.5rem 1.1rem; background:var(--bg3); border:1px solid var(--border2); border-radius:8px; font-family:'Outfit',sans-serif; font-size:0.82rem; color:var(--ink2); cursor:pointer; transition:all 0.2s; white-space:nowrap; }
+  .topbar-btn:hover { background:var(--surface); color:var(--ink); }
+  .topbar-btn.primary { background:var(--accent); color:#0b0d12; border-color:var(--accent); font-weight:600; }
+  .topbar-btn.primary:hover { opacity:0.85; }
+  .topbar-spacer { flex:1; }
+  .topbar-user { display:flex; align-items:center; gap:0.6rem; font-size:0.75rem; color:var(--ink3); white-space:nowrap; }
+  .topbar-user strong { color:var(--ink2); font-weight:500; }
+  .user-avatar { width:28px; height:28px; border-radius:50%; border:1px solid var(--border2); object-fit:cover; flex-shrink:0; }
+  .topbar-logout { padding:0.4rem 0.9rem; background:transparent; border:1px solid var(--border2); border-radius:8px; font-family:'Outfit',sans-serif; font-size:0.75rem; color:var(--ink3); cursor:pointer; transition:all 0.2s; }
+  .topbar-logout:hover { border-color:var(--orange); color:var(--orange); }
+
+  /* NAV TABS */
+  .nav-tab { padding:0.4rem 0.9rem; background:transparent; border:none; border-radius:8px; font-family:'Outfit',sans-serif; font-size:0.8rem; color:var(--ink3); cursor:pointer; transition:all 0.2s; font-weight:500; }
+  .nav-tab:hover { color:var(--ink2); background:var(--bg3); }
+  .nav-tab.active { color:var(--accent2); background:rgba(130,170,255,0.1); }
+
+  /* STATS */
+  .stats-bar { display:flex; gap:0; border-bottom:1px solid var(--border); background:var(--bg2); overflow-x:auto; }
+  .stat-card { flex:1; min-width:120px; padding:1.1rem 1.5rem; border-right:1px solid var(--border); }
+  .stat-card:last-child { border-right:none; }
+  .stat-lbl { font-size:0.68rem; color:var(--ink3); text-transform:uppercase; letter-spacing:0.08em; font-weight:600; margin-bottom:0.35rem; }
+  .stat-val { font-family:'Cormorant Garamond',serif; font-size:1.9rem; font-weight:300; line-height:1; }
+
+  /* MAPS INPUT ROW */
+  .maps-row { display:flex; align-items:center; gap:0.75rem; padding:0.85rem 1.75rem; border-bottom:1px solid var(--border); background:var(--bg); flex-wrap:wrap; }
+  .maps-label { font-size:0.7rem; color:var(--ink3); font-weight:600; letter-spacing:0.1em; text-transform:uppercase; white-space:nowrap; }
+  .maps-input { flex:1; min-width:260px; padding:0.55rem 0.9rem; background:var(--bg3); border:1px solid var(--border2); border-radius:8px; font-family:'Outfit',sans-serif; font-size:0.82rem; color:var(--ink); outline:none; transition:border-color 0.2s; }
+  .maps-input:focus { border-color:var(--accent2); }
+  .maps-btn { padding:0.55rem 1.1rem; background:var(--bg3); border:1px solid var(--border2); border-radius:8px; font-family:'Outfit',sans-serif; font-size:0.82rem; color:var(--accent2); cursor:pointer; font-weight:500; transition:all 0.2s; white-space:nowrap; }
+  .maps-btn:hover { background:var(--surface); }
+
+  /* TABLE */
+  .tbl-wrap { flex:1; overflow-x:auto; padding:1rem 1.75rem 2rem; }
+  table { width:100%; border-collapse:collapse; font-size:0.8rem; }
+  th {
+    padding:0.7rem 0.85rem; text-align:left; font-size:0.65rem; font-weight:600;
+    color:var(--ink3); letter-spacing:0.1em; text-transform:uppercase;
+    border-bottom:1px solid var(--border); white-space:nowrap; cursor:pointer;
+    background:var(--bg); user-select:none; transition:color 0.2s;
+  }
+  th:hover { color:var(--ink2); }
+  td { padding:0.7rem 0.85rem; border-bottom:1px solid var(--border); vertical-align:middle; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:200px; }
+  .trow:hover td { background:var(--bg2); }
+  .trow:last-child td { border-bottom:none; }
+  #no-res { text-align:center; padding:3rem; color:var(--ink3); font-size:0.88rem; display:none; }
+  .edit-btn { padding:0.3rem 0.75rem; background:transparent; border:1px solid var(--border2); border-radius:6px; font-family:'Outfit',sans-serif; font-size:0.72rem; color:var(--ink3); cursor:pointer; transition:all 0.2s; }
+  .edit-btn:hover { border-color:var(--accent2); color:var(--accent2); }
+
+  /* MODAL (shared base) */
+  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:200; align-items:flex-start; justify-content:center; padding:3rem 1rem 2rem; overflow-y:auto; backdrop-filter:blur(4px); }
+  .modal-overlay.open { display:flex; }
+  .modal { background:var(--bg2); border:1px solid var(--border2); border-radius:18px; padding:2rem; width:680px; max-width:100%; position:relative; }
+  .modal-title { font-family:'DM Serif Display',serif; font-size:1.3rem; font-weight:400; color:var(--ink); margin-bottom:1.5rem; }
+  .mgrid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+  .fg { display:flex; flex-direction:column; gap:0.35rem; }
+  .fg.full { grid-column:1/-1; }
+  .fg label { font-size:0.65rem; color:var(--ink3); font-weight:600; letter-spacing:0.1em; text-transform:uppercase; }
+  .fg input, .fg select, .fg textarea {
+    padding:0.7rem 0.9rem; background:var(--bg3); border:1px solid var(--border2);
+    border-radius:9px; font-family:'Outfit',sans-serif; font-size:0.85rem; color:var(--ink);
+    outline:none; width:100%; transition:border-color 0.2s, box-shadow 0.2s;
+  }
+  .fg input:focus, .fg select:focus, .fg textarea:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(199,146,234,0.1); }
+  .fg textarea { resize:vertical; min-height:70px; }
+  .fg select option { background:var(--bg3); }
+  .mfooter { display:flex; justify-content:space-between; align-items:center; margin-top:1.5rem; gap:0.75rem; }
+  .mfooter-right { display:flex; gap:0.75rem; }
+  .mbtn { padding:0.7rem 1.4rem; border-radius:100px; font-family:'Outfit',sans-serif; font-size:0.85rem; cursor:pointer; transition:all 0.2s; border:1px solid var(--border2); background:var(--bg3); color:var(--ink2); font-weight:400; }
+  .mbtn:hover { background:var(--surface); color:var(--ink); }
+  .mbtn-primary { background:var(--accent); color:#0b0d12; border-color:var(--accent); font-weight:600; }
+  .mbtn-primary:hover { opacity:0.85; }
+  .mbtn-danger { color:var(--orange); border-color:rgba(247,140,108,0.3); background:rgba(247,140,108,0.06); }
+  .mbtn-danger:hover { background:rgba(247,140,108,0.12); }
+
+  /* KANBAN */
+  .kanban { display:flex; gap:1.25rem; padding:1.5rem 1.75rem; overflow-x:auto; min-height:calc(100vh - 180px); align-items:flex-start; }
+  .k-col { background:var(--bg2); border:1px solid var(--border); border-radius:14px; width:280px; flex-shrink:0; display:flex; flex-direction:column; }
+  .k-col-header { padding:1rem 1.1rem 0.75rem; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
+  .k-col-title { font-size:0.72rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink2); }
+  .k-count { font-size:0.7rem; background:var(--bg3); border:1px solid var(--border2); border-radius:100px; padding:1px 8px; color:var(--ink3); }
+  .k-cards { flex:1; padding:0.75rem; display:flex; flex-direction:column; gap:0.6rem; min-height:60px; }
+  .k-card { background:var(--bg3); border:1px solid var(--border2); border-radius:10px; padding:0.85rem 0.9rem; cursor:pointer; transition:border-color 0.2s, box-shadow 0.2s; }
+  .k-card:hover { border-color:var(--accent2); box-shadow:0 2px 12px rgba(130,170,255,0.08); }
+  .k-card-title { font-size:0.85rem; font-weight:500; color:var(--ink); margin-bottom:0.3rem; }
+  .k-card-client { font-size:0.72rem; color:var(--ink3); margin-bottom:0.5rem; }
+  .k-card-meta { display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap; }
+  .k-add-btn { margin:0.5rem 0.75rem 0.75rem; padding:0.55rem; background:transparent; border:1px dashed var(--border2); border-radius:8px; font-family:'Outfit',sans-serif; font-size:0.78rem; color:var(--ink3); cursor:pointer; transition:all 0.2s; width:calc(100% - 1.5rem); }
+  .k-add-btn:hover { border-color:var(--accent2); color:var(--accent2); background:rgba(130,170,255,0.04); }
+
+  /* EXPENSES */
+  .exp-wrap { padding:1.5rem 1.75rem; }
+  .exp-topbar { display:flex; align-items:center; gap:1rem; margin-bottom:1.25rem; flex-wrap:wrap; }
+  .exp-stats { display:flex; gap:0; border:1px solid var(--border); border-radius:14px; overflow:hidden; margin-bottom:1.5rem; background:var(--bg2); }
+  .exp-stat { flex:1; padding:1.1rem 1.5rem; border-right:1px solid var(--border); }
+  .exp-stat:last-child { border-right:none; }
+
+  @media (max-width:700px) {
+    .topbar { padding:0.75rem 1rem; }
+    .mgrid { grid-template-columns:1fr; }
+    .fg.full { grid-column:1; }
+    .tbl-wrap { padding:0.75rem 0.75rem 2rem; }
+    .maps-row { padding:0.75rem 1rem; }
+    .stats-bar { flex-wrap:nowrap; }
+    .kanban { padding:1rem; }
+    .exp-wrap { padding:1rem; }
+    .exp-stats { flex-wrap:wrap; }
+    .exp-stat { border-right:none; border-bottom:1px solid var(--border); }
+    .exp-stat:last-child { border-bottom:none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── LOGIN SCREEN ─────────────────────────────────────────────────────────── -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">D1</div>
+    <div class="login-sub">Team Dashboard</div>
+    <button class="google-btn" id="google-btn" onclick="doLogin()">
+      <svg class="google-icon" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 8 2.9l5.7-5.7C34.5 6.5 29.5 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.7-.4-3.9z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.5 16 19 12 24 12c3.1 0 5.8 1.1 8 2.9l5.7-5.7C34.5 6.5 29.5 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.2 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8H6.3C9.6 35.4 16.3 44 24 44z" /><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.3-2.3 4.2-4.2 5.6l6.2 5.2C37 39 44 34 44 24c0-1.3-.1-2.7-.4-3.9z"/></svg>
+      Continue with Google
+    </button>
+    <div class="login-err" id="l-err"></div>
+    <div class="login-team">D1 Business Solutions · Internal use only</div>
+  </div>
+</div>
+
+<!-- ── APP SCREEN ───────────────────────────────────────────────────────────── -->
+<div id="app-screen">
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="topbar-logo">D1</div>
+    <div class="topbar-sep"></div>
+    <button class="nav-tab active" id="tab-crm" onclick="switchPage('crm')">CRM</button>
+    <button class="nav-tab" id="tab-projects" onclick="switchPage('projects')">Projects</button>
+    <button class="nav-tab" id="tab-expenses" onclick="switchPage('expenses')">Expenses</button>
+    <button class="nav-tab" id="tab-websites" onclick="switchPage('websites')">Websites</button>
+    <div class="topbar-sep"></div>
+    <div id="crm-controls" style="display:contents">
+      <input class="topbar-search" id="search" type="text" placeholder="Search contacts…" oninput="currentPage=1;renderTable()">
+      <select class="topbar-select" id="f-industry" onchange="currentPage=1;renderTable()">
+        <option value="">All industries</option>
+        <option>Auto Repair</option>
+        <option>Plumbing</option>
+        <option>HVAC</option>
+        <option>Landscaping</option>
+        <option>Other</option>
+      </select>
+      <select class="topbar-select" id="f-status-filter" onchange="currentPage=1;renderTable()">
+        <option value="">All statuses</option>
+        <option>Agreed</option>
+        <option>Callback</option>
+        <option>Not interested</option>
+        <option>Not valid</option>
+        <option>No reply</option>
+        <option>Not contacted</option>
+        <option>Send demo</option>
+        <option>In transition</option>
+        <option>User busy</option>
+      </select>
+      <button class="topbar-btn primary" onclick="openModal()">+ Add contact</button>
+    </div>
+    <div class="topbar-spacer"></div>
+    <div class="topbar-user">
+      <img class="user-avatar" id="user-avatar" src="" alt="">
+      <strong id="user-email"></strong>
+    </div>
+    <button class="topbar-logout" onclick="doLogout()">Sign out</button>
+  </div>
+
+  <!-- ── PAGE: CRM ─────────────────────────────────────────────────────────── -->
+  <div id="page-crm" style="display:flex;flex-direction:column;flex:1">
+
+    <!-- Stats -->
+    <div class="stats-bar" id="crm-stats"></div>
+
+    <!-- Maps quick-add -->
+    <div class="maps-row">
+      <span class="maps-label">Add from Maps</span>
+      <input class="maps-input" id="maps-url" type="text" placeholder="Paste a Google Maps link…">
+      <button class="maps-btn" onclick="addFromMaps()">Add &amp; fill →</button>
+    </div>
+
+    <!-- Table -->
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr>
+          <th style="width:200px" onclick="sortBy('name')">Business ↕</th>
+          <th style="width:90px"  onclick="sortBy('type')">Industry ↕</th>
+          <th style="width:120px">Phone</th>
+          <th style="width:80px">City</th>
+          <th style="width:60px">By</th>
+          <th style="width:95px" onclick="sortBy('last')">Last contact ↕</th>
+          <th style="width:95px" onclick="sortBy('follow')">Follow-up ↕</th>
+          <th style="width:115px" onclick="sortBy('status')">Status ↕</th>
+          <th style="width:65px">Price</th>
+          <th style="width:90px" onclick="sortBy('added')">Date added ↕</th>
+          <th style="width:55px"></th>
+        </tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+      <div id="no-res">No contacts match your filters.</div>
+      <div id="pager"></div>
+    </div>
+
+  </div><!-- end #page-crm -->
+
+  <!-- ── PAGE: PROJECTS (Kanban) ───────────────────────────────────────────── -->
+  <div id="page-projects" style="display:none">
+
+    <!-- Project stats -->
+    <div class="stats-bar" id="proj-stats"></div>
+
+    <!-- Kanban board -->
+    <div class="kanban" id="kanban-board"></div>
+
+  </div><!-- end #page-projects -->
+
+  <!-- ── PAGE: EXPENSES ───────────────────────────────────────────────────── -->
+  <div id="page-expenses" style="display:none">
+    <div class="exp-wrap">
+
+      <!-- Expense topbar controls -->
+      <div class="exp-topbar">
+        <button class="topbar-btn primary" onclick="openExpModal()">+ Add expense</button>
+        <select class="topbar-select" id="exp-cat-filter" onchange="renderExpenses()">
+          <option value="">All categories</option>
+          <option>Software</option>
+          <option>Marketing</option>
+          <option>Equipment</option>
+          <option>Travel</option>
+          <option>Meals</option>
+          <option>Contractor</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <!-- Expense stats -->
+      <div class="exp-stats" id="exp-stats-bar"></div>
+
+      <!-- Expense table -->
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr>
+            <th style="width:100px">Date</th>
+            <th style="width:220px">Description</th>
+            <th style="width:110px">Category</th>
+            <th style="width:100px">Amount</th>
+            <th style="width:90px">Paid by</th>
+            <th>Notes</th>
+            <th style="width:55px"></th>
+          </tr></thead>
+          <tbody id="exp-tbody"></tbody>
+        </table>
+      </div>
+
+    </div>
+  </div><!-- end #page-expenses -->
+
+  <!-- ── WEBSITES PAGE ──────────────────────────────────────────────────────── -->
+  <div id="page-websites" style="display:none">
+    <div class="page-topbar" style="display:flex;align-items:center;justify-content:space-between;padding:1.2rem 2rem 0.8rem;gap:1rem;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:1rem">
+        <div style="font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--ink)">Websites</div>
+        <button class="topbar-btn primary" onclick="openSiteModal()">+ Add website</button>
+      </div>
+    </div>
+    <div id="site-stats" style="display:flex;gap:1rem;padding:0.5rem 2rem 1rem;flex-wrap:wrap"></div>
+    <div style="padding:0 2rem 2rem;overflow-x:auto">
+      <table class="crm-table" style="width:100%">
+        <thead><tr>
+          <th style="width:200px">Business</th>
+          <th style="width:100px">Status</th>
+          <th style="width:100px">Demo</th>
+          <th style="width:100px">Live site</th>
+          <th style="width:95px">Date added</th>
+          <th>Notes</th>
+          <th style="width:55px"></th>
+        </tr></thead>
+        <tbody id="site-tbody"></tbody>
+      </table>
+    </div>
+  </div><!-- end #page-websites -->
+
+</div><!-- end #app-screen -->
+
+<!-- ── CRM MODAL ────────────────────────────────────────────────────────────── -->
+<div id="overlay" class="modal-overlay">
+  <div class="modal">
+    <div class="modal-title" id="m-title">Add contact</div>
+    <div class="mgrid">
+      <div class="fg"><label>Business name *</label><input id="f-name" type="text"></div>
+      <div class="fg"><label>Owner's name</label><input id="f-owner" type="text"></div>
+      <div class="fg"><label>Industry</label>
+        <select id="f-type"><option>Auto Repair</option><option>Plumbing</option><option>HVAC</option><option>Landscaping</option><option>Other</option></select>
+      </div>
+      <div class="fg"><label>City</label><input id="f-city" type="text"></div>
+      <div class="fg"><label>Phone</label><input id="f-phone" type="text"></div>
+      <div class="fg"><label>Email</label><input id="f-email" type="text"></div>
+      <div class="fg"><label>Contacted by</label>
+        <select id="f-who"><option value="">—</option><option>Donald</option><option>Leon</option></select>
+      </div>
+      <div class="fg"><label>Last contacted</label><input id="f-last" type="date"></div>
+      <div class="fg"><label>Follow-up date</label><input id="f-follow" type="date"></div>
+      <div class="fg"><label>Follow-up time</label><input id="f-follow_time" type="time"></div>
+      <div class="fg"><label>Scheduled meeting</label><input id="f-meeting" type="text" placeholder="e.g. Monday 10AM"></div>
+      <div class="fg"><label>Status</label>
+        <select id="f-status">
+          <option>Not contacted</option><option>Callback</option><option>Agreed</option>
+          <option>Not interested</option><option>Not valid</option><option>No reply</option>
+          <option>Send demo</option><option>In transition</option><option>User busy</option>
+        </select>
+      </div>
+      <div class="fg"><label>Closing price ($)</label><input id="f-price" type="number"></div>
+      <div class="fg"><label>Maintenance fee ($/yr)</label><input id="f-maint" type="number"></div>
+      <div class="fg full"><label>Google Maps link</label><input id="f-maps" type="text" placeholder="https://maps.app.goo.gl/…"></div>
+      <div class="fg full"><label>Response provided</label><textarea id="f-response"></textarea></div>
+      <div class="fg full"><label>Notes</label><textarea id="f-notes"></textarea></div>
+    </div>
+    <div class="mfooter">
+      <button class="mbtn mbtn-danger" id="del-btn" onclick="deleteContact()" style="display:none">Delete</button>
+      <div class="mfooter-right">
+        <button class="mbtn" onclick="closeModal()">Cancel</button>
+        <button class="mbtn mbtn-primary" onclick="saveContact()">Save contact</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── PROJECTS MODAL ───────────────────────────────────────────────────────── -->
+<div id="proj-overlay" class="modal-overlay">
+  <div class="modal" style="width:520px">
+    <div class="modal-title" id="pm-title">Add project</div>
+    <div class="mgrid">
+      <div class="fg full"><label>Title *</label><input id="pf-title" type="text" placeholder="Project name"></div>
+      <div class="fg"><label>Client</label><input id="pf-client" type="text" placeholder="Client name"></div>
+      <div class="fg"><label>Status</label>
+        <select id="pf-status">
+          <option>Backlog</option>
+          <option>In Progress</option>
+          <option>Review</option>
+          <option>Done</option>
+        </select>
+      </div>
+      <div class="fg"><label>Priority</label>
+        <select id="pf-priority">
+          <option>Low</option>
+          <option>Medium</option>
+          <option>High</option>
+        </select>
+      </div>
+      <div class="fg"><label>Due date</label><input id="pf-due" type="date"></div>
+      <div class="fg full"><label>Notes</label><textarea id="pf-notes" style="min-height:80px"></textarea></div>
+    </div>
+    <div class="mfooter">
+      <button class="mbtn mbtn-danger" id="pdel-btn" onclick="deleteProject()" style="display:none">Delete</button>
+      <div class="mfooter-right">
+        <button class="mbtn" onclick="closeProjModal()">Cancel</button>
+        <button class="mbtn mbtn-primary" onclick="saveProject()">Save project</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── EXPENSES MODAL ───────────────────────────────────────────────────────── -->
+<div id="exp-overlay" class="modal-overlay">
+  <div class="modal" style="width:520px">
+    <div class="modal-title" id="em-title">Add expense</div>
+    <div class="mgrid">
+      <div class="fg full"><label>Description *</label><input id="ef-description" type="text" placeholder="What was purchased?"></div>
+      <div class="fg"><label>Amount ($) *</label><input id="ef-amount" type="number" step="0.01" min="0" placeholder="0.00"></div>
+      <div class="fg"><label>Date</label><input id="ef-date" type="date"></div>
+      <div class="fg"><label>Category</label>
+        <select id="ef-category">
+          <option>Software</option>
+          <option>Marketing</option>
+          <option>Equipment</option>
+          <option>Travel</option>
+          <option>Meals</option>
+          <option>Contractor</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="fg"><label>Paid by</label>
+        <select id="ef-paid_by">
+          <option>Donald</option>
+          <option>Leon</option>
+          <option>Business</option>
+        </select>
+      </div>
+      <div class="fg full"><label>Notes</label><textarea id="ef-notes" style="min-height:70px"></textarea></div>
+    </div>
+    <div class="mfooter">
+      <button class="mbtn mbtn-danger" id="edel-btn" onclick="deleteExpense()" style="display:none">Delete</button>
+      <div class="mfooter-right">
+        <button class="mbtn" onclick="closeExpModal()">Cancel</button>
+        <button class="mbtn mbtn-primary" onclick="saveExpense()">Save expense</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── WEBSITES MODAL ───────────────────────────────────────────────────────── -->
+<div id="site-overlay" class="modal-overlay">
+  <div class="modal" style="width:520px">
+    <div class="modal-title" id="sm-title">Add website</div>
+    <div class="mgrid">
+      <div class="fg full"><label>Business name *</label><input id="sm-business" type="text" placeholder="e.g. F & T Auto Center"></div>
+      <div class="fg"><label>Status</label>
+        <select id="sm-status">
+          <option>Demo</option>
+          <option>Published</option>
+          <option>Both</option>
+        </select>
+      </div>
+      <div class="fg"><label>Date added</label><input id="sm-added-display" type="text" disabled style="opacity:0.5" placeholder="Auto-set on save"></div>
+      <div class="fg full"><label>Demo link</label><input id="sm-demo" type="url" placeholder="https://..."></div>
+      <div class="fg full"><label>Live site link</label><input id="sm-live" type="url" placeholder="https://..."></div>
+      <div class="fg full"><label>Notes</label><textarea id="sm-notes" style="min-height:70px" placeholder="Any notes about this site…"></textarea></div>
+    </div>
+    <div class="mfooter">
+      <button class="mbtn mbtn-danger" id="sdel-btn" onclick="deleteSite()" style="display:none">Delete</button>
+      <div class="mfooter-right">
+        <button class="mbtn" onclick="closeSiteModal()">Cancel</button>
+        <button class="mbtn mbtn-primary" onclick="saveSite()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
