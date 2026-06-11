@@ -251,6 +251,7 @@ async function startListening() {
       const upd = {};
       if (mergeToNotValid.has(data.status)) upd.status = 'Not valid';
       if (!data.last) upd.last = today;
+      if (!data.added) upd.added = today;
       if (Object.keys(upd).length) fixes.push(updateDoc(doc(db, 'contacts', d.id), upd));
     });
     if (fixes.length) await Promise.all(fixes);
@@ -728,12 +729,12 @@ window.renderTable = () => {
     <div class="stat-card"><div class="stat-lbl">Total leads</div><div class="stat-val" style="color:var(--ink)">${tot}</div></div>
     <div class="stat-card"><div class="stat-lbl" style="color:var(--accent2)">Not contacted</div><div class="stat-val" style="color:var(--accent2)">${nc}</div></div>
     <div class="stat-card"><div class="stat-lbl" style="color:var(--yellow)">Callback</div><div class="stat-val" style="color:var(--yellow)">${cb}</div></div>
+    <div class="stat-card"><div class="stat-lbl" style="color:var(--orange)">Not interested</div><div class="stat-val" style="color:var(--orange)">${ni}</div></div>
+    <div class="stat-card"><div class="stat-lbl" style="color:var(--ink3)">Not valid</div><div class="stat-val" style="color:var(--ink3)">${nv}</div></div>
     <div class="stat-card"><div class="stat-lbl" style="color:var(--accent)">Send demo</div><div class="stat-val" style="color:var(--accent)">${sd}</div></div>
     <div class="stat-card"><div class="stat-lbl" style="color:#ffb74d">In progress</div><div class="stat-val" style="color:#ffb74d">${ip}</div></div>
     <div class="stat-card"><div class="stat-lbl" style="color:var(--cyan)">Demo done</div><div class="stat-val" style="color:var(--cyan)">${dd}</div></div>
     <div class="stat-card"><div class="stat-lbl" style="color:var(--green)">Agreed</div><div class="stat-val" style="color:var(--green)">${ag}</div></div>
-    <div class="stat-card"><div class="stat-lbl" style="color:var(--orange)">Not interested</div><div class="stat-val" style="color:var(--orange)">${ni}</div></div>
-    <div class="stat-card"><div class="stat-lbl" style="color:var(--ink3)">Not valid</div><div class="stat-val" style="color:var(--ink3)">${nv}</div></div>
     <div class="stat-card"><div class="stat-lbl" style="color:var(--accent)">Pipeline value</div><div class="stat-val" style="color:var(--accent)">$${rev.toLocaleString()}</div></div>
     <div class="stat-card"><div class="stat-lbl" style="color:var(--green)">Maint. revenue</div><div class="stat-val" style="color:var(--green)">$${mrev.toLocaleString()}/yr</div></div>`;
 };
@@ -959,12 +960,12 @@ function esc(s) {
         <option value="">All statuses</option>
         <option>Not contacted</option>
         <option>Callback</option>
+        <option>Not interested</option>
+        <option>Not valid</option>
         <option>Send demo</option>
         <option>In progress</option>
         <option>Demo done</option>
         <option>Agreed</option>
-        <option>Not interested</option>
-        <option>Not valid</option>
       </select>
       <button class="topbar-btn primary" onclick="openModal()">+ Add contact</button>
     </div>
@@ -1114,9 +1115,9 @@ function esc(s) {
       <div class="fg"><label>Scheduled meeting</label><input id="f-meeting" type="text" placeholder="e.g. Monday 10AM"></div>
       <div class="fg"><label>Status</label>
         <select id="f-status">
-          <option>Not contacted</option><option>Callback</option><option>Send demo</option>
-          <option>In progress</option><option>Demo done</option><option>Agreed</option>
+          <option>Not contacted</option><option>Callback</option>
           <option>Not interested</option><option>Not valid</option>
+          <option>Send demo</option><option>In progress</option><option>Demo done</option><option>Agreed</option>
         </select>
       </div>
       <div class="fg"><label>Closing price ($)</label><input id="f-price" type="number"></div>
