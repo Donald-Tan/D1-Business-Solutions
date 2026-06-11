@@ -671,12 +671,8 @@ window.renderTable = () => {
     'Agreed':         { bg: 'rgba(195,232,141,0.12)', color: 'var(--green)',   border: 'rgba(195,232,141,0.25)' },
     'Callback':       { bg: 'rgba(255,203,107,0.12)', color: 'var(--yellow)',  border: 'rgba(255,203,107,0.25)' },
     'Not interested': { bg: 'rgba(247,140,108,0.12)', color: 'var(--orange)',  border: 'rgba(247,140,108,0.25)' },
-    'Not valid':      { bg: 'rgba(247,140,108,0.1)',  color: 'var(--orange)',  border: 'rgba(247,140,108,0.2)'  },
-    'No reply':       { bg: 'rgba(141,148,173,0.1)',  color: 'var(--ink3)',    border: 'rgba(141,148,173,0.2)'  },
     'Not contacted':  { bg: 'rgba(130,170,255,0.1)',  color: 'var(--accent2)', border: 'rgba(130,170,255,0.2)'  },
     'Send demo':      { bg: 'rgba(199,146,234,0.12)', color: 'var(--accent)',  border: 'rgba(199,146,234,0.25)' },
-    'In transition':  { bg: 'rgba(137,221,255,0.1)',  color: 'var(--cyan)',    border: 'rgba(137,221,255,0.2)'  },
-    'User busy':      { bg: 'rgba(141,148,173,0.1)',  color: 'var(--ink3)',    border: 'rgba(141,148,173,0.2)'  },
   };
 
   const badge = s => {
@@ -717,7 +713,7 @@ window.renderTable = () => {
   const tot = contacts.length;
   const ag  = contacts.filter(c => c.status === 'Agreed').length;
   const cb  = contacts.filter(c => c.status === 'Callback').length;
-  const ni  = contacts.filter(c => ['Not interested','Not valid'].includes(c.status)).length;
+  const ni  = contacts.filter(c => c.status === 'Not interested').length;
   const nc  = contacts.filter(c => c.status === 'Not contacted').length;
   const rev = contacts.filter(c => c.price).reduce((s,c) => s + parseFloat(c.price||0), 0);
   document.getElementById('crm-stats').innerHTML = `
@@ -951,12 +947,8 @@ function esc(s) {
         <option>Agreed</option>
         <option>Callback</option>
         <option>Not interested</option>
-        <option>Not valid</option>
-        <option>No reply</option>
         <option>Not contacted</option>
         <option>Send demo</option>
-        <option>In transition</option>
-        <option>User busy</option>
       </select>
       <button class="topbar-btn primary" onclick="openModal()">+ Add contact</button>
     </div>
@@ -1107,8 +1099,7 @@ function esc(s) {
       <div class="fg"><label>Status</label>
         <select id="f-status">
           <option>Not contacted</option><option>Callback</option><option>Agreed</option>
-          <option>Not interested</option><option>Not valid</option><option>No reply</option>
-          <option>Send demo</option><option>In transition</option><option>User busy</option>
+          <option>Not interested</option><option>Send demo</option>
         </select>
       </div>
       <div class="fg"><label>Closing price ($)</label><input id="f-price" type="number"></div>
