@@ -669,10 +669,12 @@ window.renderTable = () => {
 
   const statusColor = {
     'Agreed':         { bg: 'rgba(195,232,141,0.12)', color: 'var(--green)',   border: 'rgba(195,232,141,0.25)' },
+    'In progress':    { bg: 'rgba(255,183,77,0.12)',  color: '#ffb74d',        border: 'rgba(255,183,77,0.25)'  },
+    'Demo done':      { bg: 'rgba(137,221,255,0.12)', color: 'var(--cyan)',    border: 'rgba(137,221,255,0.25)' },
     'Callback':       { bg: 'rgba(255,203,107,0.12)', color: 'var(--yellow)',  border: 'rgba(255,203,107,0.25)' },
+    'Send demo':      { bg: 'rgba(199,146,234,0.12)', color: 'var(--accent)',  border: 'rgba(199,146,234,0.25)' },
     'Not interested': { bg: 'rgba(247,140,108,0.12)', color: 'var(--orange)',  border: 'rgba(247,140,108,0.25)' },
     'Not contacted':  { bg: 'rgba(130,170,255,0.1)',  color: 'var(--accent2)', border: 'rgba(130,170,255,0.2)'  },
-    'Send demo':      { bg: 'rgba(199,146,234,0.12)', color: 'var(--accent)',  border: 'rgba(199,146,234,0.25)' },
     'Not valid':      { bg: 'rgba(141,148,173,0.1)',  color: 'var(--ink3)',    border: 'rgba(141,148,173,0.2)'  },
   };
 
@@ -713,6 +715,8 @@ window.renderTable = () => {
 
   const tot = contacts.length;
   const ag  = contacts.filter(c => c.status === 'Agreed').length;
+  const ip  = contacts.filter(c => c.status === 'In progress').length;
+  const dd  = contacts.filter(c => c.status === 'Demo done').length;
   const cb  = contacts.filter(c => c.status === 'Callback').length;
   const sd  = contacts.filter(c => c.status === 'Send demo').length;
   const ni  = contacts.filter(c => c.status === 'Not interested').length;
@@ -723,13 +727,15 @@ window.renderTable = () => {
   document.getElementById('crm-stats').innerHTML = `
     <div class="stat-card"><div class="stat-lbl">Total leads</div><div class="stat-val" style="color:var(--ink)">${tot}</div></div>
     <div class="stat-card"><div class="stat-lbl" style="color:var(--green)">Agreed</div><div class="stat-val" style="color:var(--green)">${ag}</div></div>
+    <div class="stat-card"><div class="stat-lbl" style="color:#ffb74d">In progress</div><div class="stat-val" style="color:#ffb74d">${ip}</div></div>
+    <div class="stat-card"><div class="stat-lbl" style="color:var(--cyan)">Demo done</div><div class="stat-val" style="color:var(--cyan)">${dd}</div></div>
     <div class="stat-card"><div class="stat-lbl" style="color:var(--yellow)">Callbacks</div><div class="stat-val" style="color:var(--yellow)">${cb}</div></div>
     <div class="stat-card"><div class="stat-lbl" style="color:var(--accent)">Send demo</div><div class="stat-val" style="color:var(--accent)">${sd}</div></div>
     <div class="stat-card"><div class="stat-lbl" style="color:var(--orange)">Not interested</div><div class="stat-val" style="color:var(--orange)">${ni}</div></div>
     <div class="stat-card"><div class="stat-lbl" style="color:var(--accent2)">Not contacted</div><div class="stat-val" style="color:var(--accent2)">${nc}</div></div>
     <div class="stat-card"><div class="stat-lbl" style="color:var(--ink3)">Not valid</div><div class="stat-val" style="color:var(--ink3)">${nv}</div></div>
     <div class="stat-card"><div class="stat-lbl" style="color:var(--accent)">Pipeline value</div><div class="stat-val" style="color:var(--accent)">$${rev.toLocaleString()}</div></div>
-    <div class="stat-card"><div class="stat-lbl" style="color:var(--cyan)">Maint. revenue</div><div class="stat-val" style="color:var(--cyan)">$${mrev.toLocaleString()}/yr</div></div>`;
+    <div class="stat-card"><div class="stat-lbl" style="color:var(--green)">Maint. revenue</div><div class="stat-val" style="color:var(--green)">$${mrev.toLocaleString()}/yr</div></div>`;
 };
 
 function esc(s) {
@@ -952,6 +958,8 @@ function esc(s) {
       <select class="topbar-select" id="f-status-filter" onchange="currentPage=1;renderTable()">
         <option value="">All statuses</option>
         <option>Agreed</option>
+        <option>In progress</option>
+        <option>Demo done</option>
         <option>Callback</option>
         <option>Send demo</option>
         <option>Not interested</option>
@@ -1106,8 +1114,9 @@ function esc(s) {
       <div class="fg"><label>Scheduled meeting</label><input id="f-meeting" type="text" placeholder="e.g. Monday 10AM"></div>
       <div class="fg"><label>Status</label>
         <select id="f-status">
-          <option>Not contacted</option><option>Callback</option><option>Agreed</option>
-          <option>Send demo</option><option>Not interested</option><option>Not valid</option>
+          <option>Not contacted</option><option>Callback</option><option>Send demo</option>
+          <option>Demo done</option><option>In progress</option><option>Agreed</option>
+          <option>Not interested</option><option>Not valid</option>
         </select>
       </div>
       <div class="fg"><label>Closing price ($)</label><input id="f-price" type="number"></div>
