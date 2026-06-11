@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head><title>Firestore Test</title></head>
+<body style="font-family:monospace;padding:20px;background:#0b0d12;color:#ccd">
+<h2 style="color:#c792ea">Firestore Connection Test</h2>
+<div id="out" style="white-space:pre-wrap;line-height:1.8"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, collection, getDocs, addDoc }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const log = s => { document.getElementById('out').textContent += s + '\n'; console.log(s); };
+
+const app = initializeApp({
+  apiKey: "AIzaSyDYZIUYr_WBIdgFCuVgJj-iqfnUAavd_Vk",
+  authDomain: "d1-crm-e7b49.firebaseapp.com",
+  projectId: "d1-crm-e7b49",
+  storageBucket: "d1-crm-e7b49.firebasestorage.app",
+  messagingSenderId: "871585197287",
+  appId: "1:871585197287:web:a4101650a20463d2264642"
+});
+
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+onAuthStateChanged(auth, async user => {
+  if (!user) {
+    log('Not signed in — signing in with Google...');
+    try {
+      const provider = new GoogleAuthProvider();
+      await signInWithPopup(auth, provider);
+    } catch(e) {
+      log('Auth error: ' + e.message);
+    }
+    return;
+  }
+
+  log('✅ Signed in as: ' + user.email);
+  log('Attempting Firestore read...');
+
+  try {
+    const snap = await getDocs(collection(db, 'contacts'));
+    log('✅ Firestore read OK — docs count: ' + snap.size);
+  } catch(e) {
+    log('❌ Firestore read FAILED: ' + e.code + ' — ' + e.message);
+  }
+
+  log('Attempting Firestore write (test doc)...');
+  try {
+    const ref = await addDoc(collection(db, 'contacts'), { name: '__test__', status: 'test' });
+    log('✅ Firestore write OK — doc id: ' + ref.id);
+  } catch(e) {
+    log('❌ Firestore write FAILED: ' + e.code + ' — ' + e.message);
+  }
+});
+</script>
+</body>
+</html>

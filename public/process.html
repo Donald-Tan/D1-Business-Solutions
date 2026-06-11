@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Process — D1 Business Solutions</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg:      #0b0d12;
+    --bg2:     #11141b;
+    --bg3:     #171b24;
+    --surface: #1c2030;
+    --border:  #252a38;
+    --border2: #2e3448;
+    --ink:     #e9eaf2;
+    --ink2:    #8d94ad;
+    --ink3:    #555d78;
+    --accent:  #c792ea;
+    --accent2: #82aaff;
+    --green:   #c3e88d;
+    --orange:  #f78c6c;
+    --cyan:    #89ddff;
+    --yellow:  #ffcb6b;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; }
+
+  /* NAV */
+  nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.1rem 2.5rem;
+    border-bottom: 1px solid var(--border);
+    background: rgba(11,13,18,0.94);
+    backdrop-filter: blur(14px);
+    position: sticky; top: 0; z-index: 10;
+  }
+  .logo { font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 1.7rem; letter-spacing: 0.04em; color: var(--accent); font-style: italic; text-decoration: none; }
+  nav ul { display: flex; gap: 2rem; list-style: none; }
+  nav a { text-decoration: none; color: var(--ink2); font-size: 0.85rem; font-weight: 400; letter-spacing: 0.04em; transition: color 0.2s; }
+  nav a:hover { color: var(--ink); }
+  .nav-cta { background: var(--accent); color: #0b0d12 !important; padding: 0.45rem 1.3rem; border-radius: 100px; font-weight: 600 !important; font-size: 0.82rem !important; letter-spacing: 0.03em !important; }
+
+  /* SHARED */
+  .section-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+  h2 { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: clamp(2rem, 3.5vw, 2.8rem); letter-spacing: -0.01em; line-height: 1.1; margin-bottom: 1rem; }
+  h2 em { font-style: italic; color: var(--accent2); }
+  .section-intro { font-size: 0.92rem; color: var(--ink2); max-width: 500px; font-weight: 300; margin-bottom: 3rem; line-height: 1.8; }
+
+  /* PAGE HERO */
+  .page-hero {
+    max-width: 1100px; margin: 0 auto;
+    padding: 5rem 2.5rem 4rem;
+    text-align: center;
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--bg3); border: 1px solid var(--border2);
+    padding: 0.35rem 1rem; border-radius: 100px;
+    font-size: 0.72rem; font-weight: 500; color: var(--ink2); letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 1.75rem;
+  }
+  .hero-eyebrow::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 7px var(--green); }
+  .page-hero h1 {
+    font-family: 'Cormorant Garamond', serif; font-weight: 300;
+    font-size: clamp(2.8rem, 5vw, 4rem);
+    line-height: 1.05; letter-spacing: -0.01em; margin-bottom: 1.25rem;
+  }
+  .page-hero h1 em { font-style: italic; color: var(--accent); }
+  .page-hero p { font-size: 0.95rem; color: var(--ink2); font-weight: 300; max-width: 520px; margin: 0 auto 2.5rem; line-height: 1.8; }
+  .hero-actions { display: flex; gap: 1rem; align-items: center; justify-content: center; }
+  .btn-primary { background: var(--accent); color: #0b0d12; padding: 0.85rem 2rem; border-radius: 100px; text-decoration: none; font-weight: 600; font-size: 0.88rem; letter-spacing: 0.03em; transition: opacity 0.2s, transform 0.2s; display: inline-block; }
+  .btn-primary:hover { opacity: 0.85; transform: translateY(-2px); }
+  .btn-ghost { color: var(--ink2); font-weight: 400; font-size: 0.88rem; text-decoration: none; display: flex; align-items: center; gap: 0.4rem; border: 1px solid var(--border2); padding: 0.85rem 1.6rem; border-radius: 100px; letter-spacing: 0.03em; transition: border-color 0.2s, color 0.2s; }
+  .btn-ghost:hover { border-color: var(--accent2); color: var(--accent2); }
+
+  /* TIMELINE BAR */
+  .timeline-bar { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--bg2); }
+  .timeline-inner { display: flex; max-width: 1100px; margin: 0 auto; }
+  .tl-item { flex: 1; padding: 1.25rem 2rem; border-right: 1px solid var(--border); display: flex; align-items: center; gap: 0.75rem; cursor: pointer; transition: background 0.2s; text-decoration: none; }
+  .tl-item:last-child { border-right: none; }
+  .tl-item:hover { background: var(--bg3); }
+  .tl-num { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 300; color: var(--border2); line-height: 1; flex-shrink: 0; transition: color 0.2s; }
+  .tl-item:hover .tl-num { color: var(--accent); }
+  .tl-text p { font-size: 0.68rem; color: var(--ink3); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; margin-bottom: 0.1rem; }
+  .tl-text span { font-size: 0.85rem; color: var(--ink2); font-weight: 400; }
+
+  /* STEPS */
+  .steps-section { max-width: 1100px; margin: 0 auto; padding: 5rem 2.5rem; }
+
+  .step-block {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+    padding: 4rem 0; border-bottom: 1px solid var(--border);
+  }
+  .step-block:last-child { border-bottom: none; }
+  .step-block.reverse { direction: rtl; }
+  .step-block.reverse > * { direction: ltr; }
+
+  .step-meta { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; }
+  .step-badge {
+    font-family: 'Cormorant Garamond', serif; font-weight: 300;
+    font-size: 3.5rem; line-height: 1; color: var(--border2);
+  }
+  .step-tag {
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 0.2rem 0.75rem; border-radius: 100px;
+  }
+  .tag-purple { background: rgba(199,146,234,0.12); color: var(--accent); border: 1px solid rgba(199,146,234,0.25); }
+  .tag-blue   { background: rgba(130,170,255,0.1);  color: var(--accent2); border: 1px solid rgba(130,170,255,0.2); }
+  .tag-green  { background: rgba(195,232,141,0.1);  color: var(--green);   border: 1px solid rgba(195,232,141,0.2); }
+  .tag-cyan   { background: rgba(137,221,255,0.08); color: var(--cyan);    border: 1px solid rgba(137,221,255,0.2); }
+
+  .step-content h3 {
+    font-family: 'DM Serif Display', serif; font-weight: 400;
+    font-size: clamp(1.5rem, 2.5vw, 1.9rem); color: var(--ink);
+    margin-bottom: 1rem; line-height: 1.15;
+  }
+  .step-content p { font-size: 0.9rem; color: var(--ink2); font-weight: 300; line-height: 1.85; margin-bottom: 1.25rem; }
+
+  .step-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
+  .step-bullets li { display: flex; align-items: flex-start; gap: 0.65rem; font-size: 0.83rem; color: var(--ink2); font-weight: 300; line-height: 1.5; }
+  .step-bullets li::before { content: '→'; color: var(--accent); font-size: 0.78rem; flex-shrink: 0; margin-top: 0.15rem; }
+
+  /* STEP VISUAL CARDS */
+  .step-visual { background: var(--bg2); border: 1px solid var(--border); border-radius: 16px; padding: 1.75rem; }
+  .visual-header { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1.5rem; }
+  .visual-icon { font-size: 1.1rem; }
+  .visual-title { font-size: 0.78rem; color: var(--ink3); font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; }
+
+  /* Call visual */
+  .call-slots { display: flex; flex-direction: column; gap: 0.65rem; }
+  .call-slot { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; background: var(--bg3); border: 1px solid var(--border2); border-radius: 10px; }
+  .slot-time { font-size: 0.78rem; color: var(--ink3); font-weight: 500; min-width: 56px; }
+  .slot-label { font-size: 0.82rem; color: var(--ink2); flex: 1; }
+  .slot-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .dot-green { background: var(--green); box-shadow: 0 0 6px var(--green); }
+  .dot-purple { background: var(--accent); box-shadow: 0 0 6px var(--accent); }
+  .dot-gray { background: var(--ink3); }
+  .call-note { margin-top: 1rem; font-size: 0.75rem; color: var(--ink3); display: flex; align-items: center; gap: 0.5rem; }
+  .call-note::before { content: '✓'; color: var(--green); font-weight: 600; }
+
+  /* Mockup visual */
+  .mockup-frame { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .mockup-bar { display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 0.9rem; border-bottom: 1px solid var(--border); background: var(--surface); }
+  .mockup-dots { display: flex; gap: 4px; }
+  .mockup-dots span { width: 8px; height: 8px; border-radius: 50%; }
+  .mockup-dots .r { background: #ff5f56; } .mockup-dots .y { background: #ffbd2e; } .mockup-dots .g { background: #27c93f; }
+  .mockup-url { font-size: 0.68rem; color: var(--ink3); margin-left: auto; font-family: monospace; }
+  .mockup-content { padding: 1.25rem; }
+  .mockup-hero-bar { height: 10px; background: var(--accent); border-radius: 4px; width: 60%; margin-bottom: 0.6rem; opacity: 0.4; }
+  .mockup-sub-bar { height: 7px; background: var(--border2); border-radius: 4px; width: 80%; margin-bottom: 0.4rem; }
+  .mockup-sub-bar.short { width: 50%; }
+  .mockup-btn-bar { height: 28px; background: rgba(199,146,234,0.2); border: 1px solid rgba(199,146,234,0.3); border-radius: 100px; width: 100px; margin-top: 0.9rem; display: flex; align-items: center; justify-content: center; }
+  .mockup-btn-bar span { font-size: 0.6rem; color: var(--accent); font-weight: 600; letter-spacing: 0.08em; }
+  .mockup-delivered { display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem; padding: 0.6rem 0.9rem; background: rgba(195,232,141,0.06); border: 1px solid rgba(195,232,141,0.15); border-radius: 8px; }
+  .mockup-delivered span { font-size: 0.75rem; color: var(--green); font-weight: 400; }
+  .mockup-delivered::before { content: '⚡'; font-size: 0.85rem; }
+
+  /* Build visual */
+  .build-checklist { display: flex; flex-direction: column; gap: 0.6rem; }
+  .build-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.7rem 1rem; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; }
+  .build-item.done { border-color: rgba(195,232,141,0.2); }
+  .build-check { width: 18px; height: 18px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; flex-shrink: 0; }
+  .check-done { background: rgba(195,232,141,0.15); color: var(--green); }
+  .check-active { background: rgba(199,146,234,0.15); color: var(--accent); animation: pulse-soft 1.5s ease-in-out infinite; }
+  .check-pending { background: var(--surface); color: var(--ink3); }
+  @keyframes pulse-soft { 0%,100%{opacity:1} 50%{opacity:0.5} }
+  .build-label { font-size: 0.82rem; color: var(--ink2); font-weight: 300; flex: 1; }
+  .build-item.done .build-label { color: var(--ink3); text-decoration: line-through; text-decoration-color: var(--ink3); }
+  .build-item.active .build-label { color: var(--ink); }
+  .build-progress { margin-top: 1rem; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--ink3); margin-bottom: 0.4rem; }
+  .progress-bar { height: 5px; background: var(--border); border-radius: 100px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent2), var(--accent)); border-radius: 100px; width: 65%; }
+
+  /* Launch visual */
+  .launch-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+  .metric-card { background: var(--bg3); border: 1px solid var(--border2); border-radius: 10px; padding: 1rem; }
+  .metric-val { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 300; line-height: 1; margin-bottom: 0.25rem; }
+  .metric-val .up { color: var(--green); }
+  .metric-val .hi { color: var(--accent2); }
+  .metric-val .ac { color: var(--accent); }
+  .metric-val .cy { color: var(--cyan); }
+  .metric-label { font-size: 0.7rem; color: var(--ink3); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
+  .launch-status { margin-top: 0.75rem; display: flex; align-items: center; gap: 0.6rem; padding: 0.7rem 1rem; background: rgba(195,232,141,0.06); border: 1px solid rgba(195,232,141,0.2); border-radius: 8px; }
+  .launch-pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 7px var(--green); animation: pulse-glow 2s ease-in-out infinite; flex-shrink: 0; }
+  @keyframes pulse-glow { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  .launch-status span { font-size: 0.8rem; color: var(--green); font-weight: 400; }
+
+  /* WHAT TO EXPECT */
+  .expect-section { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .expect-inner { max-width: 1100px; margin: 0 auto; padding: 5rem 2.5rem; }
+  .expect-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .expect-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 14px; padding: 1.75rem; }
+  .expect-icon { font-size: 1.4rem; margin-bottom: 1rem; }
+  .expect-card h3 { font-family: 'DM Serif Display', serif; font-weight: 400; font-size: 1rem; color: var(--ink); margin-bottom: 0.5rem; }
+  .expect-card p { font-size: 0.82rem; color: var(--ink2); font-weight: 300; line-height: 1.7; }
+
+  /* TIMELINE OVERVIEW */
+  .overview-section { max-width: 1100px; margin: 0 auto; padding: 5rem 2.5rem; }
+  .overview-track { position: relative; padding-left: 2.5rem; }
+  .overview-track::before { content: ''; position: absolute; left: 7px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, var(--accent), var(--accent2), var(--green)); opacity: 0.3; }
+  .overview-row { position: relative; display: grid; grid-template-columns: 140px 1fr; gap: 2rem; align-items: flex-start; padding: 1.5rem 0; border-bottom: 1px solid var(--border); }
+  .overview-row:last-child { border-bottom: none; }
+  .overview-row::before { content: ''; position: absolute; left: -2.5rem; top: 1.85rem; width: 14px; height: 14px; border-radius: 50%; background: var(--bg); border: 2px solid var(--border2); transition: border-color 0.2s; }
+  .overview-row:hover::before { border-color: var(--accent); }
+  .overview-time { font-size: 0.75rem; color: var(--ink3); font-weight: 500; letter-spacing: 0.06em; padding-top: 0.15rem; }
+  .overview-time strong { display: block; font-size: 0.88rem; color: var(--accent2); font-weight: 600; letter-spacing: 0; margin-bottom: 0.15rem; }
+  .overview-content h4 { font-family: 'DM Serif Display', serif; font-weight: 400; font-size: 1rem; color: var(--ink); margin-bottom: 0.35rem; }
+  .overview-content p { font-size: 0.82rem; color: var(--ink2); font-weight: 300; line-height: 1.7; }
+
+  /* CTA BAND */
+  .cta-band { max-width: 1100px; margin: 0 auto 5rem; padding: 0 2.5rem; }
+  .cta-inner {
+    background: var(--bg2); border: 1px solid var(--border2); border-radius: 20px;
+    padding: 3.5rem 3rem; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
+    position: relative; overflow: hidden;
+  }
+  .cta-inner::before { content: ''; position: absolute; top: -80px; right: -80px; width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle, rgba(199,146,234,0.07) 0%, transparent 70%); pointer-events: none; }
+  .cta-inner::after { content: ''; position: absolute; bottom: -60px; left: -60px; width: 220px; height: 220px; border-radius: 50%; background: radial-gradient(circle, rgba(130,170,255,0.06) 0%, transparent 70%); pointer-events: none; }
+  .cta-content h2 { margin-bottom: 0.75rem; }
+  .cta-content p { font-size: 0.9rem; color: var(--ink2); font-weight: 300; line-height: 1.8; margin-bottom: 2rem; }
+  .cta-actions { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+  .btn-accent { display: inline-block; background: var(--accent); color: #0b0d12; padding: 0.85rem 2.2rem; border-radius: 100px; text-decoration: none; font-weight: 600; font-size: 0.88rem; letter-spacing: 0.03em; transition: opacity 0.2s, transform 0.2s; }
+  .btn-accent:hover { opacity: 0.85; transform: translateY(-2px); }
+  .cta-contacts { display: flex; flex-direction: column; gap: 0.85rem; }
+  .cta-contact-item { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.25rem; background: var(--bg3); border: 1px solid var(--border); border-radius: 12px; transition: border-color 0.2s; text-decoration: none; }
+  .cta-contact-item:hover { border-color: var(--border2); }
+  .cta-contact-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+  .icon-phone { background: rgba(195,232,141,0.1); }
+  .icon-email { background: rgba(199,146,234,0.1); }
+  .cta-contact-text p { font-size: 0.68rem; color: var(--ink3); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; margin-bottom: 0.15rem; }
+  .cta-contact-text span { font-size: 0.88rem; color: var(--ink); font-weight: 400; }
+
+  /* FOOTER */
+  footer { border-top: 1px solid var(--border); padding: 2rem 2.5rem; max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr 1fr; align-items: center; }
+  .footer-logo { font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 1.4rem; color: var(--accent); font-style: italic; }
+  .footer-legal { font-size: 0.75rem; color: var(--ink3); text-align: center; line-height: 1.7; }
+  .footer-contact { text-align: right; }
+  .footer-contact a { font-size: 0.78rem; color: var(--ink3); text-decoration: none; display: block; line-height: 2; transition: color 0.2s; }
+  .footer-contact a:hover { color: var(--accent); }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.25rem; }
+    nav ul { gap: 1rem; }
+    .page-hero { padding: 3.5rem 1.25rem 2.5rem; }
+    .timeline-inner { flex-direction: column; }
+    .tl-item { border-right: none; border-bottom: 1px solid var(--border); }
+    .tl-item:last-child { border-bottom: none; }
+    .steps-section { padding: 3rem 1.25rem; }
+    .step-block { grid-template-columns: 1fr; gap: 2rem; padding: 3rem 0; }
+    .step-block.reverse { direction: ltr; }
+    .expect-inner { padding: 3rem 1.25rem; }
+    .expect-grid { grid-template-columns: 1fr; }
+    .overview-section { padding: 3rem 1.25rem; }
+    .cta-band { padding: 0 1.25rem; }
+    .cta-inner { grid-template-columns: 1fr; padding: 2rem 1.5rem; }
+    footer { grid-template-columns: 1fr; gap: 1rem; text-align: center; }
+    .footer-contact { text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">D1</a>
+  <ul>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="work.html">Work</a></li>
+    <li><a href="process.html">Process</a></li>
+    <li><a href="quote.html" class="nav-cta">Get a quote</a></li>
+  </ul>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="hero-eyebrow">How we work</div>
+  <h1>Built around you,<br><em>delivered fast</em></h1>
+  <p>No hand-holding required. Our four-step process is designed for busy business owners — clear, collaborative, and built to hit a live launch in days, not months.</p>
+  <div class="hero-actions">
+    <a href="quote.html" class="btn-primary">Start your project →</a>
+    <a href="tel:2067134204" class="btn-ghost">📞 Talk to us first</a>
+  </div>
+</div>
+
+<!-- TIMELINE NAV BAR -->
+<div class="timeline-bar">
+  <div class="timeline-inner">
+    <a href="#step-1" class="tl-item">
+      <div class="tl-num">01</div>
+      <div class="tl-text"><p>Day 1</p><span>Discovery call</span></div>
+    </a>
+    <a href="#step-2" class="tl-item">
+      <div class="tl-num">02</div>
+      <div class="tl-text"><p>Day 1–2</p><span>Proposal & design</span></div>
+    </a>
+    <a href="#step-3" class="tl-item">
+      <div class="tl-num">03</div>
+      <div class="tl-text"><p>Day 3–14</p><span>Build & review</span></div>
+    </a>
+    <a href="#step-4" class="tl-item">
+      <div class="tl-num">04</div>
+      <div class="tl-text"><p>Day 14+</p><span>Launch & support</span></div>
+    </a>
+  </div>
+</div>
+
+<!-- STEP BLOCKS -->
+<div class="steps-section">
+
+  <!-- STEP 1 -->
+  <div class="step-block" id="step-1">
+    <div class="step-content">
+      <div class="step-meta">
+        <div class="step-badge">01</div>
+        <span class="step-tag tag-purple">Free · No pressure</span>
+      </div>
+      <h3>Discovery call</h3>
+      <p>Everything starts with a real conversation — not a sales pitch. We spend 20–30 minutes understanding your business, your customers, and what's actually holding you back online.</p>
+      <p>By the end, we'll have a clear picture of exactly what you need and you'll know precisely what to expect from us.</p>
+      <ul class="step-bullets">
+        <li>We learn your goals, audience, and competitors</li>
+        <li>You tell us what you love (and hate) about your current site</li>
+        <li>We audit your existing online presence on the spot</li>
+        <li>No homework required — just show up and talk</li>
+        <li>100% free, zero commitment</li>
+      </ul>
+    </div>
+    <div class="step-visual">
+      <div class="visual-header">
+        <div class="visual-icon">📅</div>
+        <div class="visual-title">Schedule your call</div>
+      </div>
+      <div class="call-slots">
+        <div class="call-slot">
+          <div class="slot-time">9:00 AM</div>
+          <div class="slot-label">Discovery call — 30 min</div>
+          <div class="slot-dot dot-green"></div>
+        </div>
+        <div class="call-slot">
+          <div class="slot-time">11:30 AM</div>
+          <div class="slot-label">Discovery call — 30 min</div>
+          <div class="slot-dot dot-green"></div>
+        </div>
+        <div class="call-slot">
+          <div class="slot-time">2:00 PM</div>
+          <div class="slot-label">Discovery call — 30 min</div>
+          <div class="slot-dot dot-purple"></div>
+        </div>
+        <div class="call-slot">
+          <div class="slot-time">4:30 PM</div>
+          <div class="slot-label">Discovery call — 30 min</div>
+          <div class="slot-dot dot-gray"></div>
+        </div>
+      </div>
+      <div class="call-note">Free consultation — cancel anytime</div>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step-block reverse" id="step-2">
+    <div class="step-content">
+      <div class="step-meta">
+        <div class="step-badge">02</div>
+        <span class="step-tag tag-blue">Within 48 hours</span>
+      </div>
+      <h3>Proposal & design mockup</h3>
+      <p>Within 48 hours of your call, you'll receive a full written proposal and a visual mockup of your homepage — not a wireframe, a real design with your branding and content.</p>
+      <p>You'll know the exact price, timeline, and what's included before paying a single dollar.</p>
+      <ul class="step-bullets">
+        <li>Itemized quote with no hidden costs</li>
+        <li>Visual homepage mockup in your brand colors</li>
+        <li>Full page-by-page content plan</li>
+        <li>Technology recommendations explained in plain English</li>
+        <li>Revise the proposal until it's exactly right</li>
+      </ul>
+    </div>
+    <div class="step-visual">
+      <div class="visual-header">
+        <div class="visual-icon">🎨</div>
+        <div class="visual-title">Your mockup preview</div>
+      </div>
+      <div class="mockup-frame">
+        <div class="mockup-bar">
+          <div class="mockup-dots"><span class="r"></span><span class="y"></span><span class="g"></span></div>
+          <div class="mockup-url">yourbusiness.com</div>
+        </div>
+        <div class="mockup-content">
+          <div class="mockup-hero-bar"></div>
+          <div class="mockup-sub-bar"></div>
+          <div class="mockup-sub-bar short"></div>
+          <div class="mockup-btn-bar"><span>GET STARTED →</span></div>
+        </div>
+      </div>
+      <div class="mockup-delivered">
+        <span>Mockup delivered within 48 hours of your call</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step-block" id="step-3">
+    <div class="step-content">
+      <div class="step-meta">
+        <div class="step-badge">03</div>
+        <span class="step-tag tag-green">Milestone feedback</span>
+      </div>
+      <h3>Build & review</h3>
+      <p>Once you approve the proposal and pay the 50% deposit, we get building immediately. We share progress at every milestone so you're never in the dark — and never surprised.</p>
+      <p>Unlimited revisions are included throughout. We don't stop until you're genuinely happy with every detail.</p>
+      <ul class="step-bullets">
+        <li>50% deposit to kick off, 50% on final approval</li>
+        <li>Shared staging link so you can review on any device</li>
+        <li>Feedback rounds at design, content, and integration stages</li>
+        <li>Unlimited revisions — no extra charges</li>
+        <li>Slack or email updates throughout</li>
+      </ul>
+    </div>
+    <div class="step-visual">
+      <div class="visual-header">
+        <div class="visual-icon">🔨</div>
+        <div class="visual-title">Build progress</div>
+      </div>
+      <div class="build-checklist">
+        <div class="build-item done">
+          <div class="build-check check-done">✓</div>
+          <div class="build-label">Design approved</div>
+        </div>
+        <div class="build-item done">
+          <div class="build-check check-done">✓</div>
+          <div class="build-label">Homepage built</div>
+        </div>
+        <div class="build-item done">
+          <div class="build-check check-done">✓</div>
+          <div class="build-label">Inner pages complete</div>
+        </div>
+        <div class="build-item active">
+          <div class="build-check check-active">●</div>
+          <div class="build-label">AI agent integration</div>
+        </div>
+        <div class="build-item">
+          <div class="build-check check-pending">○</div>
+          <div class="build-label">SEO & speed audit</div>
+        </div>
+        <div class="build-item">
+          <div class="build-check check-pending">○</div>
+          <div class="build-label">Final review & launch</div>
+        </div>
+      </div>
+      <div class="build-progress">
+        <div class="progress-label"><span>Overall progress</span><span>65%</span></div>
+        <div class="progress-bar"><div class="progress-fill"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step-block reverse" id="step-4">
+    <div class="step-content">
+      <div class="step-meta">
+        <div class="step-badge">04</div>
+        <span class="step-tag tag-cyan">30-day support included</span>
+      </div>
+      <h3>Launch & ongoing support</h3>
+      <p>When you give final approval, we launch — and we stay close for the first 30 days. We handle any post-launch tweaks, monitor performance, and make sure everything is running perfectly.</p>
+      <p>After that, an optional monthly retainer keeps your site growing with new content, updates, and improvements as your business evolves.</p>
+      <ul class="step-bullets">
+        <li>We go live on your schedule — never rushed</li>
+        <li>30-day post-launch support included in every package</li>
+        <li>We monitor uptime, speed, and form submissions for you</li>
+        <li>You own 100% of the code, domain, and hosting</li>
+        <li>Optional monthly retainer for ongoing growth</li>
+      </ul>
+    </div>
+    <div class="step-visual">
+      <div class="visual-header">
+        <div class="visual-icon">🚀</div>
+        <div class="visual-title">Post-launch snapshot</div>
+      </div>
+      <div class="launch-metrics">
+        <div class="metric-card">
+          <div class="metric-val"><span class="up">98</span></div>
+          <div class="metric-label">Performance score</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-val"><span class="hi">1.2</span>s</div>
+          <div class="metric-label">Page load time</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-val"><span class="ac">12</span></div>
+          <div class="metric-label">Leads this week</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-val"><span class="cy">100</span>%</div>
+          <div class="metric-label">Uptime (30 days)</div>
+        </div>
+      </div>
+      <div class="launch-status">
+        <div class="launch-pulse"></div>
+        <span>Your site is live and performing</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- WHAT TO EXPECT -->
+<div class="expect-section">
+  <div class="expect-inner">
+    <div class="section-label">What to expect</div>
+    <h2>Working with us <em>feels different</em></h2>
+    <p class="section-intro">Most agencies over-promise and under-deliver. Here's what we actually commit to on every project.</p>
+    <div class="expect-grid">
+      <div class="expect-card">
+        <div class="expect-icon">⚡</div>
+        <h3>We move fast</h3>
+        <p>First draft in 48 hours. Most starter sites launch within a week. We respect your time and know that every day without a great website is a day you're leaving money on the table.</p>
+      </div>
+      <div class="expect-card">
+        <div class="expect-icon">💬</div>
+        <h3>No jargon, ever</h3>
+        <p>We explain everything in plain English. You'll always know what we're building, why we're building it, and what it means for your business — no technical background required.</p>
+      </div>
+      <div class="expect-card">
+        <div class="expect-icon">🔁</div>
+        <h3>Unlimited revisions</h3>
+        <p>We don't stop until you genuinely love it. There's no "revision limit" — if something isn't right, we fix it. Simple as that.</p>
+      </div>
+      <div class="expect-card">
+        <div class="expect-icon">🔒</div>
+        <h3>You own everything</h3>
+        <p>The code, the content, the domain — it's all yours from day one. We never lock you in. You can take your site to any developer or host at any time, no questions asked.</p>
+      </div>
+      <div class="expect-card">
+        <div class="expect-icon">📞</div>
+        <h3>Real humans, real replies</h3>
+        <p>You'll always be talking to the people actually building your site. No account managers, no ticketing queues — same-day replies on the Growth and Scale plans.</p>
+      </div>
+      <div class="expect-card">
+        <div class="expect-icon">📈</div>
+        <h3>Built to grow with you</h3>
+        <p>Everything is modular. Need to add an AI agent, an e-commerce store, or a booking system later? Easy — we build with expansion in mind from the very first line of code.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROJECT TIMELINE OVERVIEW -->
+<div class="overview-section">
+  <div class="section-label">Typical timeline</div>
+  <h2>From first call to <em>live site</em></h2>
+  <p class="section-intro">Here's what a standard Launch Ready project looks like day by day. Growth and Scale timelines are 2–4 weeks depending on complexity.</p>
+  <div class="overview-track">
+    <div class="overview-row">
+      <div class="overview-time"><strong>Day 1</strong>Discovery call</div>
+      <div class="overview-content">
+        <h4>Free 30-minute consultation</h4>
+        <p>We learn about your business, review your current online presence, and align on goals. You'll leave the call with a clear picture of the plan.</p>
+      </div>
+    </div>
+    <div class="overview-row">
+      <div class="overview-time"><strong>Day 1–2</strong>Within 48 hrs</div>
+      <div class="overview-content">
+        <h4>Proposal + homepage mockup delivered</h4>
+        <p>Full written quote with itemized pricing, a page-by-page plan, and a real visual mockup of your homepage — all before you spend a penny.</p>
+      </div>
+    </div>
+    <div class="overview-row">
+      <div class="overview-time"><strong>Day 2–3</strong>On approval</div>
+      <div class="overview-content">
+        <h4>50% deposit — build begins immediately</h4>
+        <p>Once you sign off on the proposal, work starts the same day. You'll get access to a shared staging link so you can track progress in real time.</p>
+      </div>
+    </div>
+    <div class="overview-row">
+      <div class="overview-time"><strong>Day 4–6</strong>Build phase</div>
+      <div class="overview-content">
+        <h4>Full site built with milestone reviews</h4>
+        <p>We share progress at design, content, and integration checkpoints. Leave feedback directly on the staging link — changes happen fast.</p>
+      </div>
+    </div>
+    <div class="overview-row">
+      <div class="overview-time"><strong>Day 7</strong>Final review</div>
+      <div class="overview-content">
+        <h4>Final walkthrough & your approval</h4>
+        <p>We walk through the complete site together, make any last tweaks, and confirm everything is exactly right before we flip the switch.</p>
+      </div>
+    </div>
+    <div class="overview-row">
+      <div class="overview-time"><strong>Day 7+</strong>You're live</div>
+      <div class="overview-content">
+        <h4>Launch + 30-day post-launch support</h4>
+        <p>Your site goes live on your domain. We monitor performance, handle any fixes, and stay available for 30 days to make sure everything runs perfectly.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA BAND -->
+<div class="cta-band">
+  <div class="cta-inner">
+    <div class="cta-content">
+      <div class="section-label">Ready to start?</div>
+      <h2>Let's get your business <em>online</em></h2>
+      <p>Book a free discovery call or send us a message. We'll respond within a few hours — usually much faster — and have a proposal in your inbox within 48 hours.</p>
+      <div class="cta-actions">
+        <a href="quote.html" class="btn-accent">Get a quote →</a>
+        <a href="tel:2067134204" class="btn-ghost">📞 Call us now</a>
+      </div>
+    </div>
+    <div class="cta-contacts">
+      <a href="tel:2067134204" class="cta-contact-item">
+        <div class="cta-contact-icon icon-phone">📞</div>
+        <div class="cta-contact-text">
+          <p>Phone</p>
+          <span>(206) 713-4204</span>
+        </div>
+      </a>
+      <a href="mailto:hello@d1businesssolutions.com" class="cta-contact-item">
+        <div class="cta-contact-icon icon-email">✉️</div>
+        <div class="cta-contact-text">
+          <p>General inquiries</p>
+          <span>hello@d1businesssolutions.com</span>
+        </div>
+      </a>
+      <a href="mailto:ai@d1businesssolutions.com" class="cta-contact-item">
+        <div class="cta-contact-icon icon-email" style="background:rgba(137,221,255,0.1);">🤖</div>
+        <div class="cta-contact-text">
+          <p>AI & automation</p>
+          <span>ai@d1businesssolutions.com</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">D1</div>
+  <div class="footer-legal">© 2026 D1 Business Solutions LLC.<br>All rights reserved.</div>
+  <div class="footer-contact">
+    <a href="tel:2067134204">(206) 713-4204</a>
+    <a href="mailto:hello@d1businesssolutions.com">hello@d1businesssolutions.com</a>
+  </div>
+</footer>
+
+</body>
+</html>

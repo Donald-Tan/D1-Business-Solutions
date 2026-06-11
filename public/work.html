@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Work — D1 Business Solutions</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg:      #0b0d12;
+    --bg2:     #11141b;
+    --bg3:     #171b24;
+    --surface: #1c2030;
+    --border:  #252a38;
+    --border2: #2e3448;
+    --ink:     #e9eaf2;
+    --ink2:    #8d94ad;
+    --ink3:    #555d78;
+    --accent:  #c792ea;
+    --accent2: #82aaff;
+    --green:   #c3e88d;
+    --orange:  #f78c6c;
+    --cyan:    #89ddff;
+    --yellow:  #ffcb6b;
+  }
+  body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; }
+
+  nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.1rem 2.5rem; border-bottom: 1px solid var(--border);
+    background: rgba(11,13,18,0.94); backdrop-filter: blur(14px);
+    position: sticky; top: 0; z-index: 10;
+  }
+  .logo { font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 1.7rem; letter-spacing: 0.04em; color: var(--accent); font-style: italic; text-decoration: none; }
+  nav ul { display: flex; gap: 2rem; list-style: none; }
+  nav a { text-decoration: none; color: var(--ink2); font-size: 0.85rem; font-weight: 400; letter-spacing: 0.04em; transition: color 0.2s; }
+  nav a:hover { color: var(--ink); }
+  .nav-cta { background: var(--accent); color: #0b0d12 !important; padding: 0.45rem 1.3rem; border-radius: 100px; font-weight: 600 !important; font-size: 0.82rem !important; }
+
+  .section-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+  h2 { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: clamp(2rem, 3.5vw, 2.8rem); letter-spacing: -0.01em; line-height: 1.1; margin-bottom: 1rem; }
+  h2 em { font-style: italic; color: var(--accent2); }
+  .section-intro { font-size: 0.92rem; color: var(--ink2); max-width: 500px; font-weight: 300; margin-bottom: 3rem; line-height: 1.8; }
+
+  /* HERO */
+  .page-hero { max-width: 1100px; margin: 0 auto; padding: 5rem 2.5rem 4rem; text-align: center; }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--bg3); border: 1px solid var(--border2);
+    padding: 0.35rem 1rem; border-radius: 100px;
+    font-size: 0.72rem; font-weight: 500; color: var(--ink2); letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 1.75rem;
+  }
+  .hero-eyebrow::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 7px var(--green); }
+  .page-hero h1 { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: clamp(2.8rem, 5vw, 4rem); line-height: 1.05; letter-spacing: -0.01em; margin-bottom: 1.25rem; }
+  .page-hero h1 em { font-style: italic; color: var(--accent); }
+  .page-hero p { font-size: 0.95rem; color: var(--ink2); font-weight: 300; max-width: 520px; margin: 0 auto 2.5rem; line-height: 1.8; }
+  .hero-actions { display: flex; gap: 1rem; align-items: center; justify-content: center; }
+  .btn-primary { background: var(--accent); color: #0b0d12; padding: 0.85rem 2rem; border-radius: 100px; text-decoration: none; font-weight: 600; font-size: 0.88rem; letter-spacing: 0.03em; transition: opacity 0.2s, transform 0.2s; display: inline-block; }
+  .btn-primary:hover { opacity: 0.85; transform: translateY(-2px); }
+  .btn-ghost { color: var(--ink2); font-weight: 400; font-size: 0.88rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; border: 1px solid var(--border2); padding: 0.85rem 1.6rem; border-radius: 100px; letter-spacing: 0.03em; transition: border-color 0.2s, color 0.2s; }
+  .btn-ghost:hover { border-color: var(--accent2); color: var(--accent2); }
+
+  /* FILTER BAR */
+  .filter-bar { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--bg2); }
+  .filter-inner { display: flex; align-items: center; gap: 0.75rem; max-width: 1100px; margin: 0 auto; padding: 1rem 2.5rem; flex-wrap: wrap; }
+  .filter-label { font-size: 0.7rem; color: var(--ink3); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-right: 0.5rem; }
+  .filter-btn { padding: 0.35rem 1rem; border-radius: 100px; font-size: 0.78rem; font-weight: 400; cursor: pointer; border: 1px solid var(--border2); background: transparent; color: var(--ink3); transition: all 0.2s; font-family: 'Outfit', sans-serif; }
+  .filter-btn:hover, .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #0b0d12; font-weight: 600; }
+
+  /* CASE STUDIES */
+  .work-section { max-width: 1100px; margin: 0 auto; padding: 5rem 2.5rem; }
+
+  .case-study {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+    padding: 4.5rem 0; border-bottom: 1px solid var(--border);
+  }
+  .case-study:first-child { padding-top: 0; }
+  .case-study:last-child { border-bottom: none; }
+  .case-study.reverse { direction: rtl; }
+  .case-study.reverse > * { direction: ltr; }
+
+  .cs-tag-row { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
+  .cs-tag { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.2rem 0.75rem; border-radius: 100px; }
+  .tag-purple { background: rgba(199,146,234,0.12); color: var(--accent); border: 1px solid rgba(199,146,234,0.25); }
+  .tag-cyan   { background: rgba(137,221,255,0.08); color: var(--cyan);   border: 1px solid rgba(137,221,255,0.2); }
+  .tag-blue   { background: rgba(130,170,255,0.1);  color: var(--accent2);border: 1px solid rgba(130,170,255,0.2); }
+  .tag-green  { background: rgba(195,232,141,0.1);  color: var(--green);  border: 1px solid rgba(195,232,141,0.2); }
+  .tag-orange { background: rgba(247,140,108,0.1);  color: var(--orange); border: 1px solid rgba(247,140,108,0.2); }
+
+  .cs-industry { font-size: 0.68rem; color: var(--ink3); text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600; }
+
+  .cs-content h3 { font-family: 'DM Serif Display', serif; font-weight: 400; font-size: clamp(1.4rem, 2.2vw, 1.8rem); color: var(--ink); margin-bottom: 0.75rem; line-height: 1.2; }
+  .cs-content > p { font-size: 0.88rem; color: var(--ink2); font-weight: 300; line-height: 1.85; margin-bottom: 1.5rem; }
+
+  .cs-results { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1.75rem; }
+  .cs-result { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 0.85rem 1rem; }
+  .cs-result-val { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 300; line-height: 1; margin-bottom: 0.2rem; }
+  .rv-g { color: var(--green); } .rv-b { color: var(--accent2); } .rv-p { color: var(--accent); } .rv-c { color: var(--cyan); } .rv-o { color: var(--orange); }
+  .cs-result-label { font-size: 0.65rem; color: var(--ink3); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
+
+  .cs-quote { padding: 1.25rem; background: var(--bg3); border-left: 2px solid var(--accent); border-radius: 0 10px 10px 0; margin-bottom: 1.5rem; }
+  .cs-quote p { font-size: 0.85rem; color: var(--ink2); font-style: italic; font-weight: 300; line-height: 1.7; margin-bottom: 0.5rem; }
+  .cs-quote cite { font-size: 0.72rem; color: var(--ink3); font-style: normal; font-weight: 500; letter-spacing: 0.04em; }
+
+  .cs-link { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: var(--accent2); text-decoration: none; font-weight: 500; transition: gap 0.2s; }
+  .cs-link:hover { gap: 0.7rem; }
+
+  /* PROJECT VISUAL MOCKUPS */
+  .cs-visual { position: relative; }
+  .cs-mockup { background: var(--bg2); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+  .mockup-bar { display: flex; align-items: center; gap: 0.5rem; padding: 0.65rem 1rem; background: var(--surface); border-bottom: 1px solid var(--border); }
+  .mock-dots { display: flex; gap: 4px; }
+  .mock-dots span { width: 9px; height: 9px; border-radius: 50%; }
+  .dot-r { background: #ff5f56; } .dot-y { background: #ffbd2e; } .dot-g { background: #27c93f; }
+  .mock-url { font-size: 0.68rem; color: var(--ink3); font-family: monospace; margin-left: auto; }
+  .mock-body { padding: 1.5rem; }
+
+  /* Plumbing site mockup */
+  .plumbing-nav { display: flex; gap: 0.5rem; margin-bottom: 1.25rem; align-items: center; }
+  .plumbing-logo { width: 32px; height: 18px; background: rgba(195,232,141,0.2); border-radius: 4px; }
+  .plumbing-nav-links { display: flex; gap: 0.4rem; margin-left: auto; }
+  .plumbing-nav-links span { height: 6px; width: 28px; background: var(--border2); border-radius: 3px; }
+  .plumbing-hero-text { height: 10px; background: rgba(195,232,141,0.3); border-radius: 4px; width: 65%; margin-bottom: 0.5rem; }
+  .plumbing-sub { height: 7px; background: var(--border); border-radius: 3px; width: 80%; margin-bottom: 0.35rem; }
+  .plumbing-sub.sm { width: 55%; }
+  .plumbing-cta-row { display: flex; gap: 0.5rem; margin-top: 0.85rem; }
+  .plumbing-btn { height: 24px; border-radius: 100px; display: flex; align-items: center; justify-content: center; }
+  .plumbing-btn.solid { background: rgba(195,232,141,0.2); border: 1px solid rgba(195,232,141,0.3); width: 90px; }
+  .plumbing-btn.outline { border: 1px solid var(--border2); width: 75px; }
+  .plumbing-btn span { font-size: 0.55rem; color: var(--green); font-weight: 600; letter-spacing: 0.06em; }
+  .plumbing-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.5rem; margin-top: 1rem; }
+  .plumbing-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 0.6rem; }
+  .plumbing-card-icon { font-size: 0.9rem; margin-bottom: 0.3rem; }
+  .plumbing-card-line { height: 5px; background: var(--border2); border-radius: 3px; width: 85%; margin-bottom: 0.2rem; }
+  .plumbing-card-line.sm { width: 60%; }
+  .cs-badge { position: absolute; bottom: -12px; right: 20px; background: var(--bg3); border: 1px solid var(--border2); border-radius: 10px; padding: 0.6rem 1rem; display: flex; align-items: center; gap: 0.6rem; }
+  .cs-badge-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); animation: pulse 2s ease-in-out infinite; flex-shrink: 0; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  .cs-badge span { font-size: 0.75rem; color: var(--green); font-weight: 400; }
+
+  /* Boutique mockup */
+  .boutique-hero { height: 80px; background: linear-gradient(135deg, rgba(199,146,234,0.15), rgba(130,170,255,0.1)); border-radius: 8px; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; }
+  .boutique-hero-inner { text-align: center; }
+  .boutique-title { height: 8px; background: rgba(199,146,234,0.4); border-radius: 4px; width: 120px; margin: 0 auto 0.4rem; }
+  .boutique-sub2 { height: 6px; background: var(--border2); border-radius: 3px; width: 80px; margin: 0 auto; }
+  .boutique-products { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.5rem; }
+  .boutique-product { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .boutique-img { height: 42px; display: flex; align-items: center; justify-content: center; font-size: 1rem; background: var(--surface); }
+  .boutique-info { padding: 0.4rem 0.5rem; }
+  .boutique-name { height: 5px; background: var(--border2); border-radius: 3px; width: 80%; margin-bottom: 0.25rem; }
+  .boutique-price { font-size: 0.6rem; color: var(--accent); font-weight: 600; }
+
+  /* HVAC mockup */
+  .hvac-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; }
+  .hvac-logo-bar { height: 7px; background: rgba(137,221,255,0.3); border-radius: 3px; width: 60px; }
+  .hvac-phone { margin-left: auto; font-size: 0.62rem; color: var(--cyan); font-weight: 600; }
+  .hvac-hero-bg { height: 70px; background: linear-gradient(135deg, rgba(137,221,255,0.1), rgba(130,170,255,0.08)); border-radius: 8px; margin-bottom: 1rem; display: flex; flex-direction: column; justify-content: center; padding: 0.75rem; }
+  .hvac-h1 { height: 8px; background: rgba(137,221,255,0.35); border-radius: 4px; width: 70%; margin-bottom: 0.4rem; }
+  .hvac-sub3 { height: 6px; background: var(--border2); border-radius: 3px; width: 85%; margin-bottom: 0.3rem; }
+  .hvac-sub3.sm { width: 50%; margin-bottom: 0; }
+  .hvac-trust { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.5rem; }
+  .hvac-trust-item { background: var(--surface); border: 1px solid var(--border); border-radius: 7px; padding: 0.5rem; display: flex; align-items: center; gap: 0.4rem; }
+  .hvac-trust-icon { font-size: 0.8rem; }
+  .hvac-trust-line { height: 5px; background: var(--border2); border-radius: 3px; flex: 1; }
+
+  /* Fitness mockup */
+  .fitness-dash { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin-bottom: 0.75rem; }
+  .fitness-metric { background: var(--bg3); border: 1px solid var(--border2); border-radius: 9px; padding: 0.75rem; }
+  .fm-val { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 300; line-height: 1; margin-bottom: 0.15rem; }
+  .fm-lbl { font-size: 0.6rem; color: var(--ink3); text-transform: uppercase; letter-spacing: 0.07em; }
+  .fitness-chat { background: var(--bg3); border: 1px solid var(--border); border-radius: 9px; padding: 0.75rem; }
+  .fitness-chat-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.65rem; }
+  .fc-pulse { width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 5px var(--cyan); animation: pulse 2s ease-in-out infinite; }
+  .fc-title { font-size: 0.7rem; color: var(--ink2); font-weight: 500; }
+  .fc-msg { font-size: 0.72rem; color: var(--ink2); font-weight: 300; line-height: 1.5; padding: 0.5rem 0.65rem; background: rgba(137,221,255,0.07); border: 1px solid rgba(137,221,255,0.12); border-radius: 7px; }
+
+  /* Law firm mockup */
+  .law-hero { height: 90px; background: linear-gradient(135deg, rgba(199,146,234,0.08), rgba(11,13,18,0)); border-radius: 8px; margin-bottom: 1rem; padding: 1rem; display: flex; flex-direction: column; justify-content: center; border: 1px solid var(--border); }
+  .law-h1 { height: 9px; background: rgba(199,146,234,0.3); border-radius: 4px; width: 70%; margin-bottom: 0.5rem; }
+  .law-sub4 { height: 6px; background: var(--border2); border-radius: 3px; width: 90%; margin-bottom: 0.3rem; }
+  .law-sub4.sm { width: 60%; margin-bottom: 0.7rem; }
+  .law-cta-btn { height: 22px; background: rgba(199,146,234,0.15); border: 1px solid rgba(199,146,234,0.25); border-radius: 100px; width: 120px; display: flex; align-items: center; justify-content: center; }
+  .law-cta-btn span { font-size: 0.55rem; color: var(--accent); font-weight: 600; letter-spacing: 0.06em; }
+  .law-trust-bar { display: flex; gap: 0.5rem; }
+  .law-trust-badge { flex: 1; background: var(--surface); border: 1px solid var(--border); border-radius: 7px; padding: 0.5rem; text-align: center; }
+  .law-trust-val { font-size: 0.7rem; color: var(--accent); font-weight: 600; display: block; }
+  .law-trust-lbl { font-size: 0.55rem; color: var(--ink3); text-transform: uppercase; letter-spacing: 0.06em; }
+
+  /* Restaurant mockup */
+  .rest-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; }
+  .rest-logo { font-size: 1rem; }
+  .rest-name { height: 7px; background: rgba(247,140,108,0.35); border-radius: 3px; width: 80px; }
+  .rest-order-btn { margin-left: auto; height: 22px; background: rgba(247,140,108,0.15); border: 1px solid rgba(247,140,108,0.25); border-radius: 100px; padding: 0 0.75rem; display: flex; align-items: center; }
+  .rest-order-btn span { font-size: 0.55rem; color: var(--orange); font-weight: 600; letter-spacing: 0.06em; }
+  .rest-menu { display: flex; flex-direction: column; gap: 0.5rem; }
+  .rest-item { display: flex; align-items: center; gap: 0.75rem; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 0.6rem 0.75rem; }
+  .rest-item-icon { font-size: 1rem; flex-shrink: 0; }
+  .rest-item-info { flex: 1; }
+  .rest-item-name { height: 6px; background: var(--border2); border-radius: 3px; width: 70%; margin-bottom: 0.25rem; }
+  .rest-item-desc { height: 5px; background: var(--border); border-radius: 3px; width: 90%; }
+  .rest-item-price { font-size: 0.78rem; color: var(--orange); font-weight: 600; flex-shrink: 0; }
+
+  /* STATS BAND */
+  .stats-band { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--bg2); }
+  .stats-inner { display: flex; max-width: 1100px; margin: 0 auto; }
+  .stat-item { flex: 1; padding: 1.75rem 2.5rem; border-right: 1px solid var(--border); }
+  .stat-item:last-child { border-right: none; }
+  .stat-val { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: 2.2rem; line-height: 1; margin-bottom: 0.3rem; }
+  .stat-val .a { color: var(--accent); } .stat-val .g { color: var(--green); } .stat-val .b { color: var(--accent2); } .stat-val .c { color: var(--cyan); }
+  .stat-desc { font-size: 0.78rem; color: var(--ink3); letter-spacing: 0.03em; }
+
+  /* CTA BAND */
+  .cta-band { max-width: 1100px; margin: 5rem auto 5rem; padding: 0 2.5rem; }
+  .cta-inner {
+    background: var(--bg2); border: 1px solid var(--border2); border-radius: 20px;
+    padding: 3.5rem 3rem; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
+    position: relative; overflow: hidden;
+  }
+  .cta-inner::before { content: ''; position: absolute; top: -80px; right: -80px; width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle, rgba(199,146,234,0.07) 0%, transparent 70%); pointer-events: none; }
+  .cta-content p { font-size: 0.9rem; color: var(--ink2); font-weight: 300; line-height: 1.8; margin-bottom: 2rem; }
+  .cta-actions { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+  .btn-accent { display: inline-block; background: var(--accent); color: #0b0d12; padding: 0.85rem 2.2rem; border-radius: 100px; text-decoration: none; font-weight: 600; font-size: 0.88rem; letter-spacing: 0.03em; transition: opacity 0.2s, transform 0.2s; }
+  .btn-accent:hover { opacity: 0.85; transform: translateY(-2px); }
+  .cta-contacts { display: flex; flex-direction: column; gap: 0.85rem; }
+  .cta-contact-item { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.25rem; background: var(--bg3); border: 1px solid var(--border); border-radius: 12px; transition: border-color 0.2s; text-decoration: none; }
+  .cta-contact-item:hover { border-color: var(--border2); }
+  .cta-contact-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+  .icon-phone { background: rgba(195,232,141,0.1); } .icon-email { background: rgba(199,146,234,0.1); } .icon-ai { background: rgba(137,221,255,0.1); }
+  .cta-contact-text p { font-size: 0.68rem; color: var(--ink3); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; margin-bottom: 0.15rem; }
+  .cta-contact-text span { font-size: 0.88rem; color: var(--ink); font-weight: 400; }
+
+  footer { border-top: 1px solid var(--border); padding: 2rem 2.5rem; max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr 1fr; align-items: center; }
+  .footer-logo { font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 1.4rem; color: var(--accent); font-style: italic; }
+  .footer-legal { font-size: 0.75rem; color: var(--ink3); text-align: center; line-height: 1.7; }
+  .footer-contact { text-align: right; }
+  .footer-contact a { font-size: 0.78rem; color: var(--ink3); text-decoration: none; display: block; line-height: 2; transition: color 0.2s; }
+  .footer-contact a:hover { color: var(--accent); }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.25rem; } nav ul { gap: 1rem; }
+    .page-hero { padding: 3.5rem 1.25rem 2.5rem; }
+    .filter-inner { padding: 0.75rem 1.25rem; }
+    .work-section { padding: 3rem 1.25rem; }
+    .case-study { grid-template-columns: 1fr; gap: 2rem; padding: 3rem 0; }
+    .case-study.reverse { direction: ltr; }
+    .cs-results { grid-template-columns: repeat(3,1fr); }
+    .stats-inner { flex-wrap: wrap; }
+    .stat-item { flex: 1 1 50%; border-bottom: 1px solid var(--border); }
+    .cta-band { padding: 0 1.25rem; }
+    .cta-inner { grid-template-columns: 1fr; padding: 2rem 1.5rem; }
+    footer { grid-template-columns: 1fr; gap: 1rem; text-align: center; }
+    .footer-contact { text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">D1</a>
+  <ul>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="work.html">Work</a></li>
+    <li><a href="process.html">Process</a></li>
+    <li><a href="quote.html" class="nav-cta">Get a quote</a></li>
+  </ul>
+</nav>
+
+<div class="page-hero">
+  <div class="hero-eyebrow">Case studies</div>
+  <h1>Real businesses,<br><em>real results</em></h1>
+  <p>Every project is different. Here's a look at some of the work we've done — the problems businesses came to us with, and what happened after we got to work.</p>
+  <div class="hero-actions">
+    <a href="quote.html" class="btn-primary">Start your project →</a>
+    <a href="services.html" class="btn-ghost">See all services</a>
+  </div>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <div class="filter-inner">
+    <span class="filter-label">Filter:</span>
+    <button class="filter-btn active" onclick="filterWork('all', this)">All work</button>
+    <button class="filter-btn" onclick="filterWork('website', this)">Websites</button>
+    <button class="filter-btn" onclick="filterWork('ai', this)">AI agents</button>
+    <button class="filter-btn" onclick="filterWork('ecommerce', this)">E-commerce</button>
+    <button class="filter-btn" onclick="filterWork('seo', this)">SEO</button>
+    <button class="filter-btn" onclick="filterWork('automation', this)">Automation</button>
+  </div>
+</div>
+
+<div class="work-section">
+
+  <!-- CASE 1: Plumbing -->
+  <div class="case-study" data-tags="website ai">
+    <div class="cs-content">
+      <div class="cs-tag-row">
+        <span class="cs-tag tag-purple">Website</span>
+        <span class="cs-tag tag-cyan">AI Agent</span>
+        <span class="cs-industry">Home Services · Plumbing</span>
+      </div>
+      <h3>How a one-man plumbing company tripled its leads in 30 days</h3>
+      <p>Pacific Drain &amp; Plumbing had no website — just a Google Business listing and word of mouth. Calls were slow. When they did come in, most happened after hours with nobody to answer. We built a fast, local-SEO-optimized site and trained an AI agent to answer questions and capture leads overnight.</p>
+      <div class="cs-results">
+        <div class="cs-result"><div class="cs-result-val rv-g">3×</div><div class="cs-result-label">Lead volume</div></div>
+        <div class="cs-result"><div class="cs-result-val rv-b">1.1s</div><div class="cs-result-label">Load time</div></div>
+        <div class="cs-result"><div class="cs-result-val rv-p">68%</div><div class="cs-result-label">After-hours leads</div></div>
+      </div>
+      <div class="cs-quote">
+        <p>"I used to miss calls all the time while I was under a sink. Now the AI handles them and I just call back the hot leads. Best investment I've made."</p>
+        <cite>— Mike T., Owner, Pacific Drain &amp; Plumbing</cite>
+      </div>
+      <a href="quote.html" class="cs-link">Get a similar setup →</a>
+    </div>
+    <div class="cs-visual">
+      <div class="cs-mockup">
+        <div class="mockup-bar">
+          <div class="mock-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          <div class="mock-url">pacificdrain.com</div>
+        </div>
+        <div class="mock-body">
+          <div class="plumbing-nav">
+            <div class="plumbing-logo"></div>
+            <div class="plumbing-nav-links"><span></span><span></span><span></span></div>
+          </div>
+          <div class="plumbing-hero-text"></div>
+          <div class="plumbing-sub"></div>
+          <div class="plumbing-sub sm"></div>
+          <div class="plumbing-cta-row">
+            <div class="plumbing-btn solid"><span>CALL NOW</span></div>
+            <div class="plumbing-btn outline"></div>
+          </div>
+          <div class="plumbing-cards">
+            <div class="plumbing-card"><div class="plumbing-card-icon">🔧</div><div class="plumbing-card-line"></div><div class="plumbing-card-line sm"></div></div>
+            <div class="plumbing-card"><div class="plumbing-card-icon">🚿</div><div class="plumbing-card-line"></div><div class="plumbing-card-line sm"></div></div>
+            <div class="plumbing-card"><div class="plumbing-card-icon">⚡</div><div class="plumbing-card-line"></div><div class="plumbing-card-line sm"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="cs-badge">
+        <div class="cs-badge-dot"></div>
+        <span>AI captured 7 leads last night</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASE 2: Boutique -->
+  <div class="case-study reverse" data-tags="ecommerce website">
+    <div class="cs-content">
+      <div class="cs-tag-row">
+        <span class="cs-tag tag-blue">E-commerce</span>
+        <span class="cs-tag tag-purple">Website</span>
+        <span class="cs-industry">Retail · Fashion Boutique</span>
+      </div>
+      <h3>From Instagram DMs to a fully automated online store</h3>
+      <p>Maison Lune was taking orders manually via Instagram — copying addresses into spreadsheets, invoicing by hand, and losing sales when DMs went unread. We built a full e-commerce store with automated checkout, inventory tracking, and abandoned-cart recovery that runs itself.</p>
+      <div class="cs-results">
+        <div class="cs-result"><div class="cs-result-val rv-b">$18k</div><div class="cs-result-label">Month 1 revenue</div></div>
+        <div class="cs-result"><div class="cs-result-val rv-g">41%</div><div class="cs-result-label">Cart recovery rate</div></div>
+        <div class="cs-result"><div class="cs-result-val rv-p">0 hrs</div><div class="cs-result-label">Manual order entry</div></div>
+      </div>
+      <div class="cs-quote">
+        <p>"I was spending 3 hours a day managing orders on Instagram. Now the store runs itself and I actually have time to source new products."</p>
+        <cite>— Camille R., Founder, Maison Lune</cite>
+      </div>
+      <a href="quote.html" class="cs-link">Build your store →</a>
+    </div>
+    <div class="cs-visual">
+      <div class="cs-mockup">
+        <div class="mockup-bar">
+          <div class="mock-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          <div class="mock-url">maisonlune.com</div>
+        </div>
+        <div class="mock-body">
+          <div class="boutique-hero">
+            <div class="boutique-hero-inner">
+              <div class="boutique-title"></div>
+              <div class="boutique-sub2"></div>
+            </div>
+          </div>
+          <div class="boutique-products">
+            <div class="boutique-product"><div class="boutique-img">👗</div><div class="boutique-info"><div class="boutique-name"></div><div class="boutique-price">$94</div></div></div>
+            <div class="boutique-product"><div class="boutique-img">👜</div><div class="boutique-info"><div class="boutique-name"></div><div class="boutique-price">$148</div></div></div>
+            <div class="boutique-product"><div class="boutique-img">🧣</div><div class="boutique-info"><div class="boutique-name"></div><div class="boutique-price">$62</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASE 3: HVAC -->
+  <div class="case-study" data-tags="website seo">
+    <div class="cs-content">
+      <div class="cs-tag-row">
+        <span class="cs-tag tag-green">SEO</span>
+        <span class="cs-tag tag-purple">Website</span>
+        <span class="cs-industry">Home Services · HVAC</span>
+      </div>
+      <h3>Page-one Google rankings in a competitive local market</h3>
+      <p>Cascade Comfort Heating &amp; Cooling had a website that was 6 years old, loading in 8 seconds, and buried on page 4 for every local search term. We rebuilt it from scratch with technical SEO baked in, Google Business optimization, and location-specific landing pages for each service area.</p>
+      <div class="cs-results">
+        <div class="cs-result"><div class="cs-result-val rv-g">#1</div><div class="cs-result-label">Google rank</div></div>
+        <div class="cs-result"><div class="cs-result-val rv-b">0.9s</div><div class="cs-result-label">Load time</div></div>
+        <div class="cs-result"><div class="cs-result-val rv-c">+220%</div><div class="cs-result-label">Organic traffic</div></div>
+      </div>
+      <div class="cs-quote">
+        <p>"We went from page 4 to page 1 in about 8 weeks. The phone started ringing without us paying for ads. That was a game-changer for us."</p>
+        <cite>— James K., Owner, Cascade Comfort</cite>
+      </div>
+      <a href="quote.html" class="cs-link">Improve my rankings →</a>
+    </div>
+    <div class="cs-visual">
+      <div class="cs-mockup">
+        <div class="mockup-bar">
+          <div class="mock-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          <div class="mock-url">cascadecomfort.com</div>
+        </div>
+        <div class="mock-body">
+          <div class="hvac-header">
+            <div class="hvac-logo-bar"></div>
+            <div class="hvac-phone">📞 (206) 555-0142</div>
+          </div>
+          <div class="hvac-hero-bg">
+            <div class="hvac-h1"></div>
+            <div class="hvac-sub3"></div>
+            <div class="hvac-sub3 sm"></div>
+          </div>
+          <div class="hvac-trust">
+            <div class="hvac-trust-item"><span class="hvac-trust-icon">⭐</span><div class="hvac-trust-line"></div></div>
+            <div class="hvac-trust-item"><span class="hvac-trust-icon">🏅</span><div class="hvac-trust-line"></div></div>
+            <div class="hvac-trust-item"><span class="hvac-trust-icon">✓</span><div class="hvac-trust-line"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASE 4: Fitness -->
+  <div class="case-study reverse" data-tags="ai automation website">
+    <div class="cs-content">
+      <div class="cs-tag-row">
+        <span class="cs-tag tag-cyan">AI Agent</span>
+        <span class="cs-tag tag-orange">Automation</span>
+        <span class="cs-industry">Health &amp; Wellness · Fitness Studio</span>
+      </div>
+      <h3>An AI booking agent that fills class schedules automatically</h3>
+      <p>Apex Fitness Studio was losing sign-ups because their booking process was clunky and their team couldn't respond to inquiries fast enough. We deployed an AI agent on their site and Instagram that answers questions, handles objections, and books trial classes directly into their Mindbody calendar.</p>
+      <div class="cs-results">
+        <div class="cs-result"><div class="cs-result-val rv-c">89%</div><div class="cs-result-label">Booking rate</div></div>
+        <div class="cs-result"><div class="cs-result-val rv-g">+54</div><div class="cs-result-label">New members/mo</div></div>
+        <div class="cs-result"><div class="cs-result-val rv-b">24/7</div><div class="cs-result-label">Availability</div></div>
+      </div>
+      <div class="cs-quote">
+        <p>"The AI books more trial classes than our front desk did. It never takes a day off and it handles all the 'how much does it cost' questions without us lifting a finger."</p>
+        <cite>— Sara M., Studio Director, Apex Fitness</cite>
+      </div>
+      <a href="quote.html" class="cs-link">Get an AI agent →</a>
+    </div>
+    <div class="cs-visual">
+      <div class="cs-mockup">
+        <div class="mockup-bar">
+          <div class="mock-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          <div class="mock-url">apexfitness.com</div>
+        </div>
+        <div class="mock-body">
+          <div class="fitness-dash">
+            <div class="fitness-metric"><div class="fm-val" style="color:var(--cyan);">47</div><div class="fm-lbl">Classes booked today</div></div>
+            <div class="fitness-metric"><div class="fm-val" style="color:var(--green);">94%</div><div class="fm-lbl">Classes full</div></div>
+          </div>
+          <div class="fitness-chat">
+            <div class="fitness-chat-header"><div class="fc-pulse"></div><div class="fc-title">Apex AI — online 24/7</div></div>
+            <div class="fc-msg">Hi! I'd love to book a free trial class for you. What days work best — weekdays or weekends?</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASE 5: Law Firm -->
+  <div class="case-study" data-tags="website ai">
+    <div class="cs-content">
+      <div class="cs-tag-row">
+        <span class="cs-tag tag-purple">Website</span>
+        <span class="cs-tag tag-cyan">AI Agent</span>
+        <span class="cs-industry">Professional Services · Law</span>
+      </div>
+      <h3>A law firm's new site that converts consultations on autopilot</h3>
+      <p>Brennan &amp; Associates had an outdated firm website that looked like it was built in 2012. Prospects couldn't find what they needed, and the contact form sat for days before anyone replied. We redesigned the site to build authority fast and added an AI intake agent that screens new cases and books consultations automatically.</p>
+      <div class="cs-results">
+        <div class="cs-result"><div class="cs-result-val rv-p">4.2×</div><div class="cs-result-label">Consult bookings</div></div>
+        <div class="cs-result"><div class="cs-result-val rv-b">48h</div><div class="cs-result-label">Build time</div></div>
+        <div class="cs-result"><div class="cs-result-val rv-g">100%</div><div class="cs-result-label">Leads followed up</div></div>
+      </div>
+      <div class="cs-quote">
+        <p>"We were losing potential clients because nobody was answering the website form fast enough. The AI now qualifies them and books the call before they look elsewhere."</p>
+        <cite>— David B., Partner, Brennan &amp; Associates</cite>
+      </div>
+      <a href="quote.html" class="cs-link">Build my firm's site →</a>
+    </div>
+    <div class="cs-visual">
+      <div class="cs-mockup">
+        <div class="mockup-bar">
+          <div class="mock-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          <div class="mock-url">brennanlaw.com</div>
+        </div>
+        <div class="mock-body">
+          <div class="law-hero">
+            <div class="law-h1"></div>
+            <div class="law-sub4"></div>
+            <div class="law-sub4 sm"></div>
+            <div class="law-cta-btn"><span>FREE CONSULTATION</span></div>
+          </div>
+          <div class="law-trust-bar">
+            <div class="law-trust-badge"><span class="law-trust-val">20+</span><span class="law-trust-lbl">Years exp.</span></div>
+            <div class="law-trust-badge"><span class="law-trust-val">500+</span><span class="law-trust-lbl">Cases won</span></div>
+            <div class="law-trust-badge"><span class="law-trust-val">5.0★</span><span class="law-trust-lbl">Google rating</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASE 6: Restaurant -->
+  <div class="case-study reverse" data-tags="website automation">
+    <div class="cs-content">
+      <div class="cs-tag-row">
+        <span class="cs-tag tag-orange">Website</span>
+        <span class="cs-tag tag-blue">Automation</span>
+        <span class="cs-industry">Food &amp; Beverage · Restaurant</span>
+      </div>
+      <h3>Online ordering and reservation automation for a local restaurant</h3>
+      <p>Ember Kitchen was turning away online orders because they had no system for them — just a phone number on Yelp. We built a clean menu-first website with integrated online ordering (connected to their POS), automated reservation confirmations, and a review-collection flow that lifted their Google rating in 60 days.</p>
+      <div class="cs-results">
+        <div class="cs-result"><div class="cs-result-val rv-o">+$9k</div><div class="cs-result-label">Monthly revenue</div></div>
+        <div class="cs-result"><div class="cs-result-val rv-g">4.8★</div><div class="cs-result-label">Google rating</div></div>
+        <div class="cs-result"><div class="cs-result-val rv-b">Zero</div><div class="cs-result-label">Missed orders</div></div>
+      </div>
+      <div class="cs-quote">
+        <p>"We didn't realize how many orders we were losing until we had the system in place. Within the first week we had orders coming in online that we would have never gotten otherwise."</p>
+        <cite>— Elena V., Owner, Ember Kitchen</cite>
+      </div>
+      <a href="quote.html" class="cs-link">Set up online ordering →</a>
+    </div>
+    <div class="cs-visual">
+      <div class="cs-mockup">
+        <div class="mockup-bar">
+          <div class="mock-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+          <div class="mock-url">emberkitchen.com</div>
+        </div>
+        <div class="mock-body">
+          <div class="rest-header">
+            <div class="rest-logo">🔥</div>
+            <div class="rest-name"></div>
+            <div class="rest-order-btn"><span>ORDER ONLINE</span></div>
+          </div>
+          <div class="rest-menu">
+            <div class="rest-item"><div class="rest-item-icon">🥩</div><div class="rest-item-info"><div class="rest-item-name"></div><div class="rest-item-desc"></div></div><div class="rest-item-price">$28</div></div>
+            <div class="rest-item"><div class="rest-item-icon">🐟</div><div class="rest-item-info"><div class="rest-item-name"></div><div class="rest-item-desc"></div></div><div class="rest-item-price">$24</div></div>
+            <div class="rest-item"><div class="rest-item-icon">🥗</div><div class="rest-item-info"><div class="rest-item-name"></div><div class="rest-item-desc"></div></div><div class="rest-item-price">$16</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- STATS BAND -->
+<div class="stats-band">
+  <div class="stats-inner">
+    <div class="stat-item"><div class="stat-val"><span class="g">48</span>h</div><div class="stat-desc">Average first draft delivery</div></div>
+    <div class="stat-item"><div class="stat-val"><span class="a">100</span>%</div><div class="stat-desc">Client satisfaction rate</div></div>
+    <div class="stat-item"><div class="stat-val"><span class="b">3×</span></div><div class="stat-desc">Average lead increase after launch</div></div>
+    <div class="stat-item"><div class="stat-val"><span class="c">∞</span></div><div class="stat-desc">Revisions until you love it</div></div>
+  </div>
+</div>
+
+<!-- CTA BAND -->
+<div class="cta-band">
+  <div class="cta-inner">
+    <div class="cta-content">
+      <div class="section-label">Your project is next</div>
+      <h2>Let's build your <em>success story</em></h2>
+      <p>Every project starts with a free 30-minute discovery call. Tell us what you're working on and we'll have a proposal and visual mockup in your inbox within 48 hours.</p>
+      <div class="cta-actions">
+        <a href="quote.html" class="btn-accent">Get a quote →</a>
+        <a href="process.html" class="btn-ghost">See how it works</a>
+      </div>
+    </div>
+    <div class="cta-contacts">
+      <a href="tel:2067134204" class="cta-contact-item">
+        <div class="cta-contact-icon icon-phone">📞</div>
+        <div class="cta-contact-text"><p>Phone</p><span>(206) 713-4204</span></div>
+      </a>
+      <a href="mailto:hello@d1businesssolutions.com" class="cta-contact-item">
+        <div class="cta-contact-icon icon-email">✉️</div>
+        <div class="cta-contact-text"><p>General inquiries</p><span>hello@d1businesssolutions.com</span></div>
+      </a>
+      <a href="mailto:ai@d1businesssolutions.com" class="cta-contact-item">
+        <div class="cta-contact-icon icon-ai">🤖</div>
+        <div class="cta-contact-text"><p>AI &amp; automation</p><span>ai@d1businesssolutions.com</span></div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">D1</div>
+  <div class="footer-legal">© 2026 D1 Business Solutions LLC.<br>All rights reserved.</div>
+  <div class="footer-contact">
+    <a href="tel:2067134204">(206) 713-4204</a>
+    <a href="mailto:hello@d1businesssolutions.com">hello@d1businesssolutions.com</a>
+  </div>
+</footer>
+
+<script>
+  function filterWork(tag, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.case-study').forEach(cs => {
+      if (tag === 'all') { cs.style.display = ''; return; }
+      const tags = cs.dataset.tags || '';
+      cs.style.display = tags.includes(tag) ? '' : 'none';
+    });
+  }
+</script>
+
+</body>
+</html>
