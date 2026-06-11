@@ -242,6 +242,18 @@ async function startListening() {
   const snap = await getDocs(col);
   if (snap.empty) {
     for (const c of SEED) await addDoc(col, c);
+  } else {
+    const deprecated = new Set(['Not valid', 'No reply', 'User busy', 'In transition']);
+    const today = new Date().toISOString().slice(0,10);
+    const fixes = [];
+    snap.docs.forEach(d => {
+      const data = d.data();
+      const upd = {};
+      if (deprecated.has(data.status)) upd.status = 'Not interested';
+      if (!data.last) upd.last = today;
+      if (Object.keys(upd).length) fixes.push(updateDoc(doc(db, 'contacts', d.id), upd));
+    });
+    if (fixes.length) await Promise.all(fixes);
   }
   unsubscribe = onSnapshot(col, snapshot => {
     contacts = snapshot.docs.map(d => ({ _id: d.id, ...d.data() }));
