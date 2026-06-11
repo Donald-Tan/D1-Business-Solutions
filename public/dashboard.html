@@ -243,13 +243,13 @@ async function startListening() {
   if (snap.empty) {
     for (const c of SEED) await addDoc(col, c);
   } else {
-    const deprecated = new Set(['Not valid', 'No reply', 'User busy', 'In transition']);
+    const mergeToNotValid = new Set(['No reply', 'User busy', 'In transition']);
     const today = new Date().toISOString().slice(0,10);
     const fixes = [];
     snap.docs.forEach(d => {
       const data = d.data();
       const upd = {};
-      if (deprecated.has(data.status)) upd.status = 'Not interested';
+      if (mergeToNotValid.has(data.status)) upd.status = 'Not valid';
       if (!data.last) upd.last = today;
       if (Object.keys(upd).length) fixes.push(updateDoc(doc(db, 'contacts', d.id), upd));
     });
@@ -673,6 +673,7 @@ window.renderTable = () => {
     'Not interested': { bg: 'rgba(247,140,108,0.12)', color: 'var(--orange)',  border: 'rgba(247,140,108,0.25)' },
     'Not contacted':  { bg: 'rgba(130,170,255,0.1)',  color: 'var(--accent2)', border: 'rgba(130,170,255,0.2)'  },
     'Send demo':      { bg: 'rgba(199,146,234,0.12)', color: 'var(--accent)',  border: 'rgba(199,146,234,0.25)' },
+    'Not valid':      { bg: 'rgba(141,148,173,0.1)',  color: 'var(--ink3)',    border: 'rgba(141,148,173,0.2)'  },
   };
 
   const badge = s => {
@@ -713,16 +714,22 @@ window.renderTable = () => {
   const tot = contacts.length;
   const ag  = contacts.filter(c => c.status === 'Agreed').length;
   const cb  = contacts.filter(c => c.status === 'Callback').length;
+  const sd  = contacts.filter(c => c.status === 'Send demo').length;
   const ni  = contacts.filter(c => c.status === 'Not interested').length;
   const nc  = contacts.filter(c => c.status === 'Not contacted').length;
-  const rev = contacts.filter(c => c.price).reduce((s,c) => s + parseFloat(c.price||0), 0);
+  const nv  = contacts.filter(c => c.status === 'Not valid').length;
+  const rev  = contacts.filter(c => c.price).reduce((s,c) => s + parseFloat(c.price||0), 0);
+  const mrev = contacts.filter(c => c.maint).reduce((s,c) => s + parseFloat(c.maint||0), 0);
   document.getElementById('crm-stats').innerHTML = `
     <div class="stat-card"><div class="stat-lbl">Total leads</div><div class="stat-val" style="color:var(--ink)">${tot}</div></div>
     <div class="stat-card"><div class="stat-lbl" style="color:var(--green)">Agreed</div><div class="stat-val" style="color:var(--green)">${ag}</div></div>
     <div class="stat-card"><div class="stat-lbl" style="color:var(--yellow)">Callbacks</div><div class="stat-val" style="color:var(--yellow)">${cb}</div></div>
+    <div class="stat-card"><div class="stat-lbl" style="color:var(--accent)">Send demo</div><div class="stat-val" style="color:var(--accent)">${sd}</div></div>
     <div class="stat-card"><div class="stat-lbl" style="color:var(--orange)">Not interested</div><div class="stat-val" style="color:var(--orange)">${ni}</div></div>
     <div class="stat-card"><div class="stat-lbl" style="color:var(--accent2)">Not contacted</div><div class="stat-val" style="color:var(--accent2)">${nc}</div></div>
-    <div class="stat-card"><div class="stat-lbl" style="color:var(--accent)">Pipeline value</div><div class="stat-val" style="color:var(--accent)">$${rev.toLocaleString()}</div></div>`;
+    <div class="stat-card"><div class="stat-lbl" style="color:var(--ink3)">Not valid</div><div class="stat-val" style="color:var(--ink3)">${nv}</div></div>
+    <div class="stat-card"><div class="stat-lbl" style="color:var(--accent)">Pipeline value</div><div class="stat-val" style="color:var(--accent)">$${rev.toLocaleString()}</div></div>
+    <div class="stat-card"><div class="stat-lbl" style="color:var(--cyan)">Maint. revenue</div><div class="stat-val" style="color:var(--cyan)">$${mrev.toLocaleString()}/yr</div></div>`;
 };
 
 function esc(s) {
@@ -946,9 +953,10 @@ function esc(s) {
         <option value="">All statuses</option>
         <option>Agreed</option>
         <option>Callback</option>
+        <option>Send demo</option>
         <option>Not interested</option>
         <option>Not contacted</option>
-        <option>Send demo</option>
+        <option>Not valid</option>
       </select>
       <button class="topbar-btn primary" onclick="openModal()">+ Add contact</button>
     </div>
@@ -1099,7 +1107,7 @@ function esc(s) {
       <div class="fg"><label>Status</label>
         <select id="f-status">
           <option>Not contacted</option><option>Callback</option><option>Agreed</option>
-          <option>Not interested</option><option>Send demo</option>
+          <option>Send demo</option><option>Not interested</option><option>Not valid</option>
         </select>
       </div>
       <div class="fg"><label>Closing price ($)</label><input id="f-price" type="number"></div>
