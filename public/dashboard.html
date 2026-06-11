@@ -17,7 +17,7 @@ import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, s
 // ── Firebase config ───────────────────────────────────────────────────────────
 const firebaseConfig = {
   apiKey:            "AIzaSyBY7A0du9gqbCpjW1NR4LFb7RRlPQAZwFU",
-  authDomain:        "d1businesssolution.firebaseapp.com",
+  authDomain:        "d1businessolutions.com",
   projectId:         "d1businesssolution",
   storageBucket:     "d1businesssolution.firebasestorage.app",
   messagingSenderId: "135169545392",
@@ -172,6 +172,11 @@ let expenses = [];
 let expEditId = null;
 let unsubExpenses = null;
 
+// Websites state
+let websites = [];
+let siteEditId = null;
+let unsubWebsites = null;
+
 // ── Auth ──────────────────────────────────────────────────────────────────────
 const provider = new GoogleAuthProvider();
 const googleBtnHTML = `<svg class="google-icon" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 8 2.9l5.7-5.7C34.5 6.5 29.5 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.7-.4-3.9z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.5 16 19 12 24 12c3.1 0 5.8 1.1 8 2.9l5.7-5.7C34.5 6.5 29.5 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.2 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8H6.3C9.6 35.4 16.3 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.3-2.3 4.2-4.2 5.6l6.2 5.2C37 39 44 34 44 24c0-1.3-.1-2.7-.4-3.9z"/></svg> Continue with Google`;
@@ -194,12 +199,14 @@ onAuthStateChanged(auth, async user => {
     startListening();
     startProjectsListening();
     startExpensesListening();
+    startWebsitesListening();
   } else {
     document.getElementById('login-screen').style.display = 'flex';
     document.getElementById('app-screen').style.display  = 'none';
     if (unsubscribe) { unsubscribe(); unsubscribe = null; }
     if (unsubProjects) { unsubProjects(); unsubProjects = null; }
     if (unsubExpenses) { unsubExpenses(); unsubExpenses = null; }
+    if (unsubWebsites) { unsubWebsites(); unsubWebsites = null; }
   }
 });
 
@@ -233,7 +240,7 @@ window.doLogout = async () => {
 
 // ── Page switching ────────────────────────────────────────────────────────────
 window.switchPage = (page) => {
-  ['crm','projects','expenses'].forEach(p => {
+  ['crm','projects','expenses','websites'].forEach(p => {
     document.getElementById('page-'+p).style.display = p===page ? (p==='crm'?'flex':'block') : 'none';
     document.getElementById('tab-'+p).classList.toggle('active', p===page);
   });
@@ -271,6 +278,106 @@ function startExpensesListening() {
     renderExpenses();
   });
 }
+
+// ── Firestore: Websites real-time listener ───────────────────────────────────
+function startWebsitesListening() {
+  const col = collection(db, 'websites');
+  unsubWebsites = onSnapshot(col, snapshot => {
+    websites = snapshot.docs.map(d => ({ _id: d.id, ...d.data() }));
+    renderWebsites();
+  });
+}
+
+// ── Websites CRUD ─────────────────────────────────────────────────────────────
+window.openSiteModal = (docId) => {
+  siteEditId = docId || null;
+  const s = docId ? websites.find(x => x._id === docId) : {};
+  document.getElementById('sm-title').textContent = docId ? 'Edit website' : 'Add website';
+  ['sm-business','sm-demo','sm-live','sm-notes'].forEach(id => {
+    const el = document.getElementById(id);
+    const key = id.replace('sm-','');
+    if (el) el.value = (s && s[key]) ? s[key] : '';
+  });
+  const statusEl = document.getElementById('sm-status');
+  if (statusEl) statusEl.value = (s && s.status) ? s.status : 'Demo';
+  document.getElementById('sdel-btn').style.display = docId ? '' : 'none';
+  document.getElementById('site-overlay').classList.add('open');
+};
+
+window.closeSiteModal = () => {
+  document.getElementById('site-overlay').classList.remove('open');
+  siteEditId = null;
+};
+
+window.saveSite = async () => {
+  const business = document.getElementById('sm-business').value.trim();
+  if (!business) { alert('Business name is required.'); return; }
+  const obj = {
+    business,
+    status:  document.getElementById('sm-status').value,
+    demo:    document.getElementById('sm-demo').value.trim(),
+    live:    document.getElementById('sm-live').value.trim(),
+    notes:   document.getElementById('sm-notes').value.trim(),
+  };
+  if (siteEditId) {
+    await updateDoc(doc(db, 'websites', siteEditId), obj);
+  } else {
+    obj.added = new Date().toISOString().slice(0,10);
+    await addDoc(collection(db, 'websites'), obj);
+  }
+  closeSiteModal();
+};
+
+window.deleteSite = async () => {
+  if (!siteEditId || !confirm('Delete this entry? This cannot be undone.')) return;
+  await deleteDoc(doc(db, 'websites', siteEditId));
+  closeSiteModal();
+};
+
+document.getElementById('site-overlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('site-overlay')) closeSiteModal();
+});
+
+// ── Websites render ───────────────────────────────────────────────────────────
+window.renderWebsites = () => {
+  const statusColor = {
+    'Demo':      { bg: 'rgba(130,170,255,0.1)',  color: 'var(--accent2)', border: 'rgba(130,170,255,0.2)'  },
+    'Published': { bg: 'rgba(195,232,141,0.12)', color: 'var(--green)',   border: 'rgba(195,232,141,0.25)' },
+    'Both':      { bg: 'rgba(199,146,234,0.12)', color: 'var(--accent)',  border: 'rgba(199,146,234,0.25)' },
+  };
+  const badge = s => {
+    const sc = statusColor[s] || { bg: 'rgba(141,148,173,0.1)', color: 'var(--ink3)', border: 'rgba(141,148,173,0.2)' };
+    return `<span style="display:inline-block;padding:2px 9px;border-radius:100px;font-size:0.68rem;font-weight:600;letter-spacing:0.04em;background:${sc.bg};color:${sc.color};border:1px solid ${sc.border};white-space:nowrap">${esc(s)}</span>`;
+  };
+  const linkBtn = (url, label) => url
+    ? `<a href="${esc(url)}" target="_blank" style="display:inline-block;padding:2px 10px;border-radius:6px;border:1px solid var(--border2);color:var(--accent2);font-size:0.75rem;text-decoration:none;white-space:nowrap">${label} ↗</a>`
+    : `<span style="color:var(--ink3);font-size:0.75rem">—</span>`;
+
+  const tbody = document.getElementById('site-tbody');
+  if (!websites.length) {
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--ink3)">No websites yet. Add one above.</td></tr>`;
+  } else {
+    const sorted = [...websites].sort((a,b) => (b.added||'').localeCompare(a.added||''));
+    tbody.innerHTML = sorted.map(s => `<tr class="trow">
+      <td style="font-weight:500;color:var(--ink)">${esc(s.business)}</td>
+      <td>${badge(s.status)}</td>
+      <td>${linkBtn(s.demo, 'Demo')}</td>
+      <td>${linkBtn(s.live, 'Live')}</td>
+      <td style="color:var(--ink3);font-size:0.75rem">${s.added||'—'}</td>
+      <td style="color:var(--ink3);font-size:0.78rem;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(s.notes)||''}</td>
+      <td><button class="edit-btn" onclick="openSiteModal('${s._id}')">Edit</button></td>
+    </tr>`).join('');
+  }
+
+  // Stats
+  const total     = websites.length;
+  const demos     = websites.filter(s => s.status === 'Demo' || s.status === 'Both').length;
+  const published = websites.filter(s => s.status === 'Published' || s.status === 'Both').length;
+  document.getElementById('site-stats').innerHTML = `
+    <div class="stat-card"><div class="stat-lbl">Total</div><div class="stat-val" style="color:var(--ink)">${total}</div></div>
+    <div class="stat-card"><div class="stat-lbl" style="color:var(--accent2)">Demos</div><div class="stat-val" style="color:var(--accent2)">${demos}</div></div>
+    <div class="stat-card"><div class="stat-lbl" style="color:var(--green)">Published</div><div class="stat-val" style="color:var(--green)">${published}</div></div>`;
+};
 
 // ── CRM CRUD ──────────────────────────────────────────────────────────────────
 window.saveContact = async () => {
@@ -827,6 +934,7 @@ function esc(s) {
     <button class="nav-tab active" id="tab-crm" onclick="switchPage('crm')">CRM</button>
     <button class="nav-tab" id="tab-projects" onclick="switchPage('projects')">Projects</button>
     <button class="nav-tab" id="tab-expenses" onclick="switchPage('expenses')">Expenses</button>
+    <button class="nav-tab" id="tab-websites" onclick="switchPage('websites')">Websites</button>
     <div class="topbar-sep"></div>
     <div id="crm-controls" style="display:contents">
       <input class="topbar-search" id="search" type="text" placeholder="Search contacts…" oninput="currentPage=1;renderTable()">
@@ -949,6 +1057,31 @@ function esc(s) {
     </div>
   </div><!-- end #page-expenses -->
 
+  <!-- ── WEBSITES PAGE ──────────────────────────────────────────────────────── -->
+  <div id="page-websites" style="display:none">
+    <div class="page-topbar" style="display:flex;align-items:center;justify-content:space-between;padding:1.2rem 2rem 0.8rem;gap:1rem;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:1rem">
+        <div style="font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--ink)">Websites</div>
+        <button class="topbar-btn primary" onclick="openSiteModal()">+ Add website</button>
+      </div>
+    </div>
+    <div id="site-stats" style="display:flex;gap:1rem;padding:0.5rem 2rem 1rem;flex-wrap:wrap"></div>
+    <div style="padding:0 2rem 2rem;overflow-x:auto">
+      <table class="crm-table" style="width:100%">
+        <thead><tr>
+          <th style="width:200px">Business</th>
+          <th style="width:100px">Status</th>
+          <th style="width:100px">Demo</th>
+          <th style="width:100px">Live site</th>
+          <th style="width:95px">Date added</th>
+          <th>Notes</th>
+          <th style="width:55px"></th>
+        </tr></thead>
+        <tbody id="site-tbody"></tbody>
+      </table>
+    </div>
+  </div><!-- end #page-websites -->
+
 </div><!-- end #app-screen -->
 
 <!-- ── CRM MODAL ────────────────────────────────────────────────────────────── -->
@@ -1062,6 +1195,34 @@ function esc(s) {
       <div class="mfooter-right">
         <button class="mbtn" onclick="closeExpModal()">Cancel</button>
         <button class="mbtn mbtn-primary" onclick="saveExpense()">Save expense</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── WEBSITES MODAL ───────────────────────────────────────────────────────── -->
+<div id="site-overlay" class="modal-overlay">
+  <div class="modal" style="width:520px">
+    <div class="modal-title" id="sm-title">Add website</div>
+    <div class="mgrid">
+      <div class="fg full"><label>Business name *</label><input id="sm-business" type="text" placeholder="e.g. F & T Auto Center"></div>
+      <div class="fg"><label>Status</label>
+        <select id="sm-status">
+          <option>Demo</option>
+          <option>Published</option>
+          <option>Both</option>
+        </select>
+      </div>
+      <div class="fg"><label>Date added</label><input id="sm-added-display" type="text" disabled style="opacity:0.5" placeholder="Auto-set on save"></div>
+      <div class="fg full"><label>Demo link</label><input id="sm-demo" type="url" placeholder="https://..."></div>
+      <div class="fg full"><label>Live site link</label><input id="sm-live" type="url" placeholder="https://..."></div>
+      <div class="fg full"><label>Notes</label><textarea id="sm-notes" style="min-height:70px" placeholder="Any notes about this site…"></textarea></div>
+    </div>
+    <div class="mfooter">
+      <button class="mbtn mbtn-danger" id="sdel-btn" onclick="deleteSite()" style="display:none">Delete</button>
+      <div class="mfooter-right">
+        <button class="mbtn" onclick="closeSiteModal()">Cancel</button>
+        <button class="mbtn mbtn-primary" onclick="saveSite()">Save</button>
       </div>
     </div>
   </div>

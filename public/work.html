@@ -2,8 +2,29 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Our Work — D1 Business Solutions</title>
+<title>Our Work — Website & AI Projects | D1 Business Solutions</title>
+<meta name="description" content="See real websites and AI projects built by D1 Business Solutions for small businesses across Seattle and the US. E-commerce, service sites, AI agents, and more.">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0b0d12">
+<link rel="canonical" href="https://d1businesssolution.web.app/work">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://d1businesssolution.web.app/work">
+<meta property="og:title" content="Our Work — Website & AI Projects | D1 Business Solutions">
+<meta property="og:description" content="Real websites and AI projects built for small businesses across Seattle and the US.">
+<meta property="og:site_name" content="D1 Business Solutions">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Our Work — D1 Business Solutions">
+<meta name="twitter:description" content="Real websites and AI projects built for small businesses across Seattle and the US.">
+
+<!-- Preconnect for speed -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -238,6 +259,22 @@
   .footer-contact a { font-size: 0.78rem; color: var(--ink3); text-decoration: none; display: block; line-height: 2; transition: color 0.2s; }
   .footer-contact a:hover { color: var(--accent); }
 
+  /* HAMBURGER */
+  .nav-hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; z-index: 40; }
+  .nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--ink2); border-radius: 2px; transition: all 0.25s; transform-origin: center; }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  .nav-mobile-overlay { display: none; position: fixed; inset: 0; background: rgba(6,7,11,0.6); backdrop-filter: blur(4px); z-index: 19; }
+  .nav-mobile-overlay.open { display: block; }
+  @media (max-width: 768px) {
+  .nav-hamburger { display: flex; }
+  nav ul { display: none; position: fixed; top: 0; right: 0; bottom: 0; width: 72vw; max-width: 300px; background: var(--bg2); border-left: 1px solid var(--border); flex-direction: column; gap: 0; padding: 5rem 0 2rem; z-index: 20; transform: translateX(100%); transition: transform 0.28s cubic-bezier(0.4,0,0.2,1); }
+  nav ul.open { display: flex; transform: translateX(0); }
+  nav ul li { border-bottom: 1px solid var(--border); }
+  nav ul li a { display: block; padding: 1rem 1.75rem; font-size: 1rem; color: var(--ink2); letter-spacing: 0.03em; }
+  nav ul li a:hover { color: var(--ink); background: var(--bg3); }
+  .nav-cta { background: none !important; color: var(--accent) !important; border-radius: 0 !important; font-size: 1rem !important; padding: 1rem 1.75rem !important; }
   @media (max-width: 768px) {
     nav { padding: 1rem 1.25rem; } nav ul { gap: 1rem; }
     .page-hero { padding: 3.5rem 1.25rem 2.5rem; }
@@ -258,12 +295,15 @@
 <body>
 
 <nav>
-  <a href="index.html" class="logo">D1</a>
-  <ul>
-    <li><a href="services.html">Services</a></li>
-    <li><a href="work.html">Work</a></li>
-    <li><a href="process.html">Process</a></li>
-    <li><a href="quote.html" class="nav-cta">Get a quote</a></li>
+  <a href="/" class="logo">D1</a>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  <div class="nav-mobile-overlay" id="navOverlay"></div>
+  <ul id="navMenu">
+    <li><a href="/services">Services</a></li>
+    <li><a href="/work">Work</a></li>
+    <li><a href="/reviews">Reviews</a></li>
+    <li><a href="/process">Process</a></li>
+    <li><a href="/quote" class="nav-cta">Get a quote</a></li>
   </ul>
 </nav>
 
@@ -272,8 +312,8 @@
   <h1>Real businesses,<br><em>real results</em></h1>
   <p>Every project is different. Here's a look at some of the work we've done — the problems businesses came to us with, and what happened after we got to work.</p>
   <div class="hero-actions">
-    <a href="quote.html" class="btn-primary">Start your project →</a>
-    <a href="services.html" class="btn-ghost">See all services</a>
+    <a href="/quote" class="btn-primary">Start your project →</a>
+    <a href="/services" class="btn-ghost">See all services</a>
   </div>
 </div>
 
@@ -311,7 +351,7 @@
         <p>"I used to miss calls all the time while I was under a sink. Now the AI handles them and I just call back the hot leads. Best investment I've made."</p>
         <cite>— Mike T., Owner, Pacific Drain &amp; Plumbing</cite>
       </div>
-      <a href="quote.html" class="cs-link">Get a similar setup →</a>
+      <a href="/quote" class="cs-link">Get a similar setup →</a>
     </div>
     <div class="cs-visual">
       <div class="cs-mockup">
@@ -364,7 +404,7 @@
         <p>"I was spending 3 hours a day managing orders on Instagram. Now the store runs itself and I actually have time to source new products."</p>
         <cite>— Camille R., Founder, Maison Lune</cite>
       </div>
-      <a href="quote.html" class="cs-link">Build your store →</a>
+      <a href="/quote" class="cs-link">Build your store →</a>
     </div>
     <div class="cs-visual">
       <div class="cs-mockup">
@@ -408,7 +448,7 @@
         <p>"We went from page 4 to page 1 in about 8 weeks. The phone started ringing without us paying for ads. That was a game-changer for us."</p>
         <cite>— James K., Owner, Cascade Comfort</cite>
       </div>
-      <a href="quote.html" class="cs-link">Improve my rankings →</a>
+      <a href="/quote" class="cs-link">Improve my rankings →</a>
     </div>
     <div class="cs-visual">
       <div class="cs-mockup">
@@ -455,7 +495,7 @@
         <p>"The AI books more trial classes than our front desk did. It never takes a day off and it handles all the 'how much does it cost' questions without us lifting a finger."</p>
         <cite>— Sara M., Studio Director, Apex Fitness</cite>
       </div>
-      <a href="quote.html" class="cs-link">Get an AI agent →</a>
+      <a href="/quote" class="cs-link">Get an AI agent →</a>
     </div>
     <div class="cs-visual">
       <div class="cs-mockup">
@@ -496,7 +536,7 @@
         <p>"We were losing potential clients because nobody was answering the website form fast enough. The AI now qualifies them and books the call before they look elsewhere."</p>
         <cite>— David B., Partner, Brennan &amp; Associates</cite>
       </div>
-      <a href="quote.html" class="cs-link">Build my firm's site →</a>
+      <a href="/quote" class="cs-link">Build my firm's site →</a>
     </div>
     <div class="cs-visual">
       <div class="cs-mockup">
@@ -540,7 +580,7 @@
         <p>"We didn't realize how many orders we were losing until we had the system in place. Within the first week we had orders coming in online that we would have never gotten otherwise."</p>
         <cite>— Elena V., Owner, Ember Kitchen</cite>
       </div>
-      <a href="quote.html" class="cs-link">Set up online ordering →</a>
+      <a href="/quote" class="cs-link">Set up online ordering →</a>
     </div>
     <div class="cs-visual">
       <div class="cs-mockup">
@@ -584,8 +624,8 @@
       <h2>Let's build your <em>success story</em></h2>
       <p>Every project starts with a free 30-minute discovery call. Tell us what you're working on and we'll have a proposal and visual mockup in your inbox within 48 hours.</p>
       <div class="cta-actions">
-        <a href="quote.html" class="btn-accent">Get a quote →</a>
-        <a href="process.html" class="btn-ghost">See how it works</a>
+        <a href="/quote" class="btn-accent">Get a quote →</a>
+        <a href="/process" class="btn-ghost">See how it works</a>
       </div>
     </div>
     <div class="cta-contacts">
@@ -626,5 +666,7 @@
   }
 </script>
 
+<script src="/chat.js" defer></script>
+<script>(function(){var btn=document.getElementById("navHamburger"),menu=document.getElementById("navMenu"),overlay=document.getElementById("navOverlay");if(!btn)return;function o(){btn.classList.add("open");menu.classList.add("open");overlay.classList.add("open");btn.setAttribute("aria-expanded","true");}function c(){btn.classList.remove("open");menu.classList.remove("open");overlay.classList.remove("open");btn.setAttribute("aria-expanded","false");}btn.addEventListener("click",function(){menu.classList.contains("open")?c():o();});overlay.addEventListener("click",c);menu.querySelectorAll("a").forEach(function(a){a.addEventListener("click",c);});}());</script>
 </body>
 </html>

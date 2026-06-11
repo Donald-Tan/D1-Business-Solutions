@@ -2,8 +2,29 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Get a Quote — D1 Business Solutions</title>
+<title>Get a Free Quote — Website & AI Agent Pricing | D1 Business Solutions</title>
+<meta name="description" content="Get a free quote for your website, AI agent, or e-commerce store from D1 Business Solutions. We'll respond within 24 hours with a proposal and mockup.">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0b0d12">
+<link rel="canonical" href="https://d1businesssolution.web.app/quote">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://d1businesssolution.web.app/quote">
+<meta property="og:title" content="Get a Free Quote | D1 Business Solutions">
+<meta property="og:description" content="Tell us about your project and we'll respond within 24 hours with a proposal and mockup. No commitment required.">
+<meta property="og:site_name" content="D1 Business Solutions">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Get a Free Quote — D1 Business Solutions">
+<meta name="twitter:description" content="Tell us about your project and we'll respond within 24 hours. No commitment required.">
+
+<!-- Preconnect for speed -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -245,6 +266,22 @@
   .footer-contact a:hover { color: var(--accent); }
 
   /* MOBILE */
+  /* HAMBURGER */
+  .nav-hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; z-index: 40; }
+  .nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--ink2); border-radius: 2px; transition: all 0.25s; transform-origin: center; }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  .nav-mobile-overlay { display: none; position: fixed; inset: 0; background: rgba(6,7,11,0.6); backdrop-filter: blur(4px); z-index: 19; }
+  .nav-mobile-overlay.open { display: block; }
+  @media (max-width: 768px) {
+  .nav-hamburger { display: flex; }
+  nav ul { display: none; position: fixed; top: 0; right: 0; bottom: 0; width: 72vw; max-width: 300px; background: var(--bg2); border-left: 1px solid var(--border); flex-direction: column; gap: 0; padding: 5rem 0 2rem; z-index: 20; transform: translateX(100%); transition: transform 0.28s cubic-bezier(0.4,0,0.2,1); }
+  nav ul.open { display: flex; transform: translateX(0); }
+  nav ul li { border-bottom: 1px solid var(--border); }
+  nav ul li a { display: block; padding: 1rem 1.75rem; font-size: 1rem; color: var(--ink2); letter-spacing: 0.03em; }
+  nav ul li a:hover { color: var(--ink); background: var(--bg3); }
+  .nav-cta { background: none !important; color: var(--accent) !important; border-radius: 0 !important; font-size: 1rem !important; padding: 1rem 1.75rem !important; }
   @media (max-width: 768px) {
     nav { padding: 1rem 1.25rem; }
     nav ul { gap: 1rem; }
@@ -271,12 +308,15 @@
 <body>
 
 <nav>
-  <a href="index.html" class="logo">D1</a>
-  <ul>
-    <li><a href="services.html">Services</a></li>
-    <li><a href="work.html">Work</a></li>
-    <li><a href="process.html">Process</a></li>
-    <li><a href="quote.html" class="nav-cta">Get a quote</a></li>
+  <a href="/" class="logo">D1</a>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  <div class="nav-mobile-overlay" id="navOverlay"></div>
+  <ul id="navMenu">
+    <li><a href="/services">Services</a></li>
+    <li><a href="/work">Work</a></li>
+    <li><a href="/reviews">Reviews</a></li>
+    <li><a href="/process">Process</a></li>
+    <li><a href="/quote" class="nav-cta">Get a quote</a></li>
   </ul>
 </nav>
 
@@ -308,7 +348,7 @@
       <div class="trust-icon">📞</div>
       <div class="trust-item-text">
         <p>Support</p>
-        <span>30 days post-launch included</span>
+        <span>Included for the life of your contract</span>
       </div>
     </div>
     <div class="trust-item">
@@ -332,16 +372,7 @@
 <div class="pricing-section">
   <div class="section-label">Packages</div>
   <h2>Pick your <em>starting point</em></h2>
-  <p class="section-intro">Every plan includes mobile-optimized design, SEO foundations, and 30 days of post-launch support. Pay once, own forever — or add a monthly retainer to keep growing.</p>
-
-  <div class="pricing-toggle" id="toggleRow">
-    <span>Monthly retainer</span>
-    <div class="toggle-track" id="toggleTrack" onclick="toggleBilling()">
-      <div class="toggle-thumb"></div>
-    </div>
-    <span>One-time project</span>
-    <span class="save-badge">Save up to 20%</span>
-  </div>
+  <p class="section-intro">Every plan is a one-time project fee — pay once, own your site forever. Add a maintenance plan (includes hosting, support, and updates) to keep everything running for as long as you're with us. Launch Ready: $20/mo or $200/yr · AI-Powered Pro: $50/mo or $500/yr · Full Stack Growth: $100/mo or $1,000/yr.</p>
 
   <div class="pricing-grid">
 
@@ -355,9 +386,6 @@
           <span class="currency">$</span><span id="price-starter">799</span>
           <span class="period" id="period-starter">one-time</span>
         </div>
-        <div class="price-annual" id="annual-starter" style="display:none;">
-          <span class="strike">$1,080/yr</span><span class="save">Save $281</span>
-        </div>
       </div>
       <ul class="features-list">
         <li>Up to 5 pages (Home, About, Services, Blog, Contact)</li>
@@ -366,8 +394,9 @@
         <li>Google Analytics 4 + Search Console</li>
         <li>Contact form with email notifications</li>
         <li>Fast hosting setup & domain config</li>
-        <li>30-day post-launch support</li>
+        <li>Support included for the life of your contract</li>
         <li>Unlimited revisions during build</li>
+        <li>Maintenance plan: $20/mo or $200/yr (includes hosting)</li>
         <li class="muted">AI chatbot / lead agent</li>
         <li class="muted">E-commerce / online payments</li>
         <li class="muted">CRM or booking integration</li>
@@ -387,9 +416,6 @@
           <span class="currency">$</span><span id="price-growth">1,499</span>
           <span class="period" id="period-growth">one-time</span>
         </div>
-        <div class="price-annual" id="annual-growth" style="display:none;">
-          <span class="strike">$1,980/yr</span><span class="save">Save $481</span>
-        </div>
       </div>
       <ul class="features-list">
         <li>Up to 10 pages</li>
@@ -402,6 +428,7 @@
         <li>Speed & Core Web Vitals optimization</li>
         <li>Blog / content section with CMS</li>
         <li>Priority support (same-day response)</li>
+        <li>Maintenance plan: $50/mo or $500/yr (includes hosting)</li>
         <li class="muted">Full e-commerce store</li>
       </ul>
       <hr class="card-divider">
@@ -418,9 +445,6 @@
           <span class="currency">$</span><span id="price-scale">2,999</span>
           <span class="period" id="period-scale">one-time</span>
         </div>
-        <div class="price-annual" id="annual-scale" style="display:none;">
-          <span class="strike">$3,948/yr</span><span class="save">Save $949</span>
-        </div>
       </div>
       <ul class="features-list">
         <li>Unlimited pages</li>
@@ -431,9 +455,9 @@
         <li>Google Ads / Meta Ads tracking setup</li>
         <li>Email marketing integration (Mailchimp, Klaviyo)</li>
         <li>Custom API or webhook integrations</li>
-        <li>3 months ongoing support & updates</li>
         <li>Monthly performance report</li>
         <li>Priority Slack channel access</li>
+        <li>Maintenance plan: $100/mo or $1,000/yr (includes hosting)</li>
       </ul>
       <hr class="card-divider">
       <a href="#quote-form" class="btn-card-secondary">Get started →</a>
@@ -507,7 +531,7 @@
       <tr><td class="row-label">On-page SEO</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
       <tr><td class="row-label">Google Analytics 4</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
       <tr><td class="row-label">Contact form</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
-      <tr><td class="row-label">30-day support</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+      <tr><td class="row-label">Support (life of contract)</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
       <tr><td class="row-label">AI chatbot / lead agent</td><td><span class="dash">—</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
       <tr><td class="row-label">Email + SMS automation</td><td><span class="dash">—</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
       <tr><td class="row-label">CRM integration</td><td><span class="dash">—</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
@@ -516,7 +540,7 @@
       <tr><td class="row-label">E-commerce store</td><td><span class="dash">—</span></td><td><span class="dash">—</span></td><td><span class="check">✓</span></td></tr>
       <tr><td class="row-label">Revenue dashboard</td><td><span class="dash">—</span></td><td><span class="dash">—</span></td><td><span class="check">✓</span></td></tr>
       <tr><td class="row-label">Ad tracking setup</td><td><span class="dash">—</span></td><td><span class="dash">—</span></td><td><span class="check">✓</span></td></tr>
-      <tr><td class="row-label">Ongoing support included</td><td>30 days</td><td>30 days</td><td>3 months</td></tr>
+      <tr><td class="row-label">Maintenance (incl. hosting)</td><td>$20/mo or $200/yr</td><td>$50/mo or $500/yr</td><td>$100/mo or $1,000/yr</td></tr>
       <tr><td class="row-label">Priority support</td><td><span class="dash">—</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
       <tr><td class="row-label">Starting price</td><td>$799</td><td>$1,499</td><td>$2,999</td></tr>
     </tbody>
@@ -531,7 +555,7 @@
   <div class="faq-grid">
     <div class="faq-item">
       <h3>Do I need to pay the full amount upfront?</h3>
-      <p>No. We work on a 50% deposit to start, 50% on final approval before launch. For retainer plans, it's a simple monthly invoice — no lock-in after the first 3 months.</p>
+      <p>No. We work on a 50% deposit to start, 50% on final approval before launch.</p>
     </div>
     <div class="faq-item">
       <h3>How long does a typical project take?</h3>
@@ -572,23 +596,26 @@
       <h2>Tell us about your <em>project</em></h2>
       <p style="font-size:0.92rem; color:var(--ink2); font-weight:300; max-width:480px; line-height:1.8; margin-top:0.5rem;">Fill this out and we'll send a detailed proposal within 24 hours — no generic templates, no fluff. A real quote for your real business.</p>
     </div>
-    <form action="mailto:hello@d1businesssolutions.com" method="post" enctype="text/plain" onsubmit="return handleSubmit(event)">
+    <form id="quote-form-el" autocomplete="on">
+      <input type="hidden" name="access_key" value="2095928f-a811-4850-8120-ad58ae85756a">
+      <input type="hidden" name="subject" value="New quote request — D1 Business Solutions">
+      <input type="hidden" name="from_name" value="D1 Website Form">
       <div class="form-grid">
         <div class="form-group">
           <label for="name">Your name *</label>
-          <input type="text" id="name" name="name" placeholder="Jane Smith" required>
+          <input type="text" id="name" name="name" placeholder="Jane Smith" required autocomplete="name">
         </div>
         <div class="form-group">
           <label for="business">Business name</label>
-          <input type="text" id="business" name="business" placeholder="Acme Plumbing LLC">
+          <input type="text" id="business" name="business" placeholder="Acme Plumbing LLC" autocomplete="organization">
         </div>
         <div class="form-group">
           <label for="email">Email address *</label>
-          <input type="email" id="email" name="email" placeholder="jane@yourbusiness.com" required>
+          <input type="email" id="email" name="email" placeholder="jane@yourbusiness.com" required autocomplete="email">
         </div>
         <div class="form-group">
           <label for="phone">Phone number</label>
-          <input type="tel" id="phone" name="phone" placeholder="(206) 555-0100">
+          <input type="tel" id="phone" name="phone" placeholder="(206) 555-0100" autocomplete="tel">
         </div>
         <div class="form-group">
           <label for="package">Interested package</label>
@@ -634,7 +661,6 @@
             <option value="1k-2k">$1,000 – $2,000</option>
             <option value="2k-4k">$2,000 – $4,000</option>
             <option value="4k+">$4,000+</option>
-            <option value="monthly">Prefer monthly retainer</option>
           </select>
         </div>
         <div class="form-group full">
@@ -673,61 +699,45 @@
 </footer>
 
 <script>
-  let isMonthly = false;
 
-  const prices = {
-    starter: { onetime: 799, monthly: 67 },
-    growth:  { onetime: 1499, monthly: 125 },
-    scale:   { onetime: 2999, monthly: 250 },
-  };
-
-  function toggleBilling() {
-    isMonthly = !isMonthly;
-    const track = document.getElementById('toggleTrack');
-    track.classList.toggle('on', isMonthly);
-
-    ['starter', 'growth', 'scale'].forEach(tier => {
-      const priceEl  = document.getElementById('price-' + tier);
-      const periodEl = document.getElementById('period-' + tier);
-      const annualEl = document.getElementById('annual-' + tier);
-
-      if (isMonthly) {
-        priceEl.textContent  = prices[tier].monthly;
-        periodEl.textContent = '/mo';
-        if (annualEl) annualEl.style.display = 'block';
-      } else {
-        priceEl.textContent  = prices[tier].onetime;
-        periodEl.textContent = 'one-time';
-        if (annualEl) annualEl.style.display = 'none';
-      }
-    });
-  }
-
-  function handleSubmit(e) {
+  document.getElementById('quote-form-el').addEventListener('submit', function(e) {
     e.preventDefault();
-    const form = e.target;
-    const name = form.querySelector('#name').value;
-    const email = form.querySelector('#email').value;
-    const message = form.querySelector('#message').value;
-    const pkg = form.querySelector('#package').value;
+    handleSubmit(e.target);
+  });
 
-    const subject = encodeURIComponent('Quote Request from ' + name);
-    const body = encodeURIComponent(
-      'Name: ' + name + '\n' +
-      'Email: ' + email + '\n' +
-      'Business: ' + (form.querySelector('#business').value || 'N/A') + '\n' +
-      'Phone: ' + (form.querySelector('#phone').value || 'N/A') + '\n' +
-      'Package: ' + (pkg || 'N/A') + '\n' +
-      'Timeline: ' + (form.querySelector('#timeline').value || 'N/A') + '\n' +
-      'Budget: ' + (form.querySelector('#budget').value || 'N/A') + '\n' +
-      'Existing site: ' + (form.querySelector('#existing').value || 'None') + '\n\n' +
-      'Message:\n' + message
-    );
+  async function handleSubmit(form) {
+    const btn = form.querySelector('.btn-submit');
+    btn.textContent = 'Sending…';
+    btn.disabled = true;
 
-    window.location.href = 'mailto:hello@d1businesssolutions.com?subject=' + subject + '&body=' + body;
-    return false;
+    const data = new FormData(form);
+    // Collect checked services
+    const checked = [...form.querySelectorAll('input[name="services"]:checked')].map(c => c.value).join(', ');
+    data.set('services', checked || 'None selected');
+
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: data
+      });
+      const json = await res.json();
+      if (json.success) {
+        btn.textContent = '✓ Sent! We\'ll be in touch within 24 hours.';
+        btn.style.background = 'var(--green)';
+        btn.style.color = '#0b0d12';
+        form.reset();
+      } else {
+        throw new Error(json.message);
+      }
+    } catch(err) {
+      btn.textContent = 'Something went wrong — please try again.';
+      btn.style.background = 'var(--orange)';
+      btn.disabled = false;
+    }
   }
 </script>
 
+<script src="/chat.js" defer></script>
+<script>(function(){var btn=document.getElementById("navHamburger"),menu=document.getElementById("navMenu"),overlay=document.getElementById("navOverlay");if(!btn)return;function o(){btn.classList.add("open");menu.classList.add("open");overlay.classList.add("open");btn.setAttribute("aria-expanded","true");}function c(){btn.classList.remove("open");menu.classList.remove("open");overlay.classList.remove("open");btn.setAttribute("aria-expanded","false");}btn.addEventListener("click",function(){menu.classList.contains("open")?c():o();});overlay.addEventListener("click",c);menu.querySelectorAll("a").forEach(function(a){a.addEventListener("click",c);});}());</script>
 </body>
 </html>

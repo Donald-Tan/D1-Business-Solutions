@@ -2,9 +2,52 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>D1 Business Solutions LLC</title>
+<title>D1 Business Solutions — Web Design & AI Agents | Seattle, WA</title>
+<meta name="description" content="D1 Business Solutions builds fast, modern websites and AI agents for small businesses in Seattle and across the US. First draft in 48 hours. Starting at $800.">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0b0d12">
+<link rel="canonical" href="https://d1businesssolution.web.app/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://d1businesssolution.web.app/">
+<meta property="og:title" content="D1 Business Solutions — Web Design & AI Agents | Seattle, WA">
+<meta property="og:description" content="Fast, modern websites and AI agents for small businesses. First draft in 48 hours. Starting at $800.">
+<meta property="og:site_name" content="D1 Business Solutions">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="D1 Business Solutions — Web Design & AI Agents">
+<meta name="twitter:description" content="Fast, modern websites and AI agents for small businesses. First draft in 48 hours. Starting at $800.">
+
+<!-- Preconnect for speed -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+
+<!-- Local Business Schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "D1 Business Solutions LLC",
+  "description": "Web design, AI agents, e-commerce, SEO, and workflow automation for small businesses.",
+  "url": "https://d1businesssolution.web.app",
+  "telephone": "+12067134204",
+  "email": "hello@d1businesssolutions.com",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Seattle",
+    "addressRegion": "WA",
+    "addressCountry": "US"
+  },
+  "areaServed": "US",
+  "priceRange": "$$",
+  "sameAs": []
+}
+</script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -162,6 +205,22 @@
   .footer-contact a:hover { color: var(--accent); }
 
   /* MOBILE */
+  /* HAMBURGER */
+  .nav-hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; z-index: 40; }
+  .nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--ink2); border-radius: 2px; transition: all 0.25s; transform-origin: center; }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  .nav-mobile-overlay { display: none; position: fixed; inset: 0; background: rgba(6,7,11,0.6); backdrop-filter: blur(4px); z-index: 19; }
+  .nav-mobile-overlay.open { display: block; }
+  @media (max-width: 768px) {
+  .nav-hamburger { display: flex; }
+  nav ul { display: none; position: fixed; top: 0; right: 0; bottom: 0; width: 72vw; max-width: 300px; background: var(--bg2); border-left: 1px solid var(--border); flex-direction: column; gap: 0; padding: 5rem 0 2rem; z-index: 20; transform: translateX(100%); transition: transform 0.28s cubic-bezier(0.4,0,0.2,1); }
+  nav ul.open { display: flex; transform: translateX(0); }
+  nav ul li { border-bottom: 1px solid var(--border); }
+  nav ul li a { display: block; padding: 1rem 1.75rem; font-size: 1rem; color: var(--ink2); letter-spacing: 0.03em; }
+  nav ul li a:hover { color: var(--ink); background: var(--bg3); }
+  .nav-cta { background: none !important; color: var(--accent) !important; border-radius: 0 !important; font-size: 1rem !important; padding: 1rem 1.75rem !important; }
   @media (max-width: 768px) {
     nav { padding: 1rem 1.25rem; }
     nav ul { gap: 1rem; }
@@ -178,12 +237,15 @@
 <body>
 
 <nav>
-  <a href="index.html" class="logo">D1</a>
-  <ul>
-    <li><a href="services.html">Services</a></li>
-    <li><a href="work.html">Work</a></li>
-    <li><a href="process.html">Process</a></li>
-    <li><a href="quote.html" class="nav-cta">Get a quote</a></li>
+  <a href="/" class="logo">D1</a>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  <div class="nav-mobile-overlay" id="navOverlay"></div>
+  <ul id="navMenu">
+    <li><a href="/services">Services</a></li>
+    <li><a href="/work">Work</a></li>
+    <li><a href="/reviews">Reviews</a></li>
+    <li><a href="/process">Process</a></li>
+    <li><a href="/quote" class="nav-cta">Get a quote</a></li>
   </ul>
 </nav>
 
@@ -200,7 +262,7 @@
     </div>
     <div class="hero-actions">
       <a href="tel:2067134204" class="btn-primary">Call us now</a>
-      <a href="quote.html" class="btn-ghost">Get a quote →</a>
+      <a href="/quote" class="btn-ghost">Get a quote →</a>
     </div>
   </div>
   <div class="hero-visual">
@@ -249,8 +311,8 @@
         <span class="cm-d">D</span><span class="cm-one">ONE</span>
       </div>
       <div class="cta-links">
-        <a href="quote.html" class="btn-accent">Get a quote →</a>
-        <a href="services.html" class="btn-ghost">See our services</a>
+        <a href="/quote" class="btn-accent">Get a quote →</a>
+        <a href="/services" class="btn-ghost">See our services</a>
       </div>
     </div>
     <div class="contact-details">
@@ -288,5 +350,7 @@
   </div>
 </footer>
 
+<script src="/chat.js" defer></script>
+<script>(function(){var btn=document.getElementById("navHamburger"),menu=document.getElementById("navMenu"),overlay=document.getElementById("navOverlay");if(!btn)return;function o(){btn.classList.add("open");menu.classList.add("open");overlay.classList.add("open");btn.setAttribute("aria-expanded","true");}function c(){btn.classList.remove("open");menu.classList.remove("open");overlay.classList.remove("open");btn.setAttribute("aria-expanded","false");}btn.addEventListener("click",function(){menu.classList.contains("open")?c():o();});overlay.addEventListener("click",c);menu.querySelectorAll("a").forEach(function(a){a.addEventListener("click",c);});}());</script>
 </body>
 </html>
